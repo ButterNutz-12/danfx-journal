@@ -146,17 +146,34 @@ tbody td{padding:9px 12px;color:var(--text);white-space:nowrap;}
   .card-title{font-size:10px;}
   .hm-cell{height:18px;}
 }
+/* ── HAMBURGER ── */
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;margin-left:auto;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--gold);border-radius:2px;transition:all 0.3s;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--border);z-index:99;flex-direction:column;padding:8px 0;box-shadow:0 8px 24px rgba(0,0,0,0.4);}
+.mobile-menu.open{display:flex;}
+.mobile-tab{padding:14px 20px;font-size:14px;color:var(--text2);cursor:pointer;border-bottom:1px solid var(--border);transition:all 0.15s;}
+.mobile-tab:hover,.mobile-tab.active{color:var(--gold);background:var(--gold-dim);}
+.mobile-meta{padding:14px 20px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);line-height:2;}
+@media(max-width:768px){
+  .hamburger{display:flex;}
+  .nav-tabs{display:none;}
+  .header-meta{display:none;}
+  .header{height:52px;}
+}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div style="display:flex;align-items:center;gap:28px">
+  <div style="display:flex;align-items:center;gap:28px;flex:1">
     <div class="header-brand">
       <span class="logo">TRADING JOURNAL</span>
       <span class="tag">LIVE</span>
     </div>
-    <div class="nav-tabs">
+    <div class="nav-tabs" id="navTabs">
       <div class="nav-tab active" onclick="switchTab('overview')">Vue d'ensemble</div>
       <div class="nav-tab" onclick="switchTab('monthly')">Mensuel</div>
       <div class="nav-tab" onclick="switchTab('trades')">Trades</div>
@@ -164,9 +181,22 @@ tbody td{padding:9px 12px;color:var(--text);white-space:nowrap;}
     </div>
   </div>
   <div class="header-meta">
-    <div class="meta-item">Période <span>2026-06-03 → 2026-06-03</span></div>
+    <div class="meta-item">Période <span>2026-05-29 → 2026-05-29</span></div>
     <div class="meta-item">Capital initial <span>$100,000</span></div>
-    <div class="meta-item">Capital final <span style="color:var(--green)">$100,744.25</span></div>
+    <div class="meta-item">Capital final <span style="color:var(--green)">$100,000.00</span></div>
+  </div>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-tab active" onclick="switchTab('overview');closeMenu()">📊 Vue d'ensemble</div>
+  <div class="mobile-tab" onclick="switchTab('monthly');closeMenu()">📅 Mensuel</div>
+  <div class="mobile-tab" onclick="switchTab('trades');closeMenu()">📋 Trades</div>
+  <div class="mobile-tab" onclick="switchTab('config');closeMenu()">⚙️ Paramètres</div>
+  <div class="mobile-meta">
+    <div>Période : 2026-05-29 → 2026-05-29</div>
+    <div>Capital : $100,000 → <span style="color:var(--green)">$100,000.00</span></div>
   </div>
 </div>
 
@@ -175,13 +205,13 @@ tbody td{padding:9px 12px;color:var(--text);white-space:nowrap;}
 <!-- OVERVIEW -->
 <div id="sec-overview" class="section active">
   <div class="kpi-grid">
-    <div class="kpi-card gold"><div class="kpi-label">Rendement total</div><div class="kpi-value">+0%</div><div class="kpi-sub">$100,000 → $100,744.25</div></div>
+    <div class="kpi-card gold"><div class="kpi-label">Rendement total</div><div class="kpi-value">+0%</div><div class="kpi-sub">$100,000 → $100,000.00</div></div>
     <div class="kpi-card green"><div class="kpi-label">Profit Factor</div><div class="kpi-value">0.0</div><div class="kpi-sub">Ratio gain/perte</div></div>
     <div class="kpi-card blue"><div class="kpi-label">Max Drawdown</div><div class="kpi-value">0%</div><div class="kpi-sub">Drawdown max historique</div></div>
-    <div class="kpi-card purple"><div class="kpi-label">Trades</div><div class="kpi-value">1</div><div class="kpi-sub">1 wins + 1 trail</div></div>
-    <div class="kpi-card gold"><div class="kpi-label">Win Rate</div><div class="kpi-value">100.0%</div><div class="kpi-sub">1 wins + 1 trail</div></div>
-    <div class="kpi-card green"><div class="kpi-label">Avg SL</div><div class="kpi-value">83.6</div><div class="kpi-sub">Pips · RR 1:2.0</div></div>
-    <div class="kpi-card blue"><div class="kpi-label">Bull WR</div><div class="kpi-value">100.0%</div><div class="kpi-sub">1 trades haussiers</div></div>
+    <div class="kpi-card purple"><div class="kpi-label">Trades</div><div class="kpi-value">10</div><div class="kpi-sub">0 wins + 0 trail</div></div>
+    <div class="kpi-card gold"><div class="kpi-label">Win Rate</div><div class="kpi-value">0.0%</div><div class="kpi-sub">0 wins + 0 trail</div></div>
+    <div class="kpi-card green"><div class="kpi-label">Avg SL</div><div class="kpi-value">30.0</div><div class="kpi-sub">Pips · RR 1:2.0</div></div>
+    <div class="kpi-card blue"><div class="kpi-label">Bull WR</div><div class="kpi-value">0.0%</div><div class="kpi-sub">10 trades haussiers</div></div>
     <div class="kpi-card purple"><div class="kpi-label">Bear WR</div><div class="kpi-value">0%</div><div class="kpi-sub">0 trades baissiers</div></div>
   </div>
   <div class="chart-row">
@@ -191,16 +221,16 @@ tbody td{padding:9px 12px;color:var(--text);white-space:nowrap;}
   <div class="chart-row">
     <div class="card"><div class="card-title">PnL mensuel</div><canvas id="monthlyPnlChart" height="180"></canvas></div>
     <div class="card"><div class="card-title">Jours de semaine</div><div class="dow-grid" style="margin-top:8px"><div class="dow-cell">
-          <div class="day">Mercredi</div>
-          <div class="day-pnl" style="color:var(--green)">$744</div>
-          <div class="day-meta">1 trades · 100.0% WR</div>
+          <div class="day">Vendredi</div>
+          <div class="day-pnl" style="color:var(--green)">$0</div>
+          <div class="day-meta">10 trades · 0.0% WR</div>
         </div></div></div>
   </div>
   <div class="card"><div class="card-title">Performance par année</div><div class="yearly-grid" id="yearlyGrid"><div class="year-cell">
         <div class="yr">2026</div>
-        <div class="pnl pos">+$744</div>
-        <div class="wr">100.0% WR</div>
-        <div class="tr">1 trades</div>
+        <div class="pnl pos">+$0</div>
+        <div class="wr">0.0% WR</div>
+        <div class="tr">10 trades</div>
       </div></div></div>
 </div>
 
@@ -241,13 +271,13 @@ tbody td{padding:9px 12px;color:var(--text);white-space:nowrap;}
 <!-- CONFIG -->
 <div id="sec-config" class="section">
   <div class="chart-row">
-    <div class="card"><div class="card-title">Paramètres backtest</div><div class="config-grid"><div class="config-row"><span class="config-key">Période</span><span class="config-val">2026-06-03 → 2026-06-03</span></div><div class="config-row"><span class="config-key">Capital initial</span><span class="config-val">$100,000</span></div><div class="config-row"><span class="config-key">Risque / trade</span><span class="config-val">2.0%  ($2000.0)</span></div><div class="config-row"><span class="config-key">Risk:Reward</span><span class="config-val">1:2.0</span></div><div class="config-row"><span class="config-key">Mode entrée</span><span class="config-val">LIVE</span></div><div class="config-row"><span class="config-key">London session</span><span class="config-val">False</span></div><div class="config-row"><span class="config-key">SL buffer</span><span class="config-val">0 pts</span></div><div class="config-row"><span class="config-key">EOD close si profit</span><span class="config-val">NON</span></div><div class="config-row"><span class="config-key">No hard close</span><span class="config-val">NON</span></div></div></div>
+    <div class="card"><div class="card-title">Paramètres backtest</div><div class="config-grid"><div class="config-row"><span class="config-key">Période</span><span class="config-val">2026-05-29 → 2026-05-29</span></div><div class="config-row"><span class="config-key">Capital initial</span><span class="config-val">$100,000</span></div><div class="config-row"><span class="config-key">Risque / trade</span><span class="config-val">2.0%  ($2000.0)</span></div><div class="config-row"><span class="config-key">Risk:Reward</span><span class="config-val">1:2.0</span></div><div class="config-row"><span class="config-key">Mode entrée</span><span class="config-val">LIVE</span></div><div class="config-row"><span class="config-key">London session</span><span class="config-val">False</span></div><div class="config-row"><span class="config-key">SL buffer</span><span class="config-val">0 pts</span></div><div class="config-row"><span class="config-key">EOD close si profit</span><span class="config-val">NON</span></div><div class="config-row"><span class="config-key">No hard close</span><span class="config-val">NON</span></div></div></div>
     <div class="card">
       <div class="card-title">Trades exclus (filtres)</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div style="color:var(--text3);font-size:11px;padding:8px">Données non disponibles</div></div>
       <div class="sep"></div>
       <div class="card-title">Résumé exécution</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px"><div class="config-row"><span class="config-key">Option utilisée</span><span class="config-val">live</span></div><div class="config-row"><span class="config-key">Source</span><span class="config-val">trades_history_converted.json</span></div><div class="config-row"><span class="config-key">Total trades exécutés</span><span class="config-val">1</span></div><div class="config-row"><span class="config-key">Avg bars / trade</span><span class="config-val">—</span></div><div class="config-row"><span class="config-key">Bull / Bear split</span><span class="config-val">1 / 0</span></div><div class="config-row"><span class="config-key">Mois simulés</span><span class="config-val">1</span></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px"><div class="config-row"><span class="config-key">Option utilisée</span><span class="config-val">live</span></div><div class="config-row"><span class="config-key">Source</span><span class="config-val">live_bmc_report_converted.json</span></div><div class="config-row"><span class="config-key">Total trades exécutés</span><span class="config-val">10</span></div><div class="config-row"><span class="config-key">Avg bars / trade</span><span class="config-val">—</span></div><div class="config-row"><span class="config-key">Bull / Bear split</span><span class="config-val">10 / 0</span></div><div class="config-row"><span class="config-key">Mois simulés</span><span class="config-val">1</span></div></div>
     </div>
   </div>
 </div>
@@ -255,10 +285,10 @@ tbody td{padding:9px 12px;color:var(--text);white-space:nowrap;}
 </div><!-- /main -->
 
 <script>
-const CURVE=[["2026-06-01",100744.25,744.25,100.0,1]];
-const YEARLY=[{"year":"2026","n":1,"pnl":744.25,"wr":100.0,"wins":1,"losses":0}];
-const TRADES=[{"date":"2026-06-03","weekday":"Wednesday","direction":"BULLISH","action":"BUY","entry":0,"sl_initial":0,"tp":4447.8,"sl_pips":83.6,"tp_pips":167.2,"lots":0,"risk_usd":0,"result":"TRAIL_WIN","exit_price":4447.8,"pnl_usd":744.25,"capital":100744.25,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""}];
-const STATS={"n":1,"wins":1,"trail_wins":1,"breakevens":0,"losses":0,"timeouts":0};
+const CURVE=[["2026-05-01",100000.0,0.0,0.0,10]];
+const YEARLY=[{"year":"2026","n":10,"pnl":0.0,"wr":0.0,"wins":0,"losses":0}];
+const TRADES=[{"date":"2026-05-29","weekday":"Friday","direction":"BULLISH","action":"BUY","entry":4531.61,"sl_initial":4528.61,"tp":4537.61,"sl_pips":30,"tp_pips":60.0,"lots":5.0,"risk_usd":2000.0,"result":"PENDING","exit_price":4531.61,"pnl_usd":0.0,"capital":100000.0,"bars_held":0,"phase_reached":null,"ict_confirm":"Bullish FVG","fibo_zone":"4519.13–4531.05"},{"date":"2026-05-29","weekday":"Friday","direction":"BULLISH","action":"BUY","entry":4531.61,"sl_initial":4528.61,"tp":4537.61,"sl_pips":30,"tp_pips":60,"lots":5.0,"risk_usd":2000.0,"result":"PENDING","exit_price":4531.61,"pnl_usd":0.0,"capital":100000.0,"bars_held":0,"phase_reached":null,"ict_confirm":"Bullish FVG","fibo_zone":"4519.13–4531.05"},{"date":"2026-05-29","weekday":"Friday","direction":"BULLISH","action":"BUY","entry":4529.35,"sl_initial":4526.35,"tp":4535.35,"sl_pips":30,"tp_pips":60.0,"lots":5.0,"risk_usd":2000.0,"result":"PENDING","exit_price":4529.35,"pnl_usd":0.0,"capital":100000.0,"bars_held":0,"phase_reached":null,"ict_confirm":"Bullish FVG","fibo_zone":"4519.13–4531.05"},{"date":"2026-05-29","weekday":"Friday","direction":"BULLISH","action":"BUY","entry":4529.35,"sl_initial":4526.35,"tp":4535.35,"sl_pips":30,"tp_pips":60,"lots":5.0,"risk_usd":2000.0,"result":"PENDING","exit_price":4529.35,"pnl_usd":0.0,"capital":100000.0,"bars_held":0,"phase_reached":null,"ict_confirm":"Bullish FVG","fibo_zone":"4519.13–4531.05"},{"date":"2026-05-29","weekday":"Friday","direction":"BULLISH","action":"BUY","entry":4529.09,"sl_initial":4526.09,"tp":4535.09,"sl_pips":30,"tp_pips":60.0,"lots":5.0,"risk_usd":2000.0,"result":"PENDING","exit_price":4529.09,"pnl_usd":0.0,"capital":100000.0,"bars_held":0,"phase_reached":null,"ict_confirm":"Bullish FVG","fibo_zone":"4519.13–4531.05"},{"date":"2026-05-29","weekday":"Friday","direction":"BULLISH","action":"BUY","entry":4529.09,"sl_initial":4526.09,"tp":4535.09,"sl_pips":30,"tp_pips":60,"lots":5.0,"risk_usd":2000.0,"result":"PENDING","exit_price":4529.09,"pnl_usd":0.0,"capital":100000.0,"bars_held":0,"phase_reached":null,"ict_confirm":"Bullish FVG","fibo_zone":"4519.13–4531.05"},{"date":"2026-05-29","weekday":"Friday","direction":"BULLISH","action":"BUY","entry":4530.12,"sl_initial":4527.12,"tp":4536.12,"sl_pips":30,"tp_pips":60.0,"lots":5.0,"risk_usd":2000.0,"result":"PENDING","exit_price":4530.12,"pnl_usd":0.0,"capital":100000.0,"bars_held":0,"phase_reached":null,"ict_confirm":"Bullish FVG","fibo_zone":"4519.13–4531.05"},{"date":"2026-05-29","weekday":"Friday","direction":"BULLISH","action":"BUY","entry":4530.12,"sl_initial":4527.12,"tp":4536.12,"sl_pips":30,"tp_pips":60,"lots":5.0,"risk_usd":2000.0,"result":"PENDING","exit_price":4530.12,"pnl_usd":0.0,"capital":100000.0,"bars_held":0,"phase_reached":null,"ict_confirm":"Bullish FVG","fibo_zone":"4519.13–4531.05"},{"date":"2026-05-29","weekday":"Friday","direction":"BULLISH","action":"BUY","entry":4529.52,"sl_initial":4526.52,"tp":4535.52,"sl_pips":30,"tp_pips":60.0,"lots":5.0,"risk_usd":2000.0,"result":"PENDING","exit_price":4529.52,"pnl_usd":0.0,"capital":100000.0,"bars_held":0,"phase_reached":null,"ict_confirm":"Bullish FVG","fibo_zone":"4519.13–4531.05"},{"date":"2026-05-29","weekday":"Friday","direction":"BULLISH","action":"BUY","entry":4529.52,"sl_initial":4526.52,"tp":4535.52,"sl_pips":30,"tp_pips":60,"lots":5.0,"risk_usd":2000.0,"result":"PENDING","exit_price":4529.52,"pnl_usd":0.0,"capital":100000.0,"bars_held":0,"phase_reached":null,"ict_confirm":"Bullish FVG","fibo_zone":"4519.13–4531.05"}];
+const STATS={"n":10,"wins":0,"trail_wins":0,"breakevens":0,"losses":0,"timeouts":0};
 
 function switchTab(name){
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
@@ -516,6 +546,35 @@ window.addEventListener('load',()=>{
   setTimeout(()=>{drawEquity();drawDist();drawMonthlyPnl();},80);
 });
 window.addEventListener('resize',()=>{drawEquity();drawMonthlyPnl();});
+
+function toggleMenu(){
+  const menu=document.getElementById('mobileMenu');
+  const btn=document.getElementById('hamburger');
+  const isOpen=menu.classList.contains('open');
+  menu.classList.toggle('open',!isOpen);
+  btn.classList.toggle('open',!isOpen);
+  // Sync active tab in mobile menu
+  const activeTab=document.querySelector('.nav-tab.active');
+  if(activeTab){
+    const tabName=activeTab.getAttribute('onclick').match(/'(\w+)'/)?.[1];
+    document.querySelectorAll('.mobile-tab').forEach((t,i)=>{
+      const tabs=['overview','monthly','trades','config'];
+      t.classList.toggle('active',tabs[i]===tabName);
+    });
+  }
+}
+function closeMenu(){
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+}
+// Close menu when clicking outside
+document.addEventListener('click',function(e){
+  const menu=document.getElementById('mobileMenu');
+  const btn=document.getElementById('hamburger');
+  if(menu.classList.contains('open')&&!menu.contains(e.target)&&!btn.contains(e.target)){
+    closeMenu();
+  }
+});
 </script>
 </body>
 </html>
