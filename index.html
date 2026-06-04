@@ -476,11 +476,12 @@ function renderTrades(){
   if(currentDir)filtered=filtered.filter(t=>t.direction===currentDir);
   if(currentSearch)filtered=filtered.filter(t=>t.date.includes(currentSearch));
   $('tradeCount').textContent=filtered.length+' trades';
-  tbody.innerHTML=filtered.map(t=>{
+  window._filteredTrades=filtered;
+  tbody.innerHTML=filtered.map((t,i)=>{
     const pc=t.pnl_usd>0?'pnl-pos':t.pnl_usd<0?'pnl-neg':'pnl-zero';
     const ps=t.pnl_usd===0?'$0':(t.pnl_usd>0?'+$':'-$')+Math.abs(t.pnl_usd).toFixed(2);
     const dc=t.direction==='BULLISH'?'dir-bull':'dir-bear';
-    return `<tr onclick="openModal(${JSON.stringify(t).replace(/'/g,'&#39;')})">
+    return `<tr onclick="openModal(${i})">
       <td>${t.date}</td><td style="color:var(--text2)">${t.weekday?(t.weekday.slice(0,3)):'—'}</td>
       <td class="${dc}">${t.direction==='BULLISH'?'▲ BULL':'▼ BEAR'}</td>
       <td style="color:${t.action==='BUY'?'var(--green)':'var(--red)'};font-weight:600">${t.action}</td>
@@ -503,7 +504,8 @@ function filterDir(d,btn){
 }
 function searchTrades(v){currentSearch=v;renderTrades();}
 
-function openModal(t){
+function openModal(i){
+  const t=window._filteredTrades[i];
   const pc=t.pnl_usd>0?'var(--green)':t.pnl_usd<0?'var(--red)':'var(--gold)';
   const ps=(t.pnl_usd>0?'+$':t.pnl_usd<0?'-$':'$')+Math.abs(t.pnl_usd).toFixed(2);
   const dc=t.direction==='BULLISH'?'var(--green)':'var(--red)';
