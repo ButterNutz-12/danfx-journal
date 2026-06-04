@@ -21,15 +21,12 @@
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:13px;line-height:1.6;}
 .header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 32px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:56px;}
-.header-left{display:flex;align-items:center;gap:28px;flex:1;}
 .header-brand{display:flex;align-items:center;gap:14px;}
 .header-brand .logo{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold);letter-spacing:3px;}
 .header-brand .tag{background:var(--gold-dim);border:1px solid var(--gold);color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 8px;border-radius:2px;letter-spacing:1.5px;}
 .header-meta{display:flex;align-items:center;gap:24px;}
 .header-meta .meta-item{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);}
 .header-meta .meta-item span{color:var(--gold2);font-weight:500;}
-.mobile-header{display:none;width:100%;align-items:center;justify-content:space-between;padding:0;}
-.mobile-header .logo{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);letter-spacing:2px;}
 .nav-tabs{display:flex;gap:0;}
 .nav-tab{padding:0 20px;height:56px;display:flex;align-items:center;font-size:12px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;letter-spacing:0.5px;text-transform:uppercase;}
 .nav-tab:hover{color:var(--text);}
@@ -99,86 +96,44 @@ tbody td{padding:9px 12px;color:var(--text);white-space:nowrap;}
 .search-input{margin-left:auto;padding:5px 12px;border-radius:4px;border:1px solid var(--border);background:var(--bg4);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;outline:none;width:180px;}
 .search-input:focus{border-color:var(--gold);}
 .search-input::placeholder{color:var(--text3);}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:1000;align-items:center;justify-content:center;padding:16px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;width:100%;max-width:480px;padding:24px;position:relative;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:var(--gold2);}
+.modal-close{background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;padding:0 4px;line-height:1;}
+.modal-close:hover{color:var(--text);}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.modal-row{background:var(--bg4);border:1px solid var(--border);border-radius:4px;padding:10px 14px;}
+.modal-key{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.modal-val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--text);}
+.modal-row.full{grid-column:1/-1;}
+tbody tr{cursor:pointer;}
 .heatmap-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;}
 .hm-month-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text3);text-align:center;text-transform:uppercase;padding-bottom:4px;}
 .hm-cell{height:22px;border-radius:3px;cursor:pointer;position:relative;}
 .hm-cell:hover::after{content:attr(data-tip);position:absolute;bottom:26px;left:50%;transform:translateX(-50%);background:var(--bg);border:1px solid var(--border2);padding:5px 9px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;white-space:nowrap;color:var(--text);z-index:10;}
 .hm-year-label{grid-column:1/-1;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);padding:8px 0 2px;letter-spacing:1px;}
 .config-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.config-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg4);border:1px solid var(--border);border-radius:4px;gap:8px;}
-.config-val{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--gold2);text-align:right;word-break:break-all;}
+.config-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg4);border:1px solid var(--border);border-radius:4px;}
 .config-key{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;}
 .config-val{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--gold2);}
 .sep{height:1px;background:var(--border);margin:20px 0;}
 ::-webkit-scrollbar{width:6px;height:6px;}
 ::-webkit-scrollbar-track{background:var(--bg2);}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
-@media(max-width:900px){
-  .chart-row{grid-template-columns:1fr;}
-  .chart-row-3{grid-template-columns:1fr 1fr;}
-  .main{padding:16px;}
-  .kpi-grid{grid-template-columns:repeat(2,1fr);}
-  .header{padding:0 16px;height:auto;flex-direction:column;align-items:flex-start;gap:0;}
-  .header-meta{display:none;}
-  .nav-tabs{overflow-x:auto;width:100%;-webkit-overflow-scrolling:touch;}
-  .nav-tab{white-space:nowrap;padding:0 14px;height:40px;font-size:11px;}
-  .header-brand .logo{font-size:18px;}
-}
-@media(max-width:480px){
-  .main{padding:10px 8px;}
-  .kpi-grid{grid-template-columns:repeat(2,1fr);gap:8px;}
-  .kpi-card{padding:12px 14px;}
-  .kpi-value{font-size:20px;}
-  .kpi-label{font-size:9px;}
-  .chart-row{grid-template-columns:1fr;}
-  .chart-row-3{grid-template-columns:1fr;}
-  .config-grid{grid-template-columns:1fr;}
-  .yearly-grid{grid-template-columns:repeat(3,1fr);}
-  .dow-grid{grid-template-columns:1fr 1fr;}
-  .header{padding:0 10px;}
-  .header-brand .logo{font-size:16px;}
-  .header-brand .tag{display:none;}
-  .nav-tab{padding:0 10px;font-size:10px;}
-  .table-wrapper{font-size:10px;}
-  tbody td{padding:7px 6px;}
-  thead th{padding:8px 6px;}
-  .filter-bar{gap:6px;flex-wrap:wrap;}
-  .filter-btn{padding:4px 8px;font-size:9px;}
-  .search-input{width:100%;margin-left:0;margin-top:4px;}
-  .heatmap-grid{grid-template-columns:repeat(6,1fr);}
-  .card{padding:14px 10px;}
-  .card-title{font-size:10px;}
-  .hm-cell{height:18px;}
-}
-/* ── HAMBURGER ── */
-.hamburger{display:flex;flex-direction:column;justify-content:center;gap:5px;background:var(--bg4);border:1px solid var(--border);border-radius:6px;cursor:pointer;padding:10px 12px;min-width:44px;min-height:44px;}
-.hamburger span{display:block;width:20px;height:2px;background:var(--gold);border-radius:2px;transition:all 0.3s;}
-.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-.hamburger.open span:nth-child(2){opacity:0;}
-.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-.mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--border);z-index:99;flex-direction:column;padding:8px 0;box-shadow:0 8px 24px rgba(0,0,0,0.4);}
-.mobile-menu.open{display:flex;}
-.mobile-tab{padding:14px 20px;font-size:14px;color:var(--text2);cursor:pointer;border-bottom:1px solid var(--border);transition:all 0.15s;}
-.mobile-tab:hover,.mobile-tab.active{color:var(--gold);background:var(--gold-dim);}
-.mobile-meta{padding:14px 20px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);line-height:2;}
-@media(max-width:768px){
-  .header-left{display:none;}
-  .header-meta{display:none;}
-  .header{height:52px;padding:0 12px;}
-  .mobile-header{display:flex;}
-}
+@media(max-width:900px){.chart-row{grid-template-columns:1fr;}.chart-row-3{grid-template-columns:1fr 1fr;}.main{padding:16px;}.kpi-grid{grid-template-columns:repeat(2,1fr);}}
 </style>
 </head>
 <body>
 
-<div class="header" id="mainHeader">
-  <!-- Desktop : logo + tabs + meta -->
-  <div class="header-left">
+<div class="header">
+  <div style="display:flex;align-items:center;gap:28px">
     <div class="header-brand">
       <span class="logo">TRADING JOURNAL</span>
       <span class="tag">LIVE</span>
     </div>
-    <div class="nav-tabs" id="navTabs">
+    <div class="nav-tabs">
       <div class="nav-tab active" onclick="switchTab('overview')">Vue d'ensemble</div>
       <div class="nav-tab" onclick="switchTab('monthly')">Mensuel</div>
       <div class="nav-tab" onclick="switchTab('trades')">Trades</div>
@@ -189,24 +144,6 @@ tbody td{padding:9px 12px;color:var(--text);white-space:nowrap;}
     <div class="meta-item">Période <span>2026-06-03 → 2026-06-04</span></div>
     <div class="meta-item">Capital initial <span>$100,000</span></div>
     <div class="meta-item">Capital final <span style="color:var(--green)">$101,649.71</span></div>
-  </div>
-  <!-- Mobile : logo + hamburger -->
-  <div class="mobile-header">
-    <span class="logo">📊 TRADING JOURNAL</span>
-    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</div>
-<!-- Mobile dropdown menu -->
-<div class="mobile-menu" id="mobileMenu">
-  <div class="mobile-tab" id="mt-overview" onclick="switchTab('overview');closeMenu()">📊 Vue d'ensemble</div>
-  <div class="mobile-tab" id="mt-monthly" onclick="switchTab('monthly');closeMenu()">📅 Mensuel</div>
-  <div class="mobile-tab" id="mt-trades" onclick="switchTab('trades');closeMenu()">📋 Trades</div>
-  <div class="mobile-tab" id="mt-config" onclick="switchTab('config');closeMenu()">⚙️ Paramètres</div>
-  <div class="mobile-meta">
-    <div>2026-06-03 → 2026-06-04</div>
-    <div>$100,000 → <span style="color:var(--green)">$101,649.71</span></div>
   </div>
 </div>
 
@@ -297,6 +234,16 @@ tbody td{padding:9px 12px;color:var(--text);white-space:nowrap;}
 </div>
 
 </div><!-- /main -->
+
+<div class="modal-overlay" id="tradeModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">TRADE DETAILS</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-grid" id="modalGrid"></div>
+  </div>
+</div>
 
 <script>
 const CURVE=[["2026-06-01",101649.71,1649.71,100.0,2]];
@@ -533,7 +480,7 @@ function renderTrades(){
     const pc=t.pnl_usd>0?'pnl-pos':t.pnl_usd<0?'pnl-neg':'pnl-zero';
     const ps=t.pnl_usd===0?'$0':(t.pnl_usd>0?'+$':'-$')+Math.abs(t.pnl_usd).toFixed(2);
     const dc=t.direction==='BULLISH'?'dir-bull':'dir-bear';
-    return `<tr>
+    return `<tr onclick="openModal(${JSON.stringify(t).replace(/'/g,'&#39;')})">
       <td>${t.date}</td><td style="color:var(--text2)">${t.weekday?(t.weekday.slice(0,3)):'—'}</td>
       <td class="${dc}">${t.direction==='BULLISH'?'▲ BULL':'▼ BEAR'}</td>
       <td style="color:${t.action==='BUY'?'var(--green)':'var(--red)'};font-weight:600">${t.action}</td>
@@ -556,39 +503,40 @@ function filterDir(d,btn){
 }
 function searchTrades(v){currentSearch=v;renderTrades();}
 
+function openModal(t){
+  const pc=t.pnl_usd>0?'var(--green)':t.pnl_usd<0?'var(--red)':'var(--gold)';
+  const ps=(t.pnl_usd>0?'+$':t.pnl_usd<0?'-$':'$')+Math.abs(t.pnl_usd).toFixed(2);
+  const dc=t.direction==='BULLISH'?'var(--green)':'var(--red)';
+  const ac=t.action==='BUY'?'var(--green)':'var(--red)';
+  const rr=t.sl_pips>0?'1:'+(t.tp_pips/t.sl_pips).toFixed(1):'—';
+  $('modalTitle').innerHTML=`${t.date} &nbsp;<span style="font-size:13px;color:var(--text3)">${t.weekday||''}</span>`;
+  $('modalGrid').innerHTML=`
+    <div class="modal-row"><div class="modal-key">Direction</div><div class="modal-val" style="color:${dc}">${t.direction==='BULLISH'?'▲ BULL':'▼ BEAR'}</div></div>
+    <div class="modal-row"><div class="modal-key">Action</div><div class="modal-val" style="color:${ac}">${t.action}</div></div>
+    <div class="modal-row"><div class="modal-key">Entrée</div><div class="modal-val">${t.entry.toFixed(2)}</div></div>
+    <div class="modal-row"><div class="modal-key">Sortie</div><div class="modal-val">${t.exit_price.toFixed(2)}</div></div>
+    <div class="modal-row"><div class="modal-key">Stop Loss</div><div class="modal-val" style="color:var(--red)">${t.sl_initial.toFixed(2)}</div></div>
+    <div class="modal-row"><div class="modal-key">Take Profit</div><div class="modal-val" style="color:var(--green)">${t.tp.toFixed(2)}</div></div>
+    <div class="modal-row"><div class="modal-key">SL Pips</div><div class="modal-val">${t.sl_pips}</div></div>
+    <div class="modal-row"><div class="modal-key">Risk:Reward</div><div class="modal-val">${rr}</div></div>
+    <div class="modal-row"><div class="modal-key">Résultat</div><div class="modal-val"><span class="badge ${t.result}">${t.result}</span></div></div>
+    <div class="modal-row"><div class="modal-key">Bars tenus</div><div class="modal-val">${t.bars_held||'—'}</div></div>
+    <div class="modal-row full"><div class="modal-key">P&L</div><div class="modal-val" style="font-size:20px;color:${pc}">${ps}</div></div>
+    <div class="modal-row"><div class="modal-key">Capital après</div><div class="modal-val" style="color:var(--gold2)">${fmtK(t.capital)}</div></div>
+    <div class="modal-row"><div class="modal-key">Lots</div><div class="modal-val">${t.lots||'—'}</div></div>
+    ${t.fibo_zone?`<div class="modal-row full"><div class="modal-key">Zone Fibo</div><div class="modal-val" style="color:var(--blue)">${t.fibo_zone}</div></div>`:''}
+  `;
+  $('tradeModal').classList.add('open');
+}
+function closeModal(){
+  $('tradeModal').classList.remove('open');
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
 window.addEventListener('load',()=>{
   setTimeout(()=>{drawEquity();drawDist();drawMonthlyPnl();},80);
 });
 window.addEventListener('resize',()=>{drawEquity();drawMonthlyPnl();});
-
-function toggleMenu(){
-  const menu=document.getElementById('mobileMenu');
-  const btn=document.getElementById('hamburger');
-  const isOpen=menu.classList.contains('open');
-  menu.classList.toggle('open',!isOpen);
-  btn.classList.toggle('open',!isOpen);
-  // Sync active tab in mobile menu
-  const activeTab=document.querySelector('.nav-tab.active');
-  if(activeTab){
-    const tabName=activeTab.getAttribute('onclick').match(/'(\w+)'/)?.[1];
-    document.querySelectorAll('.mobile-tab').forEach((t,i)=>{
-      const tabs=['overview','monthly','trades','config'];
-      t.classList.toggle('active',tabs[i]===tabName);
-    });
-  }
-}
-function closeMenu(){
-  document.getElementById('mobileMenu').classList.remove('open');
-  document.getElementById('hamburger').classList.remove('open');
-}
-// Close menu when clicking outside
-document.addEventListener('click',function(e){
-  const menu=document.getElementById('mobileMenu');
-  const btn=document.getElementById('hamburger');
-  if(menu.classList.contains('open')&&!menu.contains(e.target)&&!btn.contains(e.target)){
-    closeMenu();
-  }
-});
 </script>
 </body>
 </html>
