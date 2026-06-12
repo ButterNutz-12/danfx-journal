@@ -96,24 +96,53 @@ tbody td{padding:9px 12px;color:var(--text);white-space:nowrap;}
 .search-input{margin-left:auto;padding:5px 12px;border-radius:4px;border:1px solid var(--border);background:var(--bg4);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;outline:none;width:180px;}
 .search-input:focus{border-color:var(--gold);}
 .search-input::placeholder{color:var(--text3);}
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:1000;align-items:center;justify-content:center;padding:16px;}
-.modal-overlay.open{display:flex;}
-.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;width:100%;max-width:480px;padding:24px;position:relative;}
-.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
-.modal-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:var(--gold2);}
-.modal-close{background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;padding:0 4px;line-height:1;}
-.modal-close:hover{color:var(--text);}
-.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.modal-row{background:var(--bg4);border:1px solid var(--border);border-radius:4px;padding:10px 14px;}
-.modal-key{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
-.modal-val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--text);}
-.modal-row.full{grid-column:1/-1;}
-tbody tr{cursor:pointer;}
 .heatmap-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;}
 .hm-month-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text3);text-align:center;text-transform:uppercase;padding-bottom:4px;}
 .hm-cell{height:22px;border-radius:3px;cursor:pointer;position:relative;}
 .hm-cell:hover::after{content:attr(data-tip);position:absolute;bottom:26px;left:50%;transform:translateX(-50%);background:var(--bg);border:1px solid var(--border2);padding:5px 9px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;white-space:nowrap;color:var(--text);z-index:10;}
 .hm-year-label{grid-column:1/-1;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);padding:8px 0 2px;letter-spacing:1px;}
+/* ── CALENDAR ── */
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.cal-nav{display:flex;align-items:center;gap:12px;}
+.cal-nav button{background:var(--bg3);border:1px solid var(--border);color:var(--text2);width:32px;height:32px;border-radius:4px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.cal-nav button:hover{border-color:var(--gold);color:var(--gold);}
+.cal-title{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--text);letter-spacing:2px;}
+.cal-stats-bar{display:flex;gap:10px;align-items:center;}
+.cal-stat{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 16px;text-align:center;}
+.cal-stat-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;}
+.cal-stat-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;margin-top:2px;}
+.cal-stat-val.pos{color:var(--green);}
+.cal-stat-val.neg{color:var(--red);}
+.cal-stat-val.gold{color:var(--gold2);}
+.cal-stat-days{background:var(--timeout-dim);border:1px solid var(--timeout);border-radius:12px;padding:3px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--timeout);}
+.cal-grid-wrapper{display:grid;grid-template-columns:1fr 160px;gap:12px;align-items:start;}
+.cal-grid{width:100%;}
+.cal-dow-headers{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;}
+.cal-dow-head{text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:6px 0;}
+.cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.cal-day{background:var(--bg3);border:1px solid var(--border);border-radius:6px;min-height:90px;padding:8px;position:relative;cursor:default;transition:border-color 0.15s;}
+.cal-day.empty{background:var(--bg2);border-color:var(--bg2);}
+.cal-day.has-trade{cursor:pointer;}
+.cal-day.has-trade:hover{border-color:var(--border2);}
+.cal-day.profit{background:rgba(30,80,50,0.45);border-color:rgba(46,180,100,0.35);}
+.cal-day.loss{background:rgba(80,20,20,0.45);border-color:rgba(224,82,82,0.35);}
+.cal-day-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);margin-bottom:6px;}
+.cal-day-pnl{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;line-height:1.1;}
+.cal-day-pnl.pos{color:var(--green);}
+.cal-day-pnl.neg{color:var(--red);}
+.cal-day-ntrades{font-size:10px;color:var(--text3);margin-top:4px;}
+.cal-day-dot{width:5px;height:5px;border-radius:50%;background:currentColor;position:absolute;bottom:7px;right:8px;}
+.cal-weeks{display:flex;flex-direction:column;gap:4px;}
+.cal-week-card{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:12px 14px;}
+.cal-week-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;}
+.cal-week-pnl{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;}
+.cal-week-pnl.pos{color:var(--green);}
+.cal-week-pnl.neg{color:var(--red);}
+.cal-week-days{font-size:10px;color:var(--timeout);background:var(--timeout-dim);border:1px solid rgba(139,127,212,0.3);border-radius:10px;padding:2px 7px;display:inline-block;margin-top:4px;}
+.cal-tooltip{position:fixed;background:var(--bg2);border:1px solid var(--border2);border-radius:6px;padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);z-index:999;pointer-events:none;display:none;max-width:220px;box-shadow:0 4px 20px rgba(0,0,0,0.5);}
+.cal-year-select{display:flex;gap:6px;flex-wrap:wrap;}
+.cal-year-btn{padding:4px 10px;background:var(--bg3);border:1px solid var(--border);color:var(--text3);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;cursor:pointer;transition:all 0.15s;}
+.cal-year-btn:hover,.cal-year-btn.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold);}
 .config-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .config-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg4);border:1px solid var(--border);border-radius:4px;}
 .config-key{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;}
@@ -193,14 +222,9 @@ tbody tr{cursor:pointer;}
       </div></div></div>
 </div>
 
-<!-- MONTHLY -->
+<!-- MONTHLY CALENDAR -->
 <div id="sec-monthly" class="section">
-  <div class="chart-row-3">
-    <div class="card"><div class="card-title">Mois positifs / négatifs</div><canvas id="posNegChart" height="220"></canvas></div>
-    <div class="card"><div class="card-title">Distribution Win Rate mensuel</div><canvas id="wrDistChart" height="220"></canvas></div>
-    <div class="card"><div class="card-title">PnL cumulé par année</div><canvas id="yearBarChart" height="220"></canvas></div>
-  </div>
-  <div class="card"><div class="card-title">Heatmap mensuelle — PnL ($)</div><div id="heatmapContainer" style="padding-top:8px"></div></div>
+  <div id="calendarView"></div>
 </div>
 
 <!-- TRADES -->
@@ -243,16 +267,6 @@ tbody tr{cursor:pointer;}
 
 </div><!-- /main -->
 
-<div class="modal-overlay" id="tradeModal" onclick="if(event.target===this)closeModal()">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title" id="modalTitle">TRADE DETAILS</div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
-    </div>
-    <div class="modal-grid" id="modalGrid"></div>
-  </div>
-</div>
-
 <script>
 const CURVE=[["2026-06-01",110156.22,10156.22,52.0,25]];
 const YEARLY=[{"year":"2026","n":25,"pnl":10156.22,"wr":52.0,"wins":13,"losses":12}];
@@ -270,6 +284,172 @@ function switchTab(name){
 
 const $=id=>document.getElementById(id);
 const fmtK=n=>'$'+n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+const fmtPnl=n=>{
+  if(n===0)return '$0';
+  const abs=Math.abs(n);
+  const s=abs>=1000?(abs/1000).toFixed(1)+'K':abs.toFixed(0);
+  return (n>0?'+':'-')+'$'+s;
+};
+
+// ── CALENDAR DATA ──
+const CAL_TRADES=[{"date":"2026-06-03","weekday":"Wednesday","direction":"BEARISH","action":"SELL","entry":4464.05,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":2.39,"risk_usd":0,"result":"TRAIL_WIN","exit_price":0.0,"pnl_usd":744.25,"capital":100744.25,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-04","weekday":"Thursday","direction":"BULLISH","action":"BUY","entry":4469.99,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":2.66,"risk_usd":0,"result":"TRAIL_WIN","exit_price":0.0,"pnl_usd":905.46,"capital":101649.71,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-05","weekday":"Friday","direction":"BULLISH","action":"BUY","entry":4458.68,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":3.7,"risk_usd":0,"result":"LOSS","exit_price":0.0,"pnl_usd":-2960.74,"capital":98688.97,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-09","weekday":"Tuesday","direction":"BULLISH","action":"BUY","entry":4339.28,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":3.94,"risk_usd":0,"result":"LOSS","exit_price":0.0,"pnl_usd":-2165.42,"capital":96523.55,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-09","weekday":"Tuesday","direction":"BULLISH","action":"BUY","entry":4331.11,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":2.53,"risk_usd":0,"result":"WIN","exit_price":0.0,"pnl_usd":3948.82,"capital":100472.37,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-09","weekday":"Tuesday","direction":"BEARISH","action":"SELL","entry":4274.06,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":4.01,"risk_usd":0,"result":"LOSS","exit_price":0.0,"pnl_usd":-2236.78,"capital":98235.59,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-09","weekday":"Tuesday","direction":"BEARISH","action":"SELL","entry":4278.91,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":4.01,"risk_usd":0,"result":"WIN","exit_price":0.0,"pnl_usd":3854.41,"capital":102090.0,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-09","weekday":"Tuesday","direction":"BEARISH","action":"SELL","entry":4271.79,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":4.01,"risk_usd":0,"result":"WIN","exit_price":0.0,"pnl_usd":3990.75,"capital":106080.75,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-09","weekday":"Tuesday","direction":"BEARISH","action":"SELL","entry":4264.81,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":4.01,"risk_usd":0,"result":"WIN","exit_price":0.0,"pnl_usd":3766.19,"capital":109846.94,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-09","weekday":"Tuesday","direction":"BEARISH","action":"SELL","entry":4256.78,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":4.01,"risk_usd":0,"result":"LOSS","exit_price":0.0,"pnl_usd":-2212.72,"capital":107634.22,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-09","weekday":"Tuesday","direction":"BEARISH","action":"SELL","entry":4262.33,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":4.01,"risk_usd":0,"result":"LOSS","exit_price":0.0,"pnl_usd":-2236.78,"capital":105397.44,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-09","weekday":"Tuesday","direction":"BEARISH","action":"SELL","entry":4266.27,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":4.01,"risk_usd":0,"result":"WIN","exit_price":0.0,"pnl_usd":3918.57,"capital":109316.01,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-09","weekday":"Tuesday","direction":"BEARISH","action":"SELL","entry":4247.33,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":4.01,"risk_usd":0,"result":"LOSS","exit_price":0.0,"pnl_usd":-2172.62,"capital":107143.39,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-09","weekday":"Tuesday","direction":"BEARISH","action":"SELL","entry":4251.61,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":4.01,"risk_usd":0,"result":"WIN","exit_price":0.0,"pnl_usd":3782.23,"capital":110925.62,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-09","weekday":"Tuesday","direction":"BEARISH","action":"SELL","entry":4244.51,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":4.01,"risk_usd":0,"result":"LOSS","exit_price":0.0,"pnl_usd":-2208.71,"capital":108716.91,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-09","weekday":"Tuesday","direction":"BEARISH","action":"SELL","entry":4249.76,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":4.01,"risk_usd":0,"result":"LOSS","exit_price":0.0,"pnl_usd":-2373.12,"capital":106343.79,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-09","weekday":"Tuesday","direction":"BEARISH","action":"SELL","entry":4255.05,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":4.01,"risk_usd":0,"result":"LOSS","exit_price":0.0,"pnl_usd":-2357.08,"capital":103986.71,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-09","weekday":"Tuesday","direction":"BEARISH","action":"SELL","entry":4259.87,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":4.01,"risk_usd":0,"result":"LOSS","exit_price":0.0,"pnl_usd":-2349.06,"capital":101637.65,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-09","weekday":"Tuesday","direction":"BEARISH","action":"SELL","entry":4264.97,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":4.01,"risk_usd":0,"result":"LOSS","exit_price":0.0,"pnl_usd":-211.73,"capital":101425.92,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-09","weekday":"Tuesday","direction":"BEARISH","action":"SELL","entry":4269.18,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":4.05,"risk_usd":0,"result":"WIN","exit_price":0.0,"pnl_usd":3929.31,"capital":105355.23,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-09","weekday":"Tuesday","direction":"BEARISH","action":"SELL","entry":4255.01,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":4.21,"risk_usd":0,"result":"WIN","exit_price":0.0,"pnl_usd":370.48,"capital":105725.71,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-09","weekday":"Tuesday","direction":"BEARISH","action":"SELL","entry":4252.14,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":4.22,"risk_usd":0,"result":"WIN","exit_price":0.0,"pnl_usd":202.56,"capital":105928.27,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-09","weekday":"Tuesday","direction":"BEARISH","action":"SELL","entry":4251.06,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":4.23,"risk_usd":0,"result":"LOSS","exit_price":0.0,"pnl_usd":-2254.59,"capital":103673.68,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-11","weekday":"Thursday","direction":"BEARISH","action":"SELL","entry":4090.31,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":1.16,"risk_usd":0,"result":"WIN","exit_price":0.0,"pnl_usd":2516.74,"capital":106190.42,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""},{"date":"2026-06-11","weekday":"Thursday","direction":"BEARISH","action":"SELL","entry":4100.35,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":2.51,"risk_usd":0,"result":"WIN","exit_price":0.0,"pnl_usd":3965.8,"capital":110156.22,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""}];
+(function buildCalIndex(){
+  window._calByDay={};
+  CAL_TRADES.forEach(t=>{
+    const d=t.date;
+    if(!window._calByDay[d])window._calByDay[d]={pnl:0,n:0,trades:[]};
+    window._calByDay[d].pnl+=t.pnl_usd||0;
+    window._calByDay[d].n++;
+    window._calByDay[d].trades.push(t);
+  });
+})();
+
+let _calYear=null,_calMonth=null;
+
+function initMonthly(){
+  // Find latest month with trades
+  const days=Object.keys(window._calByDay).sort();
+  if(!days.length){$('calendarView').innerHTML='<p style="color:var(--text3);padding:20px">Aucun trade disponible.</p>';return;}
+  const last=days[days.length-1];
+  _calYear=parseInt(last.slice(0,4));
+  _calMonth=parseInt(last.slice(5,7));
+  renderCalendar(_calYear,_calMonth);
+}
+
+function renderCalendar(year,month){
+  _calYear=year;_calMonth=month;
+  const MONTH_FR=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  const DOW_FR=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+
+  // Collect all months that have data
+  const allMonths=[...new Set(Object.keys(window._calByDay).map(d=>d.slice(0,7)))].sort();
+  const curKey=year+'-'+String(month).padStart(2,'0');
+  const curIdx=allMonths.indexOf(curKey);
+  const prevKey=curIdx>0?allMonths[curIdx-1]:null;
+  const nextKey=curIdx<allMonths.length-1?allMonths[curIdx+1]:null;
+
+  // Monthly stats
+  let monthPnl=0,monthTrades=0,monthDays=0;
+  const daysInMonth=new Date(year,month,0).getDate();
+  for(let d=1;d<=daysInMonth;d++){
+    const key=year+'-'+String(month).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    if(window._calByDay[key]){
+      monthPnl+=window._calByDay[key].pnl;
+      monthTrades+=window._calByDay[key].n;
+      monthDays++;
+    }
+  }
+
+  // Build week summaries (Mon–Sun, ISO-ish)
+  const firstDow=new Date(year,month-1,1).getDay(); // 0=Sun
+  const weeks=[];
+  let wk={pnl:0,n:0,days:0};
+  let wkIdx=0;
+  // Week index for each day
+  const dayWeek={};
+  for(let d=1;d<=daysInMonth;d++){
+    const key=year+'-'+String(month).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const dow=new Date(year,month-1,d).getDay(); // 0=Sun
+    // New week starts on Sunday
+    if(dow===0&&d>1){weeks.push({...wk});wk={pnl:0,n:0,days:0};wkIdx++;}
+    dayWeek[d]=wkIdx;
+    if(window._calByDay[key]){
+      wk.pnl+=window._calByDay[key].pnl;
+      wk.n+=window._calByDay[key].n;
+      wk.days++;
+    }
+  }
+  weeks.push({...wk});
+
+  // Year buttons (for quick navigation)
+  const allYears=[...new Set(allMonths.map(m=>m.slice(0,4)))].sort();
+  const yearBtns=allYears.map(y=>`<button class="cal-year-btn${y==year?' active':''}" onclick="renderCalendar(${y},1)">${y}</button>`).join('');
+
+  // DOW headers
+  const dowHtml=DOW_FR.map(d=>`<div class="cal-dow-head">${d}</div>`).join('');
+
+  // Day cells
+  let dayHtml='';
+  // Padding before first day
+  for(let i=0;i<firstDow;i++)dayHtml+='<div class="cal-day empty"></div>';
+  for(let d=1;d<=daysInMonth;d++){
+    const key=year+'-'+String(month).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const info=window._calByDay[key];
+    if(!info){
+      dayHtml+=`<div class="cal-day"><div class="cal-day-num">${d}</div></div>`;
+    } else {
+      const cls=info.pnl>=0?'profit':'loss';
+      const pnlCls=info.pnl>=0?'pos':'neg';
+      const pnlStr=fmtPnl(info.pnl);
+      const dotColor=info.pnl>=0?'var(--green)':'var(--red)';
+      const tipsData=info.trades.map(t=>`${t.direction=='BULLISH'?'▲':'▼'} ${t.result} ${t.pnl_usd>=0?'+':''}$${t.pnl_usd.toFixed(0)}`).join('\n');
+      dayHtml+=`<div class="cal-day has-trade ${cls}" onmouseenter="showCalTip(event,'${key}',\`${tipsData}\`)" onmouseleave="hideCalTip()">
+        <div class="cal-day-num">${d}</div>
+        <div class="cal-day-pnl ${pnlCls}">${pnlStr}</div>
+        <div class="cal-day-ntrades">${info.n} trade${info.n>1?'s':''}</div>
+        <div class="cal-day-dot" style="color:${dotColor}"></div>
+      </div>`;
+    }
+  }
+
+  // Week cards
+  let weekCards='';
+  weeks.forEach((w,i)=>{
+    if(w.n===0&&w.pnl===0){weekCards+=`<div class="cal-week-card"><div class="cal-week-label">Sem. ${i+1}</div><div style="color:var(--text3);font-size:11px">—</div></div>`;return;}
+    const wcls=w.pnl>=0?'pos':'neg';
+    weekCards+=`<div class="cal-week-card">
+      <div class="cal-week-label">Sem. ${i+1}</div>
+      <div class="cal-week-pnl ${wcls}">${fmtPnl(w.pnl)}</div>
+      <div class="cal-week-days">${w.days} jour${w.days>1?'s':''}</div>
+    </div>`;
+  });
+
+  const pnlCls=monthPnl>=0?'pos':'neg';
+  const pnlStr=fmtPnl(monthPnl);
+  const prevBtn=prevKey?`<button onclick="renderCalendar(${parseInt(prevKey.slice(0,4))},parseInt('${prevKey.slice(5,7)}'))">‹</button>`:`<button disabled style="opacity:0.3">‹</button>`;
+  const nextBtn=nextKey?`<button onclick="renderCalendar(${parseInt(nextKey.slice(0,4))},parseInt('${nextKey.slice(5,7)}'))">›</button>`:`<button disabled style="opacity:0.3">›</button>`;
+
+  $('calendarView').innerHTML=`
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+    <div class="cal-year-select">${yearBtns}</div>
+  </div>
+  <div class="cal-header">
+    <div class="cal-nav">
+      ${prevBtn}
+      <div class="cal-title">${MONTH_FR[month-1]} ${year}</div>
+      ${nextBtn}
+    </div>
+    <div class="cal-stats-bar">
+      <div class="cal-stat"><div class="cal-stat-label">P&L du mois</div><div class="cal-stat-val ${pnlCls}">${pnlStr}</div></div>
+      <div class="cal-stat"><div class="cal-stat-label">Trades</div><div class="cal-stat-val gold">${monthTrades}</div></div>
+      <div class="cal-stat-days">${monthDays} jour${monthDays>1?'s':''}</div>
+    </div>
+  </div>
+  <div class="cal-grid-wrapper">
+    <div class="cal-grid">
+      <div class="cal-dow-headers">${dowHtml}</div>
+      <div class="cal-days">${dayHtml}</div>
+    </div>
+    <div class="cal-weeks">${weekCards}</div>
+  </div>
+</div>
+<div id="calTooltip" class="cal-tooltip"></div>`;
+}
+
+function showCalTip(e,dateKey,lines){
+  const tip=$('calTooltip');
+  if(!tip)return;
+  const info=window._calByDay[dateKey];
+  if(!info)return;
+  const html=`<div style="color:var(--gold2);font-weight:700;margin-bottom:6px">${dateKey}</div>`+
+    lines.split('\n').map(l=>`<div style="margin:2px 0">${l}</div>`).join('');
+  tip.innerHTML=html;
+  tip.style.display='block';
+  tip.style.left=(e.clientX+14)+'px';
+  tip.style.top=(e.clientY-10)+'px';
+}
+function hideCalTip(){const t=$('calTooltip');if(t)t.style.display='none';}
 
 function drawEquity(){
   const canvas=$('equityChart');
@@ -377,104 +557,7 @@ function drawMonthlyPnl(){
   });
 }
 
-function initMonthly(){
-  drawPosNeg();drawWRDist();drawYearBar();buildHeatmap();
-}
 
-function drawPosNeg(){
-  const canvas=$('posNegChart');
-  const dpr=window.devicePixelRatio||1;
-  canvas.width=canvas.offsetWidth*dpr;canvas.height=220*dpr;
-  const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
-  const W=canvas.offsetWidth,H=220;
-  const pos=CURVE.filter(c=>c[2]>=0).length;
-  const neg=CURVE.length-pos;
-  const cx=W/2,cy=H/2-10,r=80,ri=50;
-  const slicePos=(pos/CURVE.length)*2*Math.PI;
-  ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+slicePos);ctx.closePath();ctx.fillStyle='#2ecc82';ctx.fill();
-  ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,-Math.PI/2+slicePos,-Math.PI/2+2*Math.PI);ctx.closePath();ctx.fillStyle='#e05252';ctx.fill();
-  ctx.beginPath();ctx.arc(cx,cy,ri,0,2*Math.PI);ctx.fillStyle='#131920';ctx.fill();
-  ctx.textAlign='center';
-  ctx.fillStyle='#2ecc82';ctx.font='bold 16px JetBrains Mono';ctx.fillText(pos,cx,cy-4);
-  ctx.fillStyle='#4a5f70';ctx.font='9px JetBrains Mono';ctx.fillText('positifs',cx,cy+9);
-  ctx.fillStyle='#2ecc82';ctx.font='11px JetBrains Mono';ctx.fillText('● '+pos+' mois positifs ('+(pos/CURVE.length*100).toFixed(0)+'%)',cx,H-26);
-  ctx.fillStyle='#e05252';ctx.fillText('● '+neg+' mois négatifs ('+(neg/CURVE.length*100).toFixed(0)+'%)',cx,H-10);
-}
-
-function drawWRDist(){
-  const canvas=$('wrDistChart');
-  const dpr=window.devicePixelRatio||1;
-  canvas.width=canvas.offsetWidth*dpr;canvas.height=220*dpr;
-  const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
-  const W=canvas.offsetWidth,H=220,PAD={t:16,r:10,b:30,l:40};
-  const buckets=[0,5,10,15,20,25,30,35,40];
-  const counts=new Array(buckets.length-1).fill(0);
-  CURVE.forEach(c=>{
-    for(let i=0;i<buckets.length-1;i++){if(c[3]>=buckets[i]&&c[3]<buckets[i+1]){counts[i]++;break;}}
-  });
-  const cw=W-PAD.l-PAD.r,ch=H-PAD.t-PAD.b,maxC=Math.max(...counts);
-  const bw=cw/counts.length-4;
-  counts.forEach((c,i)=>{
-    const x=PAD.l+i*(cw/counts.length)+2;
-    const bh=c/maxC*ch;
-    ctx.fillStyle='rgba(212,168,67,0.7)';ctx.fillRect(x,H-PAD.b-bh,bw,bh);
-    ctx.fillStyle='#4a5f70';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
-    ctx.fillText(buckets[i]+'%',x+bw/2,H-6);
-    if(c>0){ctx.fillStyle='#c8d8e8';ctx.font='10px JetBrains Mono';ctx.fillText(c,x+bw/2,H-PAD.b-bh-4);}
-  });
-  ctx.strokeStyle='#253545';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(PAD.l,H-PAD.b);ctx.lineTo(W-PAD.r,H-PAD.b);ctx.stroke();
-}
-
-function drawYearBar(){
-  const canvas=$('yearBarChart');
-  const dpr=window.devicePixelRatio||1;
-  canvas.width=canvas.offsetWidth*dpr;canvas.height=220*dpr;
-  const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
-  const W=canvas.offsetWidth,H=220,PAD={t:16,r:8,b:28,l:55};
-  const cw=W-PAD.l-PAD.r,ch=H-PAD.t-PAD.b;
-  const maxPnl=Math.max(...YEARLY.map(y=>Math.abs(y.pnl)))*1.05;
-  const bw=cw/YEARLY.length-4;
-  YEARLY.forEach((y,i)=>{
-    const x=PAD.l+i*(cw/YEARLY.length)+2;
-    const bh=Math.abs(y.pnl)/maxPnl*ch;
-    ctx.fillStyle=y.pnl>=0?'rgba(46,204,130,0.75)':'rgba(224,82,82,0.7)';
-    ctx.fillRect(x,H-PAD.b-bh,bw,bh);
-    ctx.fillStyle='#4a5f70';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
-    ctx.fillText(y.year.slice(2),x+bw/2,H-6);
-  });
-  ctx.strokeStyle='#253545';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(PAD.l,H-PAD.b);ctx.lineTo(W-PAD.r,H-PAD.b);ctx.stroke();
-}
-
-function buildHeatmap(){
-  const container=$('heatmapContainer');
-  const byYear={};
-  CURVE.forEach(c=>{
-    const[yr,mo]=c[0].split('-');
-    if(!byYear[yr])byYear[yr]={};
-    byYear[yr][parseInt(mo)]={pnl:c[2],wr:c[3],n:c[4]};
-  });
-  const months=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
-  const maxPnl=Math.max(...CURVE.map(c=>Math.abs(c[2])));
-  let html='<div class="heatmap-grid">';
-  months.forEach(m=>{html+=`<div class="hm-month-label">${m}</div>`;}); 
-  Object.keys(byYear).sort().forEach(yr=>{
-    html+=`<div class="hm-year-label">── ${yr} ──────────────────────────────────────────</div>`;
-    for(let mo=1;mo<=12;mo++){
-      const d=byYear[yr][mo];
-      if(!d){html+='<div class="hm-cell" style="background:#1a2230"></div>';continue;}
-      const intensity=Math.min(1,Math.abs(d.pnl)/(maxPnl*0.6));
-      let bg;
-      if(d.pnl>0){bg=`rgba(46,180,100,${0.2+intensity*0.6})`;}
-      else{const i2=Math.min(1,Math.abs(d.pnl)/(maxPnl*0.3));bg=`rgba(224,82,82,${0.2+i2*0.55})`;}
-      const tip=`${yr}-${String(mo).padStart(2,'0')} | PnL: ${d.pnl>=0?'+':''}$${d.pnl.toFixed(0)} | WR: ${d.wr}% | ${d.n} trades`;
-      html+=`<div class="hm-cell" style="background:${bg}" data-tip="${tip}"></div>`;
-    }
-  });
-  html+='</div>';
-  container.innerHTML=html;
-}
 
 let currentFilter='ALL',currentDir=null,currentSearch='';
 function renderTrades(){
@@ -484,12 +567,11 @@ function renderTrades(){
   if(currentDir)filtered=filtered.filter(t=>t.direction===currentDir);
   if(currentSearch)filtered=filtered.filter(t=>t.date.includes(currentSearch));
   $('tradeCount').textContent=filtered.length+' trades';
-  window._filteredTrades=filtered;
-  tbody.innerHTML=filtered.map((t,i)=>{
+  tbody.innerHTML=filtered.map(t=>{
     const pc=t.pnl_usd>0?'pnl-pos':t.pnl_usd<0?'pnl-neg':'pnl-zero';
     const ps=t.pnl_usd===0?'$0':(t.pnl_usd>0?'+$':'-$')+Math.abs(t.pnl_usd).toFixed(2);
     const dc=t.direction==='BULLISH'?'dir-bull':'dir-bear';
-    return `<tr onclick="openModal(${i})">
+    return `<tr>
       <td>${t.date}</td><td style="color:var(--text2)">${t.weekday?(t.weekday.slice(0,3)):'—'}</td>
       <td class="${dc}">${t.direction==='BULLISH'?'▲ BULL':'▼ BEAR'}</td>
       <td style="color:${t.action==='BUY'?'var(--green)':'var(--red)'};font-weight:600">${t.action}</td>
@@ -511,37 +593,6 @@ function filterDir(d,btn){
   currentFilter='ALL';renderTrades();
 }
 function searchTrades(v){currentSearch=v;renderTrades();}
-
-function openModal(i){
-  const t=window._filteredTrades[i];
-  const pc=t.pnl_usd>0?'var(--green)':t.pnl_usd<0?'var(--red)':'var(--gold)';
-  const ps=(t.pnl_usd>0?'+$':t.pnl_usd<0?'-$':'$')+Math.abs(t.pnl_usd).toFixed(2);
-  const dc=t.direction==='BULLISH'?'var(--green)':'var(--red)';
-  const ac=t.action==='BUY'?'var(--green)':'var(--red)';
-  const rr=t.sl_pips>0?'1:'+(t.tp_pips/t.sl_pips).toFixed(1):'—';
-  $('modalTitle').innerHTML=`${t.date} &nbsp;<span style="font-size:13px;color:var(--text3)">${t.weekday||''}</span>`;
-  $('modalGrid').innerHTML=`
-    <div class="modal-row"><div class="modal-key">Direction</div><div class="modal-val" style="color:${dc}">${t.direction==='BULLISH'?'▲ BULL':'▼ BEAR'}</div></div>
-    <div class="modal-row"><div class="modal-key">Action</div><div class="modal-val" style="color:${ac}">${t.action}</div></div>
-    <div class="modal-row"><div class="modal-key">Entrée</div><div class="modal-val">${t.entry.toFixed(2)}</div></div>
-    <div class="modal-row"><div class="modal-key">Sortie</div><div class="modal-val">${t.exit_price.toFixed(2)}</div></div>
-    <div class="modal-row"><div class="modal-key">Stop Loss</div><div class="modal-val" style="color:var(--red)">${t.sl_initial.toFixed(2)}</div></div>
-    <div class="modal-row"><div class="modal-key">Take Profit</div><div class="modal-val" style="color:var(--green)">${t.tp.toFixed(2)}</div></div>
-    <div class="modal-row"><div class="modal-key">SL Pips</div><div class="modal-val">${t.sl_pips}</div></div>
-    <div class="modal-row"><div class="modal-key">Risk:Reward</div><div class="modal-val">${rr}</div></div>
-    <div class="modal-row"><div class="modal-key">Résultat</div><div class="modal-val"><span class="badge ${t.result}">${t.result}</span></div></div>
-    <div class="modal-row"><div class="modal-key">Bars tenus</div><div class="modal-val">${t.bars_held||'—'}</div></div>
-    <div class="modal-row full"><div class="modal-key">P&L</div><div class="modal-val" style="font-size:20px;color:${pc}">${ps}</div></div>
-    <div class="modal-row"><div class="modal-key">Capital après</div><div class="modal-val" style="color:var(--gold2)">${fmtK(t.capital)}</div></div>
-    <div class="modal-row"><div class="modal-key">Lots</div><div class="modal-val">${t.lots||'—'}</div></div>
-    ${t.fibo_zone?`<div class="modal-row full"><div class="modal-key">Zone Fibo</div><div class="modal-val" style="color:var(--blue)">${t.fibo_zone}</div></div>`:''}
-  `;
-  $('tradeModal').classList.add('open');
-}
-function closeModal(){
-  $('tradeModal').classList.remove('open');
-}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
 window.addEventListener('load',()=>{
   setTimeout(()=>{drawEquity();drawDist();drawMonthlyPnl();},80);
