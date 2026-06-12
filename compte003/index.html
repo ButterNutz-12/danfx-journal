@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trading Journal — live</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap');
+:root {
+  --bg:#080b0f;--bg2:#0d1117;--bg3:#131920;--bg4:#1a2230;
+  --border:#1e2d3d;--border2:#253545;
+  --gold:#d4a843;--gold2:#f0c060;--gold-dim:rgba(212,168,67,0.12);
+  --green:#2ecc82;--green-dim:rgba(46,204,130,0.12);
+  --red:#e05252;--red-dim:rgba(224,82,82,0.12);
+  --blue:#4a9fd4;--blue-dim:rgba(74,159,212,0.1);
+  --timeout:#8b7fd4;--timeout-dim:rgba(139,127,212,0.12);
+  --trail:#4ad4b8;--trail-dim:rgba(74,212,184,0.12);
+  --text:#c8d8e8;--text2:#7a93a8;--text3:#4a5f70;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:13px;line-height:1.6;}
+.header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 32px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:56px;}
+.header-brand{display:flex;align-items:center;gap:14px;}
+.header-brand .logo{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold);letter-spacing:3px;}
+.header-brand .tag{background:var(--gold-dim);border:1px solid var(--gold);color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 8px;border-radius:2px;letter-spacing:1.5px;}
+.header-meta{display:flex;align-items:center;gap:24px;}
+.header-meta .meta-item{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);}
+.header-meta .meta-item span{color:var(--gold2);font-weight:500;}
+.nav-tabs{display:flex;gap:0;}
+.nav-tab{padding:0 20px;height:56px;display:flex;align-items:center;font-size:12px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;letter-spacing:0.5px;text-transform:uppercase;}
+.nav-tab:hover{color:var(--text);}
+.nav-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+.main{padding:28px 32px;max-width:1500px;margin:0 auto;}
+.section{display:none;}
+.section.active{display:block;}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:28px;}
+.kpi-card{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:18px 20px;position:relative;overflow:hidden;}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.kpi-card.gold::before{background:linear-gradient(90deg,var(--gold),transparent);}
+.kpi-card.green::before{background:linear-gradient(90deg,var(--green),transparent);}
+.kpi-card.red::before{background:linear-gradient(90deg,var(--red),transparent);}
+.kpi-card.blue::before{background:linear-gradient(90deg,var(--blue),transparent);}
+.kpi-card.purple::before{background:linear-gradient(90deg,var(--timeout),transparent);}
+.kpi-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;}
+.kpi-value{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;line-height:1;margin-bottom:4px;}
+.kpi-sub{font-size:11px;color:var(--text2);}
+.kpi-card.gold .kpi-value{color:var(--gold2);}
+.kpi-card.green .kpi-value{color:var(--green);}
+.kpi-card.red .kpi-value{color:var(--red);}
+.kpi-card.blue .kpi-value{color:var(--blue);}
+.kpi-card.purple .kpi-value{color:var(--timeout);}
+.chart-row{display:grid;grid-template-columns:1fr 340px;gap:12px;margin-bottom:12px;}
+.chart-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;}
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:20px;margin-bottom:0;}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.card-title::before{content:'';display:inline-block;width:3px;height:12px;background:var(--gold);border-radius:1px;}
+canvas{display:block;width:100%!important;}
+.yearly-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;}
+.year-cell{background:var(--bg4);border:1px solid var(--border);border-radius:4px;padding:12px;text-align:center;}
+.year-cell .yr{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);margin-bottom:4px;}
+.year-cell .pnl{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;}
+.year-cell .pnl.pos{color:var(--green);}
+.year-cell .pnl.neg{color:var(--red);}
+.year-cell .wr{font-size:10px;color:var(--text2);margin-top:2px;}
+.year-cell .tr{font-size:10px;color:var(--text3);}
+.table-wrapper{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:11.5px;}
+thead th{background:var(--bg4);color:var(--text3);font-size:10px;text-transform:uppercase;letter-spacing:1px;padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);font-weight:500;white-space:nowrap;}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.15s;}
+tbody tr:hover{background:var(--bg4);}
+tbody td{padding:9px 12px;color:var(--text);white-space:nowrap;}
+.badge{display:inline-block;padding:2px 8px;border-radius:3px;font-size:10px;font-weight:700;letter-spacing:0.5px;}
+.badge.WIN{background:var(--green-dim);color:var(--green);border:1px solid rgba(46,204,130,0.3);}
+.badge.LOSS{background:var(--red-dim);color:var(--red);border:1px solid rgba(224,82,82,0.3);}
+.badge.TIMEOUT{background:var(--timeout-dim);color:var(--timeout);border:1px solid rgba(139,127,212,0.3);}
+.badge.TRAIL_WIN{background:var(--trail-dim);color:var(--trail);border:1px solid rgba(74,212,184,0.3);}
+.badge.BREAKEVEN{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(212,168,67,0.3);}
+.dir-bull{color:var(--green);font-weight:600;}
+.dir-bear{color:var(--red);font-weight:600;}
+.pnl-pos{color:var(--green);}
+.pnl-neg{color:var(--red);}
+.pnl-zero{color:var(--gold);}
+.dow-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;}
+.dow-cell{background:var(--bg4);border:1px solid var(--border);border-radius:4px;padding:14px;}
+.dow-cell .day{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;}
+.dow-cell .day-pnl{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--green);}
+.dow-cell .day-meta{font-size:11px;color:var(--text2);margin-top:3px;}
+.filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+.filter-btn{padding:5px 12px;border-radius:4px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:all 0.15s;}
+.filter-btn:hover{border-color:var(--border2);color:var(--text);}
+.filter-btn.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold);}
+.filter-btn.f-win.active{background:var(--green-dim);border-color:var(--green);color:var(--green);}
+.filter-btn.f-loss.active{background:var(--red-dim);border-color:var(--red);color:var(--red);}
+.filter-btn.f-timeout.active{background:var(--timeout-dim);border-color:var(--timeout);color:var(--timeout);}
+.search-input{margin-left:auto;padding:5px 12px;border-radius:4px;border:1px solid var(--border);background:var(--bg4);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px;outline:none;width:180px;}
+.search-input:focus{border-color:var(--gold);}
+.search-input::placeholder{color:var(--text3);}
+.heatmap-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;}
+.hm-month-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text3);text-align:center;text-transform:uppercase;padding-bottom:4px;}
+.hm-cell{height:22px;border-radius:3px;cursor:pointer;position:relative;}
+.hm-cell:hover::after{content:attr(data-tip);position:absolute;bottom:26px;left:50%;transform:translateX(-50%);background:var(--bg);border:1px solid var(--border2);padding:5px 9px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;white-space:nowrap;color:var(--text);z-index:10;}
+.hm-year-label{grid-column:1/-1;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);padding:8px 0 2px;letter-spacing:1px;}
+/* ── CALENDAR ── */
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.cal-nav{display:flex;align-items:center;gap:12px;}
+.cal-nav button{background:var(--bg3);border:1px solid var(--border);color:var(--text2);width:32px;height:32px;border-radius:4px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.cal-nav button:hover{border-color:var(--gold);color:var(--gold);}
+.cal-title{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--text);letter-spacing:2px;}
+.cal-stats-bar{display:flex;gap:10px;align-items:center;}
+.cal-stat{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 16px;text-align:center;}
+.cal-stat-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;}
+.cal-stat-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;margin-top:2px;}
+.cal-stat-val.pos{color:var(--green);}
+.cal-stat-val.neg{color:var(--red);}
+.cal-stat-val.gold{color:var(--gold2);}
+.cal-stat-days{background:var(--timeout-dim);border:1px solid var(--timeout);border-radius:12px;padding:3px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--timeout);}
+.cal-grid-wrapper{display:grid;grid-template-columns:1fr 160px;gap:12px;align-items:start;}
+.cal-grid{width:100%;}
+.cal-dow-headers{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;}
+.cal-dow-head{text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:6px 0;}
+.cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.cal-day{background:var(--bg3);border:1px solid var(--border);border-radius:6px;min-height:90px;padding:8px;position:relative;cursor:default;transition:border-color 0.15s;}
+.cal-day.empty{background:var(--bg2);border-color:var(--bg2);}
+.cal-day.has-trade{cursor:pointer;}
+.cal-day.has-trade:hover{border-color:var(--border2);}
+.cal-day.profit{background:rgba(30,80,50,0.45);border-color:rgba(46,180,100,0.35);}
+.cal-day.loss{background:rgba(80,20,20,0.45);border-color:rgba(224,82,82,0.35);}
+.cal-day-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);margin-bottom:6px;}
+.cal-day-pnl{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;line-height:1.1;}
+.cal-day-pnl.pos{color:var(--green);}
+.cal-day-pnl.neg{color:var(--red);}
+.cal-day-ntrades{font-size:10px;color:var(--text3);margin-top:4px;}
+.cal-day-dot{width:5px;height:5px;border-radius:50%;background:currentColor;position:absolute;bottom:7px;right:8px;}
+.cal-weeks{display:flex;flex-direction:column;gap:4px;}
+.cal-week-card{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:12px 14px;}
+.cal-week-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;}
+.cal-week-pnl{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;}
+.cal-week-pnl.pos{color:var(--green);}
+.cal-week-pnl.neg{color:var(--red);}
+.cal-week-days{font-size:10px;color:var(--timeout);background:var(--timeout-dim);border:1px solid rgba(139,127,212,0.3);border-radius:10px;padding:2px 7px;display:inline-block;margin-top:4px;}
+.cal-tooltip{position:fixed;background:var(--bg2);border:1px solid var(--border2);border-radius:6px;padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);z-index:999;pointer-events:none;display:none;max-width:220px;box-shadow:0 4px 20px rgba(0,0,0,0.5);}
+.cal-year-select{display:flex;gap:6px;flex-wrap:wrap;}
+.cal-year-btn{padding:4px 10px;background:var(--bg3);border:1px solid var(--border);color:var(--text3);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;cursor:pointer;transition:all 0.15s;}
+.cal-year-btn:hover,.cal-year-btn.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold);}
+.config-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.config-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg4);border:1px solid var(--border);border-radius:4px;}
+.config-key{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;}
+.config-val{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--gold2);}
+.sep{height:1px;background:var(--border);margin:20px 0;}
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:var(--bg2);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+@media(max-width:900px){.chart-row{grid-template-columns:1fr;}.chart-row-3{grid-template-columns:1fr 1fr;}.main{padding:16px;}.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div style="display:flex;align-items:center;gap:28px">
+    <div class="header-brand">
+      <span class="logo">TRADING JOURNAL</span>
+      <span class="tag">LIVE</span>
+    </div>
+    <div class="nav-tabs">
+      <div class="nav-tab active" onclick="switchTab('overview')">Vue d'ensemble</div>
+      <div class="nav-tab" onclick="switchTab('monthly')">Mensuel</div>
+      <div class="nav-tab" onclick="switchTab('trades')">Trades</div>
+      <div class="nav-tab" onclick="switchTab('config')">Paramètres</div>
+    </div>
+  </div>
+  <div class="header-meta">
+    <div class="meta-item">Période <span>2026-01-01 → 2026-06-12</span></div>
+    <div class="meta-item">Capital initial <span>$100,000</span></div>
+    <div class="meta-item">Capital final <span style="color:var(--green)">$100,000.00</span></div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- OVERVIEW -->
+<div id="sec-overview" class="section active">
+  <div class="kpi-grid">
+    <div class="kpi-card gold"><div class="kpi-label">Rendement total</div><div class="kpi-value">+0%</div><div class="kpi-sub">$100,000 → $100,000.00</div></div>
+    <div class="kpi-card green"><div class="kpi-label">Profit Factor</div><div class="kpi-value">0.0</div><div class="kpi-sub">Ratio gain/perte</div></div>
+    <div class="kpi-card blue"><div class="kpi-label">Max Drawdown</div><div class="kpi-value">0%</div><div class="kpi-sub">Drawdown max historique</div></div>
+    <div class="kpi-card purple"><div class="kpi-label">Trades</div><div class="kpi-value">0</div><div class="kpi-sub">0 wins + 0 trail</div></div>
+    <div class="kpi-card gold"><div class="kpi-label">Win Rate</div><div class="kpi-value">0%</div><div class="kpi-sub">0 wins + 0 trail</div></div>
+    <div class="kpi-card green"><div class="kpi-label">Avg SL</div><div class="kpi-value">0</div><div class="kpi-sub">Pips · RR 1:2.0</div></div>
+    <div class="kpi-card blue"><div class="kpi-label">Bull WR</div><div class="kpi-value">0%</div><div class="kpi-sub">0 trades haussiers</div></div>
+    <div class="kpi-card purple"><div class="kpi-label">Bear WR</div><div class="kpi-value">0%</div><div class="kpi-sub">0 trades baissiers</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="card"><div class="card-title">Courbe d'équité — mensuelle</div><canvas id="equityChart" height="240"></canvas></div>
+    <div class="card"><div class="card-title">Distribution résultats</div><canvas id="distChart" height="240"></canvas></div>
+  </div>
+  <div class="chart-row">
+    <div class="card"><div class="card-title">PnL mensuel</div><canvas id="monthlyPnlChart" height="180"></canvas></div>
+    <div class="card"><div class="card-title">Jours de semaine</div><div class="dow-grid" style="margin-top:8px"></div></div>
+  </div>
+  <div class="card"><div class="card-title">Performance par année</div><div class="yearly-grid" id="yearlyGrid"></div></div>
+</div>
+
+<!-- MONTHLY CALENDAR -->
+<div id="sec-monthly" class="section">
+  <div id="calendarView"></div>
+</div>
+
+<!-- TRADES -->
+<div id="sec-trades" class="section">
+  <div class="filter-bar">
+    <div class="filter-btn active" onclick="filterTrades('ALL',this)">Tous</div>
+    <div class="filter-btn f-win" onclick="filterTrades('WIN',this)">WIN</div>
+    <div class="filter-btn f-win" onclick="filterTrades('TRAIL_WIN',this)">TRAIL WIN</div>
+    <div class="filter-btn f-loss" onclick="filterTrades('LOSS',this)">LOSS</div>
+    <div class="filter-btn f-timeout" onclick="filterTrades('TIMEOUT',this)">TIMEOUT</div>
+    <div class="filter-btn" onclick="filterTrades('BREAKEVEN',this)">BREAKEVEN</div>
+    <div class="filter-btn" onclick="filterDir('BULLISH',this)" style="color:var(--green);border-color:rgba(46,204,130,0.4)">▲ BULL</div>
+    <div class="filter-btn" onclick="filterDir('BEARISH',this)" style="color:var(--red);border-color:rgba(224,82,82,0.4)">▼ BEAR</div>
+    <input class="search-input" id="searchInput" placeholder="Chercher une date..." oninput="searchTrades(this.value)">
+    <span id="tradeCount" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);margin-left:8px"></span>
+  </div>
+  <div class="card"><div class="table-wrapper"><table id="tradeTable">
+    <thead><tr>
+      <th>Date</th><th>Jour</th><th>Dir.</th><th>Action</th>
+      <th>Entrée</th><th>SL init.</th><th>TP</th><th>SL pips</th>
+      <th>Phase</th><th>Résultat</th><th>Sortie</th><th>Bars</th><th>PnL $</th><th>Capital</th>
+    </tr></thead>
+    <tbody id="tradeBody"></tbody>
+  </table></div></div>
+</div>
+
+<!-- CONFIG -->
+<div id="sec-config" class="section">
+  <div class="chart-row">
+    <div class="card"><div class="card-title">Paramètres backtest</div><div class="config-grid"><div class="config-row"><span class="config-key">Période</span><span class="config-val">2026-01-01 → 2026-06-12</span></div><div class="config-row"><span class="config-key">Capital initial</span><span class="config-val">$100,000</span></div><div class="config-row"><span class="config-key">Risque / trade</span><span class="config-val">2.0%  ($2000.0)</span></div><div class="config-row"><span class="config-key">Risk:Reward</span><span class="config-val">1:2.0</span></div><div class="config-row"><span class="config-key">Mode entrée</span><span class="config-val">LIVE</span></div><div class="config-row"><span class="config-key">London session</span><span class="config-val">False</span></div><div class="config-row"><span class="config-key">SL buffer</span><span class="config-val">0 pts</span></div><div class="config-row"><span class="config-key">EOD close si profit</span><span class="config-val">NON</span></div><div class="config-row"><span class="config-key">No hard close</span><span class="config-val">NON</span></div></div></div>
+    <div class="card">
+      <div class="card-title">Trades exclus (filtres)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div style="color:var(--text3);font-size:11px;padding:8px">Données non disponibles</div></div>
+      <div class="sep"></div>
+      <div class="card-title">Résumé exécution</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px"><div class="config-row"><span class="config-key">Option utilisée</span><span class="config-val">live</span></div><div class="config-row"><span class="config-key">Source</span><span class="config-val">trades_history_converted_003.json</span></div><div class="config-row"><span class="config-key">Total trades exécutés</span><span class="config-val">0</span></div><div class="config-row"><span class="config-key">Avg bars / trade</span><span class="config-val">—</span></div><div class="config-row"><span class="config-key">Bull / Bear split</span><span class="config-val">0 / 0</span></div><div class="config-row"><span class="config-key">Mois simulés</span><span class="config-val">0</span></div></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+const CURVE=[];
+const YEARLY=[];
+const TRADES=[];
+const STATS={"n":0,"wins":0,"trail_wins":0,"breakevens":0,"losses":0,"timeouts":0};
+
+function switchTab(name){
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('sec-'+name).classList.add('active');
+  if(name==='monthly'&&!window._mi){initMonthly();window._mi=true;}
+  if(name==='trades'&&!window._ti){renderTrades();window._ti=true;}
+}
+
+const $=id=>document.getElementById(id);
+const fmtK=n=>'$'+n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+const fmtPnl=n=>{
+  if(n===0)return '$0';
+  const abs=Math.abs(n);
+  const s=abs>=1000?(abs/1000).toFixed(1)+'K':abs.toFixed(0);
+  return (n>0?'+':'-')+'$'+s;
+};
+
+// ── CALENDAR DATA ──
+const CAL_TRADES=[];
+(function buildCalIndex(){
+  window._calByDay={};
+  CAL_TRADES.forEach(t=>{
+    const d=t.date;
+    if(!window._calByDay[d])window._calByDay[d]={pnl:0,n:0,trades:[]};
+    window._calByDay[d].pnl+=t.pnl_usd||0;
+    window._calByDay[d].n++;
+    window._calByDay[d].trades.push(t);
+  });
+})();
+
+let _calYear=null,_calMonth=null;
+
+function initMonthly(){
+  // Find latest month with trades
+  const days=Object.keys(window._calByDay).sort();
+  if(!days.length){$('calendarView').innerHTML='<p style="color:var(--text3);padding:20px">Aucun trade disponible.</p>';return;}
+  const last=days[days.length-1];
+  _calYear=parseInt(last.slice(0,4));
+  _calMonth=parseInt(last.slice(5,7));
+  renderCalendar(_calYear,_calMonth);
+}
+
+function renderCalendar(year,month){
+  _calYear=year;_calMonth=month;
+  const MONTH_FR=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  const DOW_FR=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+
+  // Collect all months that have data
+  const allMonths=[...new Set(Object.keys(window._calByDay).map(d=>d.slice(0,7)))].sort();
+  const curKey=year+'-'+String(month).padStart(2,'0');
+  const curIdx=allMonths.indexOf(curKey);
+  const prevKey=curIdx>0?allMonths[curIdx-1]:null;
+  const nextKey=curIdx<allMonths.length-1?allMonths[curIdx+1]:null;
+
+  // Monthly stats
+  let monthPnl=0,monthTrades=0,monthDays=0;
+  const daysInMonth=new Date(year,month,0).getDate();
+  for(let d=1;d<=daysInMonth;d++){
+    const key=year+'-'+String(month).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    if(window._calByDay[key]){
+      monthPnl+=window._calByDay[key].pnl;
+      monthTrades+=window._calByDay[key].n;
+      monthDays++;
+    }
+  }
+
+  // Build week summaries (Mon–Sun, ISO-ish)
+  const firstDow=new Date(year,month-1,1).getDay(); // 0=Sun
+  const weeks=[];
+  let wk={pnl:0,n:0,days:0};
+  let wkIdx=0;
+  // Week index for each day
+  const dayWeek={};
+  for(let d=1;d<=daysInMonth;d++){
+    const key=year+'-'+String(month).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const dow=new Date(year,month-1,d).getDay(); // 0=Sun
+    // New week starts on Sunday
+    if(dow===0&&d>1){weeks.push({...wk});wk={pnl:0,n:0,days:0};wkIdx++;}
+    dayWeek[d]=wkIdx;
+    if(window._calByDay[key]){
+      wk.pnl+=window._calByDay[key].pnl;
+      wk.n+=window._calByDay[key].n;
+      wk.days++;
+    }
+  }
+  weeks.push({...wk});
+
+  // Year buttons (for quick navigation)
+  const allYears=[...new Set(allMonths.map(m=>m.slice(0,4)))].sort();
+  const yearBtns=allYears.map(y=>`<button class="cal-year-btn${y==year?' active':''}" onclick="renderCalendar(${y},1)">${y}</button>`).join('');
+
+  // DOW headers
+  const dowHtml=DOW_FR.map(d=>`<div class="cal-dow-head">${d}</div>`).join('');
+
+  // Day cells
+  let dayHtml='';
+  // Padding before first day
+  for(let i=0;i<firstDow;i++)dayHtml+='<div class="cal-day empty"></div>';
+  for(let d=1;d<=daysInMonth;d++){
+    const key=year+'-'+String(month).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const info=window._calByDay[key];
+    if(!info){
+      dayHtml+=`<div class="cal-day"><div class="cal-day-num">${d}</div></div>`;
+    } else {
+      const cls=info.pnl>=0?'profit':'loss';
+      const pnlCls=info.pnl>=0?'pos':'neg';
+      const pnlStr=fmtPnl(info.pnl);
+      const dotColor=info.pnl>=0?'var(--green)':'var(--red)';
+      const tipsData=info.trades.map(t=>`${t.direction=='BULLISH'?'▲':'▼'} ${t.result} ${t.pnl_usd>=0?'+':''}$${t.pnl_usd.toFixed(0)}`).join('\n');
+      dayHtml+=`<div class="cal-day has-trade ${cls}" onmouseenter="showCalTip(event,'${key}',\`${tipsData}\`)" onmouseleave="hideCalTip()">
+        <div class="cal-day-num">${d}</div>
+        <div class="cal-day-pnl ${pnlCls}">${pnlStr}</div>
+        <div class="cal-day-ntrades">${info.n} trade${info.n>1?'s':''}</div>
+        <div class="cal-day-dot" style="color:${dotColor}"></div>
+      </div>`;
+    }
+  }
+
+  // Week cards
+  let weekCards='';
+  weeks.forEach((w,i)=>{
+    if(w.n===0&&w.pnl===0){weekCards+=`<div class="cal-week-card"><div class="cal-week-label">Sem. ${i+1}</div><div style="color:var(--text3);font-size:11px">—</div></div>`;return;}
+    const wcls=w.pnl>=0?'pos':'neg';
+    weekCards+=`<div class="cal-week-card">
+      <div class="cal-week-label">Sem. ${i+1}</div>
+      <div class="cal-week-pnl ${wcls}">${fmtPnl(w.pnl)}</div>
+      <div class="cal-week-days">${w.days} jour${w.days>1?'s':''}</div>
+    </div>`;
+  });
+
+  const pnlCls=monthPnl>=0?'pos':'neg';
+  const pnlStr=fmtPnl(monthPnl);
+  const prevBtn=prevKey?`<button onclick="renderCalendar(${parseInt(prevKey.slice(0,4))},parseInt('${prevKey.slice(5,7)}'))">‹</button>`:`<button disabled style="opacity:0.3">‹</button>`;
+  const nextBtn=nextKey?`<button onclick="renderCalendar(${parseInt(nextKey.slice(0,4))},parseInt('${nextKey.slice(5,7)}'))">›</button>`:`<button disabled style="opacity:0.3">›</button>`;
+
+  $('calendarView').innerHTML=`
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+    <div class="cal-year-select">${yearBtns}</div>
+  </div>
+  <div class="cal-header">
+    <div class="cal-nav">
+      ${prevBtn}
+      <div class="cal-title">${MONTH_FR[month-1]} ${year}</div>
+      ${nextBtn}
+    </div>
+    <div class="cal-stats-bar">
+      <div class="cal-stat"><div class="cal-stat-label">P&L du mois</div><div class="cal-stat-val ${pnlCls}">${pnlStr}</div></div>
+      <div class="cal-stat"><div class="cal-stat-label">Trades</div><div class="cal-stat-val gold">${monthTrades}</div></div>
+      <div class="cal-stat-days">${monthDays} jour${monthDays>1?'s':''}</div>
+    </div>
+  </div>
+  <div class="cal-grid-wrapper">
+    <div class="cal-grid">
+      <div class="cal-dow-headers">${dowHtml}</div>
+      <div class="cal-days">${dayHtml}</div>
+    </div>
+    <div class="cal-weeks">${weekCards}</div>
+  </div>
+</div>
+<div id="calTooltip" class="cal-tooltip"></div>`;
+}
+
+function showCalTip(e,dateKey,lines){
+  const tip=$('calTooltip');
+  if(!tip)return;
+  const info=window._calByDay[dateKey];
+  if(!info)return;
+  const html=`<div style="color:var(--gold2);font-weight:700;margin-bottom:6px">${dateKey}</div>`+
+    lines.split('\n').map(l=>`<div style="margin:2px 0">${l}</div>`).join('');
+  tip.innerHTML=html;
+  tip.style.display='block';
+  tip.style.left=(e.clientX+14)+'px';
+  tip.style.top=(e.clientY-10)+'px';
+}
+function hideCalTip(){const t=$('calTooltip');if(t)t.style.display='none';}
+
+function drawEquity(){
+  const canvas=$('equityChart');
+  const dpr=window.devicePixelRatio||1;
+  const rect=canvas.getBoundingClientRect();
+  canvas.width=rect.width*dpr; canvas.height=240*dpr;
+  const ctx=canvas.getContext('2d'); ctx.scale(dpr,dpr);
+  const W=rect.width,H=240,PAD={t:16,r:16,b:30,l:72};
+  const cw=W-PAD.l-PAD.r,ch=H-PAD.t-PAD.b;
+  const vals=CURVE.map(c=>c[1]);
+  const min=Math.min(...vals)*0.98,max=Math.max(...vals)*1.01;
+  const sy=v=>PAD.t+ch-(v-min)/(max-min)*ch;
+  const sx=i=>PAD.l+(i/(vals.length-1))*cw;
+  ctx.strokeStyle='#1e2d3d';ctx.lineWidth=1;
+  for(let g=0;g<=4;g++){
+    const y=PAD.t+ch*g/4;
+    ctx.beginPath();ctx.moveTo(PAD.l,y);ctx.lineTo(W-PAD.r,y);ctx.stroke();
+    const v=max-(max-min)*g/4;
+    ctx.fillStyle='#4a5f70';ctx.font='10px JetBrains Mono';ctx.textAlign='right';
+    ctx.fillText('$'+Math.round(v/1000)+'k',PAD.l-6,y+3);
+  }
+  CURVE.forEach((c,i)=>{
+    if(c[0].endsWith('-01')){
+      ctx.strokeStyle='#1e2d3d';ctx.beginPath();ctx.moveTo(sx(i),PAD.t);ctx.lineTo(sx(i),H-PAD.b);ctx.stroke();
+      ctx.fillStyle='#4a5f70';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
+      ctx.fillText(c[0].slice(0,4),sx(i),H-8);
+    }
+  });
+  const grad=ctx.createLinearGradient(0,PAD.t,0,H-PAD.b);
+  grad.addColorStop(0,'rgba(212,168,67,0.25)');grad.addColorStop(1,'rgba(212,168,67,0.01)');
+  ctx.beginPath();ctx.moveTo(sx(0),sy(vals[0]));
+  vals.forEach((v,i)=>ctx.lineTo(sx(i),sy(v)));
+  ctx.lineTo(sx(vals.length-1),H-PAD.b);ctx.lineTo(sx(0),H-PAD.b);ctx.closePath();
+  ctx.fillStyle=grad;ctx.fill();
+  ctx.beginPath();ctx.strokeStyle='#d4a843';ctx.lineWidth=1.8;
+  vals.forEach((v,i)=>i===0?ctx.moveTo(sx(0),sy(v)):ctx.lineTo(sx(i),sy(v)));
+  ctx.stroke();
+}
+
+function drawDist(){
+  const canvas=$('distChart');
+  const dpr=window.devicePixelRatio||1;
+  canvas.width=340*dpr;canvas.height=240*dpr;
+  const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
+  const W=340,H=240;
+  const data=[
+    {label:'TIMEOUT',val:STATS.timeouts,color:'#8b7fd4'},
+    {label:'LOSS',val:STATS.losses,color:'#e05252'},
+    {label:'WIN',val:STATS.wins,color:'#2ecc82'},
+    {label:'TRAIL WIN',val:STATS.trail_wins,color:'#4ad4b8'},
+    {label:'BREAKEVEN',val:STATS.breakevens,color:'#d4a843'},
+  ];
+  const total=data.reduce((s,d)=>s+d.val,0);
+  const cx=120,cy=H/2,r=85,ri=52;
+  let angle=-Math.PI/2;
+  data.forEach(d=>{
+    const slice=(d.val/total)*2*Math.PI;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,angle,angle+slice);ctx.closePath();
+    ctx.fillStyle=d.color;ctx.fill();
+    ctx.strokeStyle='#0d1117';ctx.lineWidth=2;ctx.stroke();
+    angle+=slice;
+  });
+  ctx.beginPath();ctx.arc(cx,cy,ri,0,2*Math.PI);ctx.fillStyle='#131920';ctx.fill();
+  ctx.fillStyle='#d4a843';ctx.font='bold 20px JetBrains Mono';ctx.textAlign='center';
+  ctx.fillText(total.toLocaleString(),cx,cy+2);
+  ctx.fillStyle='#4a5f70';ctx.font='10px JetBrains Mono';ctx.fillText('TRADES',cx,cy+16);
+  let ly=36;
+  data.forEach(d=>{
+    ctx.fillStyle=d.color;ctx.fillRect(220,ly-9,10,10);
+    ctx.fillStyle='#c8d8e8';ctx.font='11px JetBrains Mono';ctx.textAlign='left';
+    ctx.fillText(d.label,236,ly);
+    ctx.fillStyle='#7a93a8';ctx.font='10px JetBrains Mono';
+    ctx.fillText(d.val+'  ('+(d.val/total*100).toFixed(1)+'%)',236,ly+13);
+    ly+=38;
+  });
+}
+
+function drawMonthlyPnl(){
+  const canvas=$('monthlyPnlChart');
+  const dpr=window.devicePixelRatio||1;
+  const rect=canvas.getBoundingClientRect();
+  canvas.width=rect.width*dpr;canvas.height=180*dpr;
+  const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
+  const W=rect.width,H=180,PAD={t:10,r:16,b:24,l:55};
+  const cw=W-PAD.l-PAD.r,ch=H-PAD.t-PAD.b;
+  const pnls=CURVE.map(c=>c[2]);
+  const maxP=Math.max(...pnls.map(Math.abs))*1.05;
+  const midY=PAD.t+ch/2;
+  const bw=Math.max(1.5,cw/pnls.length-1);
+  ctx.strokeStyle='#253545';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(PAD.l,midY);ctx.lineTo(W-PAD.r,midY);ctx.stroke();
+  pnls.forEach((p,i)=>{
+    const x=PAD.l+(i/pnls.length)*cw;
+    const barH=Math.abs(p)/maxP*(ch/2);
+    ctx.fillStyle=p>=0?'rgba(46,204,130,0.7)':'rgba(224,82,82,0.65)';
+    if(p>=0)ctx.fillRect(x,midY-barH,bw,barH);
+    else ctx.fillRect(x,midY,bw,barH);
+  });
+  CURVE.forEach((c,i)=>{
+    if(c[0].endsWith('-01')){
+      const x=PAD.l+(i/pnls.length)*cw;
+      ctx.fillStyle='#4a5f70';ctx.font='8px JetBrains Mono';ctx.textAlign='center';
+      ctx.fillText(c[0].slice(0,4),x,H-6);
+    }
+  });
+}
+
+
+
+let currentFilter='ALL',currentDir=null,currentSearch='';
+function renderTrades(){
+  const tbody=$('tradeBody');
+  let filtered=[...TRADES].reverse();
+  if(currentFilter!=='ALL')filtered=filtered.filter(t=>t.result===currentFilter);
+  if(currentDir)filtered=filtered.filter(t=>t.direction===currentDir);
+  if(currentSearch)filtered=filtered.filter(t=>t.date.includes(currentSearch));
+  $('tradeCount').textContent=filtered.length+' trades';
+  tbody.innerHTML=filtered.map(t=>{
+    const pc=t.pnl_usd>0?'pnl-pos':t.pnl_usd<0?'pnl-neg':'pnl-zero';
+    const ps=t.pnl_usd===0?'$0':(t.pnl_usd>0?'+$':'-$')+Math.abs(t.pnl_usd).toFixed(2);
+    const dc=t.direction==='BULLISH'?'dir-bull':'dir-bear';
+    return `<tr>
+      <td>${t.date}</td><td style="color:var(--text2)">${t.weekday?(t.weekday.slice(0,3)):'—'}</td>
+      <td class="${dc}">${t.direction==='BULLISH'?'▲ BULL':'▼ BEAR'}</td>
+      <td style="color:${t.action==='BUY'?'var(--green)':'var(--red)'};font-weight:600">${t.action}</td>
+      <td>${t.entry.toFixed(2)}</td><td style="color:var(--text2)">${t.sl_initial.toFixed(2)}</td>
+      <td style="color:var(--text2)">${t.tp.toFixed(2)}</td><td style="color:var(--text2)">${t.sl_pips}</td>
+      <td style="color:var(--text3)">Ph.${t.phase_reached||'—'}</td>
+      <td><span class="badge ${t.result}">${t.result}</span></td>
+      <td style="color:var(--text2)">${t.exit_price.toFixed(2)}</td>
+      <td style="color:var(--text3)">${t.bars_held}</td>
+      <td class="${pc}" style="font-weight:600">${ps}</td>
+      <td style="color:var(--gold2)">${fmtK(t.capital)}</td>
+    </tr>`;
+  }).join('');
+}
+function filterTrades(r,btn){currentFilter=r;currentDir=null;document.querySelectorAll('#sec-trades .filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderTrades();}
+function filterDir(d,btn){
+  if(currentDir===d){currentDir=null;btn.classList.remove('active');}
+  else{currentDir=d;document.querySelectorAll('#sec-trades .filter-btn').forEach(b=>b.classList.remove('active'));document.querySelector('[onclick="filterTrades(\'ALL\',this)"]').classList.add('active');btn.classList.add('active');}
+  currentFilter='ALL';renderTrades();
+}
+function searchTrades(v){currentSearch=v;renderTrades();}
+
+window.addEventListener('load',()=>{
+  setTimeout(()=>{drawEquity();drawDist();drawMonthlyPnl();},80);
+});
+window.addEventListener('resize',()=>{drawEquity();drawMonthlyPnl();});
+</script>
+</body>
+</html>
