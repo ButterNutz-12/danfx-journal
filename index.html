@@ -60,7 +60,7 @@
 <body>
   <div class="header">
     <h1>🥇 BMC GOLD — Trading Journal</h1>
-    <span class="meta">Mis à jour : 2026-06-17 20:53</span>
+    <span class="meta">Mis à jour : 2026-06-17 20:58</span>
   </div>
 
   <div class="tabs">
@@ -79,46 +79,133 @@
       <button class="stab" onclick="showSub('002','trades',this)">Trades (32)</button>
     </div>
     <div id="002-overview" class="sub active"><div class="kpi-grid"><div class="kpi"><label>Trades</label><value class="">32</value></div><div class="kpi"><label>Wins</label><value class="win">18</value></div><div class="kpi"><label>Losses</label><value class="loss">14</value></div><div class="kpi"><label>Breakeven</label><value class="be">0</value></div><div class="kpi"><label>Win Rate</label><value class="pos">56%</value></div><div class="kpi"><label>P&amp;L Total</label><value class=""><span class="pos">+$14,474.57</span></value></div><div class="kpi"><label>Swap Total</label><value class=""><span class="neg">$-357.29</span></value></div><div class="kpi"><label>Capital Initial</label><value class="">$100,000</value></div><div class="kpi"><label>Capital Final</label><value class="pos">$114,474.57</value></div><div class="kpi"><label>Moy. Win</label><value class="pos">$2,368.70</value></div><div class="kpi"><label>Moy. Loss</label><value class="neg">$-2,011.58</value></div><div class="kpi"><label>RR Réel</label><value class="">1.18</value></div></div></div>
-    <div id="002-monthly"  class="sub"><div style="margin-bottom:24px">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #1a1a1a">
-            <span style="font-size:13px;color:#888">2026-06</span>
-            <span style="font-size:11px;color:#555">32 trades · 18W</span>
-            <span class="pos" style="font-size:14px;font-weight:bold">+$14,474.57</span>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:6px"><div style="background:rgba(34,211,160,0.07);border:1px solid #22d3a0;border-radius:6px;padding:10px 8px;text-align:center">
-              <div style="font-size:10px;color:#555;margin-bottom:4px">03</div>
-              <div class="pos" style="font-size:13px;font-weight:bold">+$744</div>
-              <div style="font-size:10px;color:#555;margin-top:3px">1T · 100%</div>
-            </div><div style="background:rgba(34,211,160,0.07);border:1px solid #22d3a0;border-radius:6px;padding:10px 8px;text-align:center">
-              <div style="font-size:10px;color:#555;margin-bottom:4px">04</div>
-              <div class="pos" style="font-size:13px;font-weight:bold">+$905</div>
-              <div style="font-size:10px;color:#555;margin-top:3px">1T · 100%</div>
-            </div><div style="background:rgba(248,113,113,0.07);border:1px solid #f87171;border-radius:6px;padding:10px 8px;text-align:center">
-              <div style="font-size:10px;color:#555;margin-bottom:4px">05</div>
-              <div class="neg" style="font-size:13px;font-weight:bold">$2,961</div>
-              <div style="font-size:10px;color:#555;margin-top:3px">1T · 0%</div>
-            </div><div style="background:rgba(34,211,160,0.07);border:1px solid #22d3a0;border-radius:6px;padding:10px 8px;text-align:center">
-              <div style="font-size:10px;color:#555;margin-bottom:4px">09</div>
-              <div class="pos" style="font-size:13px;font-weight:bold">+$4,985</div>
-              <div style="font-size:10px;color:#555;margin-top:3px">20T · 45%</div>
-            </div><div style="background:rgba(34,211,160,0.07);border:1px solid #22d3a0;border-radius:6px;padding:10px 8px;text-align:center">
-              <div style="font-size:10px;color:#555;margin-bottom:4px">11</div>
-              <div class="pos" style="font-size:13px;font-weight:bold">+$6,483</div>
-              <div style="font-size:10px;color:#555;margin-top:3px">2T · 100%</div>
-            </div><div style="background:rgba(34,211,160,0.07);border:1px solid #22d3a0;border-radius:6px;padding:10px 8px;text-align:center">
-              <div style="font-size:10px;color:#555;margin-bottom:4px">12</div>
-              <div class="pos" style="font-size:13px;font-weight:bold">+$3,272</div>
-              <div style="font-size:10px;color:#555;margin-top:3px">1T · 100%</div>
-            </div><div style="background:rgba(34,211,160,0.07);border:1px solid #22d3a0;border-radius:6px;padding:10px 8px;text-align:center">
-              <div style="font-size:10px;color:#555;margin-bottom:4px">15</div>
-              <div class="pos" style="font-size:13px;font-weight:bold">+$49</div>
-              <div style="font-size:10px;color:#555;margin-top:3px">2T · 50%</div>
-            </div><div style="background:rgba(34,211,160,0.07);border:1px solid #22d3a0;border-radius:6px;padding:10px 8px;text-align:center">
-              <div style="font-size:10px;color:#555;margin-bottom:4px">17</div>
-              <div class="pos" style="font-size:13px;font-weight:bold">+$997</div>
-              <div style="font-size:10px;color:#555;margin-top:3px">4T · 75%</div>
-            </div></div>
-        </div></div>
+    <div id="002-monthly"  class="sub">
+<div id="cal-002" style="font-family:'Courier New',monospace;color:#ddd">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+    <div style="display:flex;align-items:center;gap:8px">
+      <button onclick="calPrev('002')" style="background:#111;border:1px solid #222;color:#aaa;width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:16px;line-height:1">‹</button>
+      <span id="cal-title-002" style="font-size:17px;color:#e0e0e0;min-width:155px;text-align:center;font-weight:bold"></span>
+      <button onclick="calNext('002')" style="background:#111;border:1px solid #222;color:#aaa;width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:16px;line-height:1">›</button>
+      <button onclick="calToday('002')" style="background:#111;border:1px solid #333;color:#888;padding:4px 12px;border-radius:20px;cursor:pointer;font-size:11px">This month</button>
+    </div>
+    <div id="cal-stats-002" style="display:flex;align-items:center;gap:8px;font-size:12px;color:#555">Monthly stats: —</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 130px;gap:10px;align-items:start">
+    <div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px">
+        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Sun</div>
+        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Mon</div>
+        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Tue</div>
+        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Wed</div>
+        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Thu</div>
+        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Fri</div>
+        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Sat</div>
+      </div>
+      <div id="cal-grid-002" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px"></div>
+    </div>
+    <div id="cal-weeks-002" style="display:flex;flex-direction:column;gap:5px"></div>
+  </div>
+</div>
+<script>
+(function(){
+  var DAYS_002   = {"2026-06-03": {"trades": 1, "wins": 1, "losses": 0, "pnl": 744.25}, "2026-06-04": {"trades": 1, "wins": 1, "losses": 0, "pnl": 905.46}, "2026-06-05": {"trades": 1, "wins": 0, "losses": 1, "pnl": -2960.74}, "2026-06-09": {"trades": 20, "wins": 9, "losses": 11, "pnl": 4984.709999999998}, "2026-06-11": {"trades": 2, "wins": 2, "losses": 0, "pnl": 6482.54}, "2026-06-12": {"trades": 1, "wins": 1, "losses": 0, "pnl": 3272.33}, "2026-06-15": {"trades": 2, "wins": 1, "losses": 1, "pnl": 48.620000000000005}, "2026-06-17": {"trades": 4, "wins": 3, "losses": 1, "pnl": 997.4000000000001}};
+  var MONTHS_002 = ["2026-06"];
+  var idx_002    = 0;
+  var MNAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  function fmtK(v) {
+    var a = Math.abs(v), s;
+    if (a >= 1000) s = '$' + (a/1000).toFixed(1) + 'K';
+    else s = '$' + a.toFixed(0);
+    return (v >= 0 ? '+' : '-') + s;
+  }
+
+  function render_002() {
+    var ms   = MONTHS_002[idx_002];
+    var yr   = parseInt(ms.slice(0,4));
+    var mo   = parseInt(ms.slice(5,7));
+    document.getElementById('cal-title-002').textContent = MNAMES[mo-1] + ' ' + yr;
+
+    var dim  = new Date(yr, mo, 0).getDate();
+    var mPnl = 0, mDays = 0;
+    for (var d = 1; d <= dim; d++) {
+      var key = yr+'-'+String(mo).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+      if (DAYS_002[key]) { mPnl += DAYS_002[key].pnl; mDays++; }
+    }
+    var sc = mPnl >= 0 ? '#22d3a0' : '#f87171';
+    document.getElementById('cal-stats-002').innerHTML =
+      '<span>Monthly stats:</span>' +
+      '<span style="background:'+sc+'22;border:1px solid '+sc+';color:'+sc+';padding:3px 10px;border-radius:20px;font-weight:bold">'+fmtK(mPnl)+'</span>' +
+      '<span style="background:#6366f122;border:1px solid #6366f155;color:#a5b4fc;padding:3px 10px;border-radius:20px">'+mDays+' days</span>';
+
+    var grid  = document.getElementById('cal-grid-002');
+    var weeksEl = document.getElementById('cal-weeks-002');
+    grid.innerHTML = ''; weeksEl.innerHTML = '';
+
+    var firstDow = new Date(yr, mo-1, 1).getDay();
+    for (var i = 0; i < firstDow; i++) {
+      var emp = document.createElement('div');
+      emp.style.cssText = 'min-height:75px;background:#0a0a0a;border-radius:8px';
+      grid.appendChild(emp);
+    }
+
+    var weeks = [], wk = {pnl:0,days:0};
+    for (var d = 1; d <= dim; d++) {
+      var dow = new Date(yr, mo-1, d).getDay();
+      if (dow === 0 && d > 1) { weeks.push(Object.assign({},wk)); wk={pnl:0,days:0}; }
+      var key = yr+'-'+String(mo).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+      var info = DAYS_002[key];
+      var el = document.createElement('div');
+      if (info) {
+        var pos = info.pnl >= 0;
+        var bc  = pos ? '#22d3a0' : '#f87171';
+        var bg  = pos ? 'rgba(34,211,160,0.11)' : 'rgba(248,113,113,0.11)';
+        el.style.cssText = 'min-height:75px;background:'+bg+';border:1px solid '+bc+'55;border-radius:8px;padding:7px;position:relative';
+        el.innerHTML = '<div style="font-size:10px;color:#666;margin-bottom:3px">'+d+'</div>'+
+          '<div style="font-size:13px;font-weight:bold;color:'+bc+'">'+fmtK(info.pnl)+'</div>'+
+          '<div style="font-size:10px;color:#555;margin-top:2px">'+info.trades+' trade'+(info.trades>1?'s':'')+'</div>'+
+          '<div style="width:5px;height:5px;border-radius:50%;background:'+bc+';position:absolute;bottom:6px;right:6px"></div>';
+        wk.pnl += info.pnl; wk.days++;
+      } else {
+        el.style.cssText = 'min-height:75px;background:#0d0d0d;border:1px solid #111;border-radius:8px;padding:7px';
+        el.innerHTML = '<div style="font-size:10px;color:#2a2a2a">'+d+'</div>';
+      }
+      grid.appendChild(el);
+    }
+    weeks.push(Object.assign({},wk));
+
+    weeks.forEach(function(w, i) {
+      var pos = w.pnl >= 0;
+      var wc  = w.days === 0 ? '#333' : (pos ? '#22d3a0' : '#f87171');
+      var wDiv = document.createElement('div');
+      wDiv.style.cssText = 'background:#111;border:1px solid #1a1a1a;border-radius:8px;padding:10px 12px';
+      wDiv.innerHTML = '<div style="font-size:10px;color:#444;margin-bottom:4px">Week '+(i+1)+'</div>'+
+        '<div style="font-size:15px;font-weight:bold;color:'+wc+'">'+(w.days?fmtK(w.pnl):'—')+'</div>'+
+        (w.days?'<div style="display:inline-block;background:#6366f122;border:1px solid #6366f144;color:#a5b4fc;padding:2px 7px;border-radius:12px;font-size:10px;margin-top:4px">'+w.days+' day'+(w.days>1?'s':'')+'</div>':'');
+      weeksEl.appendChild(wDiv);
+    });
+  }
+
+  window.calPrev = window.calPrev || function(){};
+  window.calNext = window.calNext || function(){};
+  window.calToday= window.calToday|| function(){};
+
+  (function(){
+    var pp=window.calPrev, pn=window.calNext, pt=window.calToday;
+    window.calPrev = function(uid) {
+      if(uid==='002'){ idx_002=Math.min(MONTHS_002.length-1,idx_002+1); render_002(); } else pp(uid);
+    };
+    window.calNext = function(uid) {
+      if(uid==='002'){ idx_002=Math.max(0,idx_002-1); render_002(); } else pn(uid);
+    };
+    window.calToday = function(uid) {
+      if(uid==='002'){ idx_002=0; render_002(); } else pt(uid);
+    };
+  })();
+
+  render_002();
+})();
+</script></div>
     <div id="002-trades"   class="sub">
     <div style="overflow-x:auto">
     <table>
@@ -457,22 +544,133 @@
       <button class="stab" onclick="showSub('003','trades',this)">Trades (3)</button>
     </div>
     <div id="003-overview" class="sub active"><div class="kpi-grid"><div class="kpi"><label>Trades</label><value class="">3</value></div><div class="kpi"><label>Wins</label><value class="win">2</value></div><div class="kpi"><label>Losses</label><value class="loss">1</value></div><div class="kpi"><label>Breakeven</label><value class="be">0</value></div><div class="kpi"><label>Win Rate</label><value class="pos">67%</value></div><div class="kpi"><label>P&amp;L Total</label><value class=""><span class="pos">+$19.92</span></value></div><div class="kpi"><label>Swap Total</label><value class=""><span class="neg">$-3.03</span></value></div><div class="kpi"><label>Capital Initial</label><value class="">$1,000</value></div><div class="kpi"><label>Capital Final</label><value class="pos">$1,019.92</value></div><div class="kpi"><label>Moy. Win</label><value class="pos">$20.52</value></div><div class="kpi"><label>Moy. Loss</label><value class="neg">$-21.13</value></div><div class="kpi"><label>RR Réel</label><value class="">0.97</value></div></div></div>
-    <div id="003-monthly"  class="sub"><div style="margin-bottom:24px">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #1a1a1a">
-            <span style="font-size:13px;color:#888">2026-06</span>
-            <span style="font-size:11px;color:#555">3 trades · 2W</span>
-            <span class="pos" style="font-size:14px;font-weight:bold">+$19.92</span>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:6px"><div style="background:rgba(248,113,113,0.07);border:1px solid #f87171;border-radius:6px;padding:10px 8px;text-align:center">
-              <div style="font-size:10px;color:#555;margin-bottom:4px">15</div>
-              <div class="neg" style="font-size:13px;font-weight:bold">$21</div>
-              <div style="font-size:10px;color:#555;margin-top:3px">1T · 0%</div>
-            </div><div style="background:rgba(34,211,160,0.07);border:1px solid #22d3a0;border-radius:6px;padding:10px 8px;text-align:center">
-              <div style="font-size:10px;color:#555;margin-bottom:4px">17</div>
-              <div class="pos" style="font-size:13px;font-weight:bold">+$41</div>
-              <div style="font-size:10px;color:#555;margin-top:3px">2T · 100%</div>
-            </div></div>
-        </div></div>
+    <div id="003-monthly"  class="sub">
+<div id="cal-003" style="font-family:'Courier New',monospace;color:#ddd">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+    <div style="display:flex;align-items:center;gap:8px">
+      <button onclick="calPrev('003')" style="background:#111;border:1px solid #222;color:#aaa;width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:16px;line-height:1">‹</button>
+      <span id="cal-title-003" style="font-size:17px;color:#e0e0e0;min-width:155px;text-align:center;font-weight:bold"></span>
+      <button onclick="calNext('003')" style="background:#111;border:1px solid #222;color:#aaa;width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:16px;line-height:1">›</button>
+      <button onclick="calToday('003')" style="background:#111;border:1px solid #333;color:#888;padding:4px 12px;border-radius:20px;cursor:pointer;font-size:11px">This month</button>
+    </div>
+    <div id="cal-stats-003" style="display:flex;align-items:center;gap:8px;font-size:12px;color:#555">Monthly stats: —</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 130px;gap:10px;align-items:start">
+    <div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px">
+        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Sun</div>
+        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Mon</div>
+        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Tue</div>
+        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Wed</div>
+        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Thu</div>
+        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Fri</div>
+        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Sat</div>
+      </div>
+      <div id="cal-grid-003" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px"></div>
+    </div>
+    <div id="cal-weeks-003" style="display:flex;flex-direction:column;gap:5px"></div>
+  </div>
+</div>
+<script>
+(function(){
+  var DAYS_003   = {"2026-06-15": {"trades": 1, "wins": 0, "losses": 1, "pnl": -21.13}, "2026-06-17": {"trades": 2, "wins": 2, "losses": 0, "pnl": 41.05}};
+  var MONTHS_003 = ["2026-06"];
+  var idx_003    = 0;
+  var MNAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  function fmtK(v) {
+    var a = Math.abs(v), s;
+    if (a >= 1000) s = '$' + (a/1000).toFixed(1) + 'K';
+    else s = '$' + a.toFixed(0);
+    return (v >= 0 ? '+' : '-') + s;
+  }
+
+  function render_003() {
+    var ms   = MONTHS_003[idx_003];
+    var yr   = parseInt(ms.slice(0,4));
+    var mo   = parseInt(ms.slice(5,7));
+    document.getElementById('cal-title-003').textContent = MNAMES[mo-1] + ' ' + yr;
+
+    var dim  = new Date(yr, mo, 0).getDate();
+    var mPnl = 0, mDays = 0;
+    for (var d = 1; d <= dim; d++) {
+      var key = yr+'-'+String(mo).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+      if (DAYS_003[key]) { mPnl += DAYS_003[key].pnl; mDays++; }
+    }
+    var sc = mPnl >= 0 ? '#22d3a0' : '#f87171';
+    document.getElementById('cal-stats-003').innerHTML =
+      '<span>Monthly stats:</span>' +
+      '<span style="background:'+sc+'22;border:1px solid '+sc+';color:'+sc+';padding:3px 10px;border-radius:20px;font-weight:bold">'+fmtK(mPnl)+'</span>' +
+      '<span style="background:#6366f122;border:1px solid #6366f155;color:#a5b4fc;padding:3px 10px;border-radius:20px">'+mDays+' days</span>';
+
+    var grid  = document.getElementById('cal-grid-003');
+    var weeksEl = document.getElementById('cal-weeks-003');
+    grid.innerHTML = ''; weeksEl.innerHTML = '';
+
+    var firstDow = new Date(yr, mo-1, 1).getDay();
+    for (var i = 0; i < firstDow; i++) {
+      var emp = document.createElement('div');
+      emp.style.cssText = 'min-height:75px;background:#0a0a0a;border-radius:8px';
+      grid.appendChild(emp);
+    }
+
+    var weeks = [], wk = {pnl:0,days:0};
+    for (var d = 1; d <= dim; d++) {
+      var dow = new Date(yr, mo-1, d).getDay();
+      if (dow === 0 && d > 1) { weeks.push(Object.assign({},wk)); wk={pnl:0,days:0}; }
+      var key = yr+'-'+String(mo).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+      var info = DAYS_003[key];
+      var el = document.createElement('div');
+      if (info) {
+        var pos = info.pnl >= 0;
+        var bc  = pos ? '#22d3a0' : '#f87171';
+        var bg  = pos ? 'rgba(34,211,160,0.11)' : 'rgba(248,113,113,0.11)';
+        el.style.cssText = 'min-height:75px;background:'+bg+';border:1px solid '+bc+'55;border-radius:8px;padding:7px;position:relative';
+        el.innerHTML = '<div style="font-size:10px;color:#666;margin-bottom:3px">'+d+'</div>'+
+          '<div style="font-size:13px;font-weight:bold;color:'+bc+'">'+fmtK(info.pnl)+'</div>'+
+          '<div style="font-size:10px;color:#555;margin-top:2px">'+info.trades+' trade'+(info.trades>1?'s':'')+'</div>'+
+          '<div style="width:5px;height:5px;border-radius:50%;background:'+bc+';position:absolute;bottom:6px;right:6px"></div>';
+        wk.pnl += info.pnl; wk.days++;
+      } else {
+        el.style.cssText = 'min-height:75px;background:#0d0d0d;border:1px solid #111;border-radius:8px;padding:7px';
+        el.innerHTML = '<div style="font-size:10px;color:#2a2a2a">'+d+'</div>';
+      }
+      grid.appendChild(el);
+    }
+    weeks.push(Object.assign({},wk));
+
+    weeks.forEach(function(w, i) {
+      var pos = w.pnl >= 0;
+      var wc  = w.days === 0 ? '#333' : (pos ? '#22d3a0' : '#f87171');
+      var wDiv = document.createElement('div');
+      wDiv.style.cssText = 'background:#111;border:1px solid #1a1a1a;border-radius:8px;padding:10px 12px';
+      wDiv.innerHTML = '<div style="font-size:10px;color:#444;margin-bottom:4px">Week '+(i+1)+'</div>'+
+        '<div style="font-size:15px;font-weight:bold;color:'+wc+'">'+(w.days?fmtK(w.pnl):'—')+'</div>'+
+        (w.days?'<div style="display:inline-block;background:#6366f122;border:1px solid #6366f144;color:#a5b4fc;padding:2px 7px;border-radius:12px;font-size:10px;margin-top:4px">'+w.days+' day'+(w.days>1?'s':'')+'</div>':'');
+      weeksEl.appendChild(wDiv);
+    });
+  }
+
+  window.calPrev = window.calPrev || function(){};
+  window.calNext = window.calNext || function(){};
+  window.calToday= window.calToday|| function(){};
+
+  (function(){
+    var pp=window.calPrev, pn=window.calNext, pt=window.calToday;
+    window.calPrev = function(uid) {
+      if(uid==='003'){ idx_003=Math.min(MONTHS_003.length-1,idx_003+1); render_003(); } else pp(uid);
+    };
+    window.calNext = function(uid) {
+      if(uid==='003'){ idx_003=Math.max(0,idx_003-1); render_003(); } else pn(uid);
+    };
+    window.calToday = function(uid) {
+      if(uid==='003'){ idx_003=0; render_003(); } else pt(uid);
+    };
+  })();
+
+  render_003();
+})();
+</script></div>
     <div id="003-trades"   class="sub">
     <div style="overflow-x:auto">
     <table>
