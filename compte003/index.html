@@ -172,7 +172,7 @@ tbody td{padding:9px 12px;color:var(--text);white-space:nowrap;}
   <div class="header-meta">
     <div class="meta-item">Période <span>2026-06-15 → 2026-06-15</span></div>
     <div class="meta-item">Capital initial <span>$1,000</span></div>
-    <div class="meta-item">Capital final <span style="color:var(--red)">$981.90</span></div>
+    <div class="meta-item">Capital final <span style="color:var(--red)">$978.87</span></div>
   </div>
 </div>
 
@@ -181,7 +181,7 @@ tbody td{padding:9px 12px;color:var(--text);white-space:nowrap;}
 <!-- OVERVIEW -->
 <div id="sec-overview" class="section active">
   <div class="kpi-grid">
-    <div class="kpi-card gold"><div class="kpi-label">Rendement total</div><div class="kpi-value">+0%</div><div class="kpi-sub">$1,000 → $981.90</div></div>
+    <div class="kpi-card gold"><div class="kpi-label">Rendement total</div><div class="kpi-value">+0%</div><div class="kpi-sub">$1,000 → $978.87</div></div>
     <div class="kpi-card green"><div class="kpi-label">Profit Factor</div><div class="kpi-value">0.0</div><div class="kpi-sub">Ratio gain/perte</div></div>
     <div class="kpi-card blue"><div class="kpi-label">Max Drawdown</div><div class="kpi-value">0%</div><div class="kpi-sub">Drawdown max historique</div></div>
     <div class="kpi-card purple"><div class="kpi-label">Trades</div><div class="kpi-value">1</div><div class="kpi-sub">0 wins + 0 trail</div></div>
@@ -198,13 +198,13 @@ tbody td{padding:9px 12px;color:var(--text);white-space:nowrap;}
     <div class="card"><div class="card-title">PnL mensuel</div><canvas id="monthlyPnlChart" height="180"></canvas></div>
     <div class="card"><div class="card-title">Jours de semaine</div><div class="dow-grid" style="margin-top:8px"><div class="dow-cell">
           <div class="day">Lundi</div>
-          <div class="day-pnl" style="color:var(--red)">$18</div>
+          <div class="day-pnl" style="color:var(--red)">$21</div>
           <div class="day-meta">1 trades · 0.0% WR</div>
         </div></div></div>
   </div>
   <div class="card"><div class="card-title">Performance par année</div><div class="yearly-grid" id="yearlyGrid"><div class="year-cell">
         <div class="yr">2026</div>
-        <div class="pnl neg">$18</div>
+        <div class="pnl neg">$21</div>
         <div class="wr">0.0% WR</div>
         <div class="tr">1 trades</div>
       </div></div></div>
@@ -256,9 +256,9 @@ tbody td{padding:9px 12px;color:var(--text);white-space:nowrap;}
 </div><!-- /main -->
 
 <script>
-const CURVE=[["2026-06-01",981.9,-18.1,0.0,1]];
-const YEARLY=[{"year":"2026","n":1,"pnl":-18.1,"wr":0.0,"wins":0,"losses":1}];
-const TRADES=[{"date":"2026-06-15","weekday":"Monday","direction":"BULLISH","action":"BUY","entry":4346.52,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":0.01,"risk_usd":0,"result":"LOSS","exit_price":0.0,"pnl_usd":-18.1,"capital":981.9,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""}];
+const CURVE=[["2026-06-01",978.87,-21.13,0.0,1]];
+const YEARLY=[{"year":"2026","n":1,"pnl":-21.13,"wr":0.0,"wins":0,"losses":1}];
+const TRADES=[{"date":"2026-06-15","weekday":"Monday","direction":"BULLISH","action":"BUY","entry":4346.52,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":0.01,"risk_usd":0,"result":"LOSS","exit_price":0.0,"pnl_usd":-21.13,"capital":978.87,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""}];
 const STATS={"n":1,"wins":0,"trail_wins":0,"breakevens":0,"losses":1,"timeouts":0};
 
 function switchTab(name){
@@ -280,7 +280,7 @@ const fmtPnl=n=>{
 };
 
 // ── CALENDAR DATA ──
-const CAL_TRADES=[{"date":"2026-06-15","weekday":"Monday","direction":"BULLISH","action":"BUY","entry":4346.52,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":0.01,"risk_usd":0,"result":"LOSS","exit_price":0.0,"pnl_usd":-18.1,"capital":981.9,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""}];
+const CAL_TRADES=[{"date":"2026-06-15","weekday":"Monday","direction":"BULLISH","action":"BUY","entry":4346.52,"sl_initial":0.0,"tp":0.0,"sl_pips":0.0,"tp_pips":0.0,"lots":0.01,"risk_usd":0,"result":"LOSS","exit_price":0.0,"pnl_usd":-21.13,"capital":978.87,"bars_held":0,"phase_reached":null,"ict_confirm":"","fibo_zone":""}];
 (function buildCalIndex(){
   window._calByDay={};
   CAL_TRADES.forEach(t=>{
