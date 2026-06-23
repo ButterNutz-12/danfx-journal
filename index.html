@@ -60,15 +60,15 @@
 <body>
   <div class="header">
     <h1>🥇 BMC GOLD — Trading Journal</h1>
-    <span class="meta">Mis à jour : 2026-06-19 22:42</span>
+    <span class="meta">Mis à jour : 2026-06-23 22:47</span>
   </div>
 
   <div class="tabs">
     <button class="tab active" onclick="showAccount('002', this)">
-      BMC-002 <span class="badge pos">+$12,126.12</span>
+      BMC-002 <span class="badge pos">+$10,110.87</span>
     </button>
     <button class="tab" onclick="showAccount('003', this)">
-      BMC-003 <span class="badge neg">$-0.04</span>
+      BMC-003 <span class="badge neg">$-18.26</span>
     </button>
   </div>
 
@@ -76,9 +76,9 @@
     <div class="sub-tabs">
       <button class="stab active" onclick="showSub('002','overview',this)">Vue d'ensemble</button>
       <button class="stab" onclick="showSub('002','monthly',this)">Mensuel</button>
-      <button class="stab" onclick="showSub('002','trades',this)">Trades (34)</button>
+      <button class="stab" onclick="showSub('002','trades',this)">Trades (36)</button>
     </div>
-    <div id="002-overview" class="sub active"><div class="kpi-grid"><div class="kpi"><label>Trades</label><value class="">34</value></div><div class="kpi"><label>Wins</label><value class="win">18</value></div><div class="kpi"><label>Losses</label><value class="loss">16</value></div><div class="kpi"><label>Breakeven</label><value class="be">0</value></div><div class="kpi"><label>Win Rate</label><value class="pos">53%</value></div><div class="kpi"><label>P&amp;L Total</label><value class=""><span class="pos">+$12,126.12</span></value></div><div class="kpi"><label>Swap Total</label><value class=""><span class="neg">$-357.29</span></value></div><div class="kpi"><label>Capital Initial</label><value class="">$100,000</value></div><div class="kpi"><label>Capital Final</label><value class="pos">$112,126.12</value></div><div class="kpi"><label>Moy. Win</label><value class="pos">$2,368.70</value></div><div class="kpi"><label>Moy. Loss</label><value class="neg">$-1,906.91</value></div><div class="kpi"><label>RR Réel</label><value class="">1.24</value></div></div></div>
+    <div id="002-overview" class="sub active"><div class="kpi-grid"><div class="kpi"><label>Trades</label><value class="">36</value></div><div class="kpi"><label>Wins</label><value class="win">18</value></div><div class="kpi"><label>Losses</label><value class="loss">18</value></div><div class="kpi"><label>Breakeven</label><value class="be">0</value></div><div class="kpi"><label>Win Rate</label><value class="pos">50%</value></div><div class="kpi"><label>P&amp;L Total</label><value class=""><span class="pos">+$10,110.87</span></value></div><div class="kpi"><label>Swap Total</label><value class=""><span class="neg">$-357.29</span></value></div><div class="kpi"><label>Capital Initial</label><value class="">$100,000</value></div><div class="kpi"><label>Capital Final</label><value class="pos">$110,110.87</value></div><div class="kpi"><label>Moy. Win</label><value class="pos">$2,368.70</value></div><div class="kpi"><label>Moy. Loss</label><value class="neg">$-1,806.99</value></div><div class="kpi"><label>RR Réel</label><value class="">1.31</value></div></div></div>
     <div id="002-monthly"  class="sub">
 <div id="cal-002" style="font-family:'Courier New',monospace;color:#ddd">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
@@ -108,7 +108,7 @@
 </div>
 <script>
 (function(){
-  var DAYS_002   = {"2026-06-03": {"trades": 1, "wins": 1, "losses": 0, "pnl": 744.25}, "2026-06-04": {"trades": 1, "wins": 1, "losses": 0, "pnl": 905.46}, "2026-06-05": {"trades": 1, "wins": 0, "losses": 1, "pnl": -2960.74}, "2026-06-09": {"trades": 20, "wins": 9, "losses": 11, "pnl": 4984.709999999998}, "2026-06-11": {"trades": 2, "wins": 2, "losses": 0, "pnl": 6482.54}, "2026-06-12": {"trades": 1, "wins": 1, "losses": 0, "pnl": 3272.33}, "2026-06-15": {"trades": 2, "wins": 1, "losses": 1, "pnl": 48.620000000000005}, "2026-06-17": {"trades": 4, "wins": 3, "losses": 1, "pnl": 997.4000000000001}, "2026-06-19": {"trades": 2, "wins": 0, "losses": 2, "pnl": -2348.45}};
+  var DAYS_002   = {"2026-06-03": {"trades": 1, "wins": 1, "losses": 0, "pnl": 744.25}, "2026-06-04": {"trades": 1, "wins": 1, "losses": 0, "pnl": 905.46}, "2026-06-05": {"trades": 1, "wins": 0, "losses": 1, "pnl": -2960.74}, "2026-06-09": {"trades": 20, "wins": 9, "losses": 11, "pnl": 4984.709999999998}, "2026-06-11": {"trades": 2, "wins": 2, "losses": 0, "pnl": 6482.54}, "2026-06-12": {"trades": 1, "wins": 1, "losses": 0, "pnl": 3272.33}, "2026-06-15": {"trades": 2, "wins": 1, "losses": 1, "pnl": 48.620000000000005}, "2026-06-17": {"trades": 4, "wins": 3, "losses": 1, "pnl": 997.4000000000001}, "2026-06-19": {"trades": 2, "wins": 0, "losses": 2, "pnl": -2348.45}, "2026-06-23": {"trades": 2, "wins": 0, "losses": 2, "pnl": -2015.25}};
   var MONTHS_002 = ["2026-06"];
   var idx_002    = 0;
   var MNAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -214,6 +214,26 @@
         <th>SL Init.</th><th>Résultat</th><th>P&amp;L</th><th>Swap</th><th>Capital</th>
       </tr></thead>
       <tbody><tr>
+          <td>2026-06-23</td>
+          <td class="win">BUY</td>
+          <td class="gold">4127.92</td>
+          <td>4111.69</td>
+          <td>—</td>
+          <td><span class="loss">LOSS</span></td>
+          <td><span class="neg">$-1,997.03</span></td>
+          <td><span style="color:#555">—</span></td>
+          <td>$110,110.87</td>
+        </tr><tr>
+          <td>2026-06-23</td>
+          <td class="win">BUY</td>
+          <td class="gold">4129.72</td>
+          <td>4111.50</td>
+          <td>—</td>
+          <td><span class="loss">LOSS</span></td>
+          <td><span class="neg">$-18.22</span></td>
+          <td><span style="color:#555">—</span></td>
+          <td>$112,107.90</td>
+        </tr><tr>
           <td>2026-06-19</td>
           <td class="win">BUY</td>
           <td class="gold">4166.21</td>
@@ -561,9 +581,9 @@
     <div class="sub-tabs">
       <button class="stab active" onclick="showSub('003','overview',this)">Vue d'ensemble</button>
       <button class="stab" onclick="showSub('003','monthly',this)">Mensuel</button>
-      <button class="stab" onclick="showSub('003','trades',this)">Trades (4)</button>
+      <button class="stab" onclick="showSub('003','trades',this)">Trades (5)</button>
     </div>
-    <div id="003-overview" class="sub active"><div class="kpi-grid"><div class="kpi"><label>Trades</label><value class="">4</value></div><div class="kpi"><label>Wins</label><value class="win">2</value></div><div class="kpi"><label>Losses</label><value class="loss">2</value></div><div class="kpi"><label>Breakeven</label><value class="be">0</value></div><div class="kpi"><label>Win Rate</label><value class="pos">50%</value></div><div class="kpi"><label>P&amp;L Total</label><value class=""><span class="neg">$-0.04</span></value></div><div class="kpi"><label>Swap Total</label><value class=""><span class="neg">$-3.03</span></value></div><div class="kpi"><label>Capital Initial</label><value class="">$1,000</value></div><div class="kpi"><label>Capital Final</label><value class="neg">$999.96</value></div><div class="kpi"><label>Moy. Win</label><value class="pos">$20.52</value></div><div class="kpi"><label>Moy. Loss</label><value class="neg">$-20.55</value></div><div class="kpi"><label>RR Réel</label><value class="">1.00</value></div></div></div>
+    <div id="003-overview" class="sub active"><div class="kpi-grid"><div class="kpi"><label>Trades</label><value class="">5</value></div><div class="kpi"><label>Wins</label><value class="win">2</value></div><div class="kpi"><label>Losses</label><value class="loss">3</value></div><div class="kpi"><label>Breakeven</label><value class="be">0</value></div><div class="kpi"><label>Win Rate</label><value class="neg">40%</value></div><div class="kpi"><label>P&amp;L Total</label><value class=""><span class="neg">$-18.26</span></value></div><div class="kpi"><label>Swap Total</label><value class=""><span class="neg">$-3.03</span></value></div><div class="kpi"><label>Capital Initial</label><value class="">$1,000</value></div><div class="kpi"><label>Capital Final</label><value class="neg">$981.74</value></div><div class="kpi"><label>Moy. Win</label><value class="pos">$20.52</value></div><div class="kpi"><label>Moy. Loss</label><value class="neg">$-19.77</value></div><div class="kpi"><label>RR Réel</label><value class="">1.04</value></div></div></div>
     <div id="003-monthly"  class="sub">
 <div id="cal-003" style="font-family:'Courier New',monospace;color:#ddd">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
@@ -593,7 +613,7 @@
 </div>
 <script>
 (function(){
-  var DAYS_003   = {"2026-06-15": {"trades": 1, "wins": 0, "losses": 1, "pnl": -21.13}, "2026-06-17": {"trades": 2, "wins": 2, "losses": 0, "pnl": 41.05}, "2026-06-19": {"trades": 1, "wins": 0, "losses": 1, "pnl": -19.96}};
+  var DAYS_003   = {"2026-06-15": {"trades": 1, "wins": 0, "losses": 1, "pnl": -21.13}, "2026-06-17": {"trades": 2, "wins": 2, "losses": 0, "pnl": 41.05}, "2026-06-19": {"trades": 1, "wins": 0, "losses": 1, "pnl": -19.96}, "2026-06-23": {"trades": 1, "wins": 0, "losses": 1, "pnl": -18.22}};
   var MONTHS_003 = ["2026-06"];
   var idx_003    = 0;
   var MNAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -699,6 +719,16 @@
         <th>SL Init.</th><th>Résultat</th><th>P&amp;L</th><th>Swap</th><th>Capital</th>
       </tr></thead>
       <tbody><tr>
+          <td>2026-06-23</td>
+          <td class="win">BUY</td>
+          <td class="gold">4129.72</td>
+          <td>4111.50</td>
+          <td>—</td>
+          <td><span class="loss">LOSS</span></td>
+          <td><span class="neg">$-18.22</span></td>
+          <td><span style="color:#555">—</span></td>
+          <td>$981.74</td>
+        </tr><tr>
           <td>2026-06-19</td>
           <td class="win">BUY</td>
           <td class="gold">4167.11</td>
