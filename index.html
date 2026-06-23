@@ -2,791 +2,375 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>BMC Gold — Trading Journal</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #0a0a0a; color: #e0e0e0; font-family: 'Courier New', monospace; min-height: 100vh; }
-
-    /* Header */
-    .header { background: #111; padding: 14px 24px; border-bottom: 1px solid #1e1e1e; display: flex; justify-content: space-between; align-items: center; }
-    .header h1 { color: #c9a227; font-size: 15px; letter-spacing: 0.5px; }
-    .header .meta { color: #444; font-size: 11px; }
-
-    /* Onglets principaux */
-    .tabs { display: flex; gap: 8px; padding: 12px 24px; background: #0d0d0d; border-bottom: 1px solid #1a1a1a; }
-    .tab { display: flex; align-items: center; gap: 10px; padding: 9px 22px; border: 1px solid #2a2a2a; background: #141414; color: #666; cursor: pointer; border-radius: 5px; font-family: inherit; font-size: 13px; transition: all 0.15s; }
-    .tab:hover { border-color: #c9a227; color: #c9a227; }
-    .tab.active { background: #c9a227; color: #000; border-color: #c9a227; font-weight: bold; }
-    .tab.active .badge { color: rgba(0,0,0,0.65); }
-    .badge { font-size: 11px; }
-    .badge.pos { color: #22d3a0; }
-    .badge.neg { color: #f87171; }
-
-    /* Contenu compte */
-    .account { display: none; }
-    .account.active { display: block; }
-
-    /* Sous-onglets */
-    .sub-tabs { display: flex; gap: 6px; padding: 14px 24px; border-bottom: 1px solid #141414; background: #0a0a0a; }
-    .stab { padding: 6px 16px; border: 1px solid #222; background: none; color: #555; cursor: pointer; border-radius: 4px; font-family: inherit; font-size: 12px; transition: all 0.15s; }
-    .stab:hover { color: #aaa; border-color: #333; }
-    .stab.active { color: #e0e0e0; border-color: #444; background: #1a1a1a; }
-
-    /* Sous-contenu */
-    .sub { display: none; padding: 24px; }
-    .sub.active { display: block; }
-
-    /* KPI */
-    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 24px; }
-    .kpi { background: #111; border: 1px solid #1a1a1a; padding: 14px; border-radius: 6px; text-align: center; }
-    .kpi label { display: block; font-size: 9px; color: #444; margin-bottom: 7px; text-transform: uppercase; letter-spacing: 0.8px; }
-    .kpi value { font-size: 17px; font-weight: bold; color: #ddd; }
-
-    /* Table */
-    table { width: 100%; border-collapse: collapse; font-size: 12px; }
-    th { background: #0d0d0d; padding: 9px 12px; text-align: left; font-size: 9px; color: #444; text-transform: uppercase; letter-spacing: 0.8px; border-bottom: 1px solid #1a1a1a; white-space: nowrap; }
-    td { padding: 9px 12px; border-bottom: 1px solid #111; white-space: nowrap; }
-    tr:hover td { background: #0f0f0f; }
-
-    /* Couleurs */
-    .win, .pos { color: #22d3a0; }
-    .loss, .neg { color: #f87171; }
-    .be { color: #888; }
-    .gold { color: #c9a227; }
-    .empty { color: #444; padding: 32px; text-align: center; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f9fafb;color:#111;min-height:100vh}
+    .topbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:10}
+    .logo{display:flex;align-items:center;gap:10px}
+    .logo-icon{width:28px;height:28px;background:#f0c040;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px}
+    .logo-text{font-size:15px;font-weight:600;color:#111}
+    .logo-sub{font-size:12px;color:#9ca3af;margin-top:1px}
+    .topbar-right{font-size:12px;color:#6b7280}
+    .agent-tabs{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 32px;display:flex;gap:2px}
+    .agent-tab{padding:13px 20px;font-size:13px;border:none;background:none;cursor:pointer;color:#6b7280;border-bottom:2px solid transparent;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:8px}
+    .agent-tab.active{color:#111;border-bottom-color:#111;font-weight:500}
+    .agent-tab:hover:not(.active){color:#374151}
+    .main{padding:28px 32px;max-width:1200px;margin:0 auto}
+    .view-tabs{display:flex;gap:4px;margin-bottom:24px}
+    .vtab{padding:6px 14px;font-size:13px;border:1px solid #e5e7eb;background:#fff;border-radius:6px;cursor:pointer;color:#6b7280;font-family:inherit;transition:all .15s}
+    .vtab.active{background:#111;color:#fff;border-color:#111}
+    .vtab:hover:not(.active){border-color:#d1d5db;color:#374151}
+    .section{display:none}.section.active{display:block}
+    .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px}
+    .kpi{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:14px 16px}
+    .kpi-label{font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+    .kpi-val{font-size:20px;font-weight:600;color:#111}
+    .kpi-val.pos{color:#16a34a}.kpi-val.neg{color:#dc2626}
+    .chart-card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:20px 24px;margin-bottom:24px}
+    .chart-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px}
+    .chart-title{font-size:14px;font-weight:600;color:#111}
+    .equity-labels{display:flex;justify-content:space-between;margin-top:8px}
+    .equity-label{font-size:11px;color:#9ca3af}
+    .dist-card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:20px 24px;margin-bottom:24px}
+    .dist-title{font-size:14px;font-weight:600;color:#111;margin-bottom:16px}
+    .dist-bar-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+    .dist-label{font-size:12px;color:#6b7280;width:60px}
+    .dist-bar-bg{flex:1;background:#f3f4f6;border-radius:4px;height:10px}
+    .dist-bar-fill{height:10px;border-radius:4px}
+    .dist-count{font-size:12px;color:#374151;width:80px;text-align:right}
+    .month-block{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:20px;margin-bottom:20px}
+    .month-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    .month-name{font-size:15px;font-weight:600;color:#111}
+    .month-pnl{font-size:15px;font-weight:600}
+    .cal-table{width:100%;border-collapse:separate;border-spacing:4px}
+    .cal-table th{font-size:11px;color:#9ca3af;text-align:center;padding:4px 0;font-weight:500;text-transform:uppercase;letter-spacing:.05em}
+    .cal-day{border:1px solid #e5e7eb;border-radius:8px;padding:6px 8px;height:56px;vertical-align:top;background:#fff}
+    .cal-empty{height:56px}
+    .cal-day-num{font-size:12px;color:#9ca3af;font-weight:500}
+    .cal-pnl{font-size:12px;font-weight:600;margin-top:4px}
+    .has-trade{cursor:pointer;transition:all .15s}.has-trade:hover{opacity:.85;transform:scale(1.03)}
+    .table-card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden}
+    .table-toolbar{padding:14px 20px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .filter-btn{padding:5px 12px;font-size:12px;border:1px solid #e5e7eb;background:#fff;border-radius:6px;cursor:pointer;color:#374151;font-family:inherit;transition:all .15s}
+    .filter-btn.active{background:#111;color:#fff;border-color:#111}
+    .filter-btn:hover:not(.active){border-color:#9ca3af}
+    .day-badge{font-size:12px;color:#6b7280;padding:4px 10px;background:#f3f4f6;border-radius:6px;display:none;align-items:center;gap:6px}
+    .clear-x{cursor:pointer;color:#9ca3af;font-size:14px;line-height:1}.clear-x:hover{color:#374151}
+    table.trades{width:100%;border-collapse:collapse}
+    table.trades th{padding:10px 14px;text-align:left;font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid #e5e7eb;background:#f9fafb;font-weight:500;white-space:nowrap}
+    table.trades th.sortable{cursor:pointer;user-select:none}
+    table.trades th.sortable:hover{color:#374151}
+    table.trades th .si{display:inline-block;margin-left:3px;opacity:.35;font-size:10px}
+    table.trades th.asc .si::after{content:'▲';opacity:1}
+    table.trades th.desc .si::after{content:'▼';opacity:1}
+    table.trades th:not(.asc):not(.desc) .si::after{content:'⇅'}
+    table.trades td{padding:10px 14px;border-bottom:1px solid #f3f4f6;vertical-align:middle;font-size:13px}
+    table.trades tr:last-child td{border-bottom:none}
+    table.trades tr:hover td{background:#f9fafb}
+    .badge{padding:2px 8px;border-radius:100px;font-size:11px;font-weight:500;display:inline-block}
+    .bwin{background:#dcfce7;color:#15803d}.bloss{background:#fee2e2;color:#b91c1c}
+    .bbuy{background:#dbeafe;color:#1d4ed8}.bsell{background:#fce7f3;color:#9d174d}
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1>🥇 BMC GOLD — Trading Journal</h1>
-    <span class="meta">Mis à jour : 2026-06-23 23:44</span>
-  </div>
 
-  <div class="tabs">
-    <button class="tab active" onclick="showAccount('002', this)">
-      BMC-002 <span class="badge pos">+$10,110.87</span>
-    </button>
-    <button class="tab" onclick="showAccount('003', this)">
-      BMC-003 <span class="badge neg">$-18.26</span>
-    </button>
-  </div>
-
-  <div id="account-002" class="account active">
-    <div class="sub-tabs">
-      <button class="stab active" onclick="showSub('002','overview',this)">Vue d'ensemble</button>
-      <button class="stab" onclick="showSub('002','monthly',this)">Mensuel</button>
-      <button class="stab" onclick="showSub('002','trades',this)">Trades (36)</button>
-    </div>
-    <div id="002-overview" class="sub active"><div class="kpi-grid"><div class="kpi"><label>Trades</label><value class="">36</value></div><div class="kpi"><label>Wins</label><value class="win">18</value></div><div class="kpi"><label>Losses</label><value class="loss">18</value></div><div class="kpi"><label>Breakeven</label><value class="be">0</value></div><div class="kpi"><label>Win Rate</label><value class="pos">50%</value></div><div class="kpi"><label>P&amp;L Total</label><value class=""><span class="pos">+$10,110.87</span></value></div><div class="kpi"><label>Swap Total</label><value class=""><span class="neg">$-357.29</span></value></div><div class="kpi"><label>Capital Initial</label><value class="">$100,000</value></div><div class="kpi"><label>Capital Final</label><value class="pos">$110,110.87</value></div><div class="kpi"><label>Moy. Win</label><value class="pos">$2,368.70</value></div><div class="kpi"><label>Moy. Loss</label><value class="neg">$-1,806.99</value></div><div class="kpi"><label>RR Réel</label><value class="">1.31</value></div></div></div>
-    <div id="002-monthly"  class="sub">
-<div id="cal-002" style="font-family:'Courier New',monospace;color:#ddd">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
-    <div style="display:flex;align-items:center;gap:8px">
-      <button onclick="calPrev('002')" style="background:#111;border:1px solid #222;color:#aaa;width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:16px;line-height:1">‹</button>
-      <span id="cal-title-002" style="font-size:17px;color:#e0e0e0;min-width:155px;text-align:center;font-weight:bold"></span>
-      <button onclick="calNext('002')" style="background:#111;border:1px solid #222;color:#aaa;width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:16px;line-height:1">›</button>
-      <button onclick="calToday('002')" style="background:#111;border:1px solid #333;color:#888;padding:4px 12px;border-radius:20px;cursor:pointer;font-size:11px">This month</button>
-    </div>
-    <div id="cal-stats-002" style="display:flex;align-items:center;gap:8px;font-size:12px;color:#555">Monthly stats: —</div>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 130px;gap:10px;align-items:start">
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-icon">🥇</div>
     <div>
-      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px">
-        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Sun</div>
-        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Mon</div>
-        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Tue</div>
-        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Wed</div>
-        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Thu</div>
-        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Fri</div>
-        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Sat</div>
-      </div>
-      <div id="cal-grid-002" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px"></div>
+      <div class="logo-text">BMC GOLD</div>
+      <div class="logo-sub">Trading Journal</div>
     </div>
-    <div id="cal-weeks-002" style="display:flex;flex-direction:column;gap:5px"></div>
+  </div>
+  <div class="topbar-right">Mis à jour : 2026-06-23 23:51 · XAU/USD via OANDA</div>
+</div>
+
+<div class="agent-tabs">
+  <button class="agent-tab active" id="tab-agent-002" onclick="switchAgent('002',this)">
+    BMC-002 <span style="font-size:12px;font-weight:600;color:#16a34a">+$10,110.87</span>
+  </button>
+  <button class="agent-tab" id="tab-agent-003" onclick="switchAgent('003',this)">
+    BMC-003 <span style="font-size:12px;font-weight:600;color:#dc2626">$-18.26</span>
+  </button>
+</div>
+
+<div class="main">
+  <div class="view-tabs">
+    <button class="vtab active" id="vtab-overview" onclick="switchView('overview',this)">Vue d'ensemble</button>
+    <button class="vtab" id="vtab-monthly" onclick="switchView('monthly',this)">Mensuel</button>
+    <button class="vtab" id="vtab-trades" onclick="switchView('trades',this)">
+      Trades (<span id="trade-count">36</span>)
+    </button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div id="overview" class="section active">
+    <div id="kpis-002"><div class="kpi-grid">
+  <div class="kpi"><div class="kpi-label">Trades</div><div class="kpi-val">36</div></div>
+  <div class="kpi"><div class="kpi-label">Wins</div><div class="kpi-val pos">18</div></div>
+  <div class="kpi"><div class="kpi-label">Losses</div><div class="kpi-val neg">18</div></div>
+  <div class="kpi"><div class="kpi-label">Win Rate</div><div class="kpi-val">50%</div></div>
+  <div class="kpi"><div class="kpi-label">P&L Total</div><div class="kpi-val pos">+$10,110.87</div></div>
+  <div class="kpi"><div class="kpi-label">Swap</div><div class="kpi-val neg">$-357.29</div></div>
+  <div class="kpi"><div class="kpi-label">Capital initial</div><div class="kpi-val">$100,000.0</div></div>
+  <div class="kpi"><div class="kpi-label">Capital final</div><div class="kpi-val pos">$110,111</div></div>
+  <div class="kpi"><div class="kpi-label">Moy. Win</div><div class="kpi-val pos">+$2,369</div></div>
+  <div class="kpi"><div class="kpi-label">Moy. Loss</div><div class="kpi-val neg">$-1,807</div></div>
+  <div class="kpi"><div class="kpi-label">RR Réel</div><div class="kpi-val">1.31</div></div>
+  <div class="kpi"><div class="kpi-label">Rendement</div><div class="kpi-val pos">+10.1%</div></div>
+</div></div>
+    <div id="kpis-003" style="display:none"><div class="kpi-grid">
+  <div class="kpi"><div class="kpi-label">Trades</div><div class="kpi-val">5</div></div>
+  <div class="kpi"><div class="kpi-label">Wins</div><div class="kpi-val pos">2</div></div>
+  <div class="kpi"><div class="kpi-label">Losses</div><div class="kpi-val neg">3</div></div>
+  <div class="kpi"><div class="kpi-label">Win Rate</div><div class="kpi-val">40%</div></div>
+  <div class="kpi"><div class="kpi-label">P&L Total</div><div class="kpi-val neg">$-18.26</div></div>
+  <div class="kpi"><div class="kpi-label">Swap</div><div class="kpi-val neg">$-3.03</div></div>
+  <div class="kpi"><div class="kpi-label">Capital initial</div><div class="kpi-val">$1,000.0</div></div>
+  <div class="kpi"><div class="kpi-label">Capital final</div><div class="kpi-val pos">$982</div></div>
+  <div class="kpi"><div class="kpi-label">Moy. Win</div><div class="kpi-val pos">+$21</div></div>
+  <div class="kpi"><div class="kpi-label">Moy. Loss</div><div class="kpi-val neg">$-20</div></div>
+  <div class="kpi"><div class="kpi-label">RR Réel</div><div class="kpi-val">1.04</div></div>
+  <div class="kpi"><div class="kpi-label">Rendement</div><div class="kpi-val pos">+-1.8%</div></div>
+</div></div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <div class="chart-title">Courbe Equity — XAU/USD</div>
+        <div id="eq-sub-002" style="font-size:12px;color:#9ca3af">
+          $100,744 →
+          <span style="color:#16a34a;font-weight:600">$110,111</span>
+        </div>
+        <div id="eq-sub-003" style="font-size:12px;color:#9ca3af;display:none">
+          $979 →
+          <span style="color:#16a34a;font-weight:600">$982</span>
+        </div>
+      </div>
+      <div id="eq-002"><svg viewBox="0 0 740 156" width="100%" style="display:block;overflow:visible">
+  <defs><linearGradient id="eg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#16a34a" stop-opacity="0.15"/>
+    <stop offset="100%" stop-color="#16a34a" stop-opacity="0.01"/>
+  </linearGradient></defs>
+  <line x1="0" y1="110.8" x2="740" y2="110.8"
+        stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4,4"/>
+  <polygon points="0,140 0.0,106.3 21.1,100.8 42.3,118.8 63.4,132.0 84.6,107.9 105.7,121.6 126.9,98.1 148.0,73.8 169.1,50.8 190.3,64.3 211.4,77.9 232.6,54.1 253.7,67.3 274.9,44.3 296.0,57.7 317.1,72.2 338.3,86.5 359.4,100.8 380.6,102.1 401.7,78.2 422.9,75.9 444.0,74.7 465.1,88.4 486.3,73.1 507.4,48.9 528.6,29.0 549.7,29.1 570.9,28.7 592.0,8.3 613.1,8.0 634.3,8.0 655.4,22.6 676.6,22.8 697.7,36.9 718.9,37.1 740.0,49.2 740,140" fill="url(#eg)"/>
+  <polyline points="0.0,106.3 21.1,100.8 42.3,118.8 63.4,132.0 84.6,107.9 105.7,121.6 126.9,98.1 148.0,73.8 169.1,50.8 190.3,64.3 211.4,77.9 232.6,54.1 253.7,67.3 274.9,44.3 296.0,57.7 317.1,72.2 338.3,86.5 359.4,100.8 380.6,102.1 401.7,78.2 422.9,75.9 444.0,74.7 465.1,88.4 486.3,73.1 507.4,48.9 528.6,29.0 549.7,29.1 570.9,28.7 592.0,8.3 613.1,8.0 634.3,8.0 655.4,22.6 676.6,22.8 697.7,36.9 718.9,37.1 740.0,49.2" fill="none" stroke="#16a34a"
+            stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="0.0" cy="106.3" r="3.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="21.1" cy="100.8" r="3.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="42.3" cy="118.8" r="3.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/><circle cx="63.4" cy="132.0" r="3.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/><circle cx="84.6" cy="107.9" r="3.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="105.7" cy="121.6" r="3.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/><circle cx="126.9" cy="98.1" r="3.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="148.0" cy="73.8" r="3.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="169.1" cy="50.8" r="3.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="190.3" cy="64.3" r="3.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/><circle cx="211.4" cy="77.9" r="3.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/><circle cx="232.6" cy="54.1" r="3.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="253.7" cy="67.3" r="3.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/><circle cx="274.9" cy="44.3" r="3.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="296.0" cy="57.7" r="3.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/><circle cx="317.1" cy="72.2" r="3.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/><circle cx="338.3" cy="86.5" r="3.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/><circle cx="359.4" cy="100.8" r="3.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/><circle cx="380.6" cy="102.1" r="3.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/><circle cx="401.7" cy="78.2" r="3.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="422.9" cy="75.9" r="3.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="444.0" cy="74.7" r="3.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="465.1" cy="88.4" r="3.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/><circle cx="486.3" cy="73.1" r="3.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="507.4" cy="48.9" r="3.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="528.6" cy="29.0" r="3.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="549.7" cy="29.1" r="3.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/><circle cx="570.9" cy="28.7" r="3.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="592.0" cy="8.3" r="3.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="613.1" cy="8.0" r="3.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="634.3" cy="8.0" r="3.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="655.4" cy="22.6" r="3.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/><circle cx="676.6" cy="22.8" r="3.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/><circle cx="697.7" cy="36.9" r="3.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/><circle cx="718.9" cy="37.1" r="3.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/><circle cx="740.0" cy="49.2" r="3.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/>
+</svg></div>
+      <div id="eq-003" style="display:none"><svg viewBox="0 0 740 156" width="100%" style="display:block;overflow:visible">
+  <defs><linearGradient id="eg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#16a34a" stop-opacity="0.15"/>
+    <stop offset="100%" stop-color="#16a34a" stop-opacity="0.01"/>
+  </linearGradient></defs>
+  <line x1="0" y1="68.2" x2="740" y2="68.2"
+        stroke="#e5e7eb" stroke-width="1" stroke-dasharray="4,4"/>
+  <polygon points="0,140 0.0,132.0 185.0,12.7 370.0,8.0 555.0,68.3 740.0,123.3 740,140" fill="url(#eg)"/>
+  <polyline points="0.0,132.0 185.0,12.7 370.0,8.0 555.0,68.3 740.0,123.3" fill="none" stroke="#16a34a"
+            stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="0.0" cy="132.0" r="3.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/><circle cx="185.0" cy="12.7" r="3.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="370.0" cy="8.0" r="3.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/><circle cx="555.0" cy="68.3" r="3.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/><circle cx="740.0" cy="123.3" r="3.5" fill="#ef4444" stroke="#fff" stroke-width="1.5"/>
+</svg></div>
+      <div class="equity-labels">
+        <span class="equity-label" id="eq-start">2026-06-03</span>
+        <span class="equity-label" id="eq-max" style="color:#16a34a;font-weight:500">
+          Max : $116,876
+        </span>
+        <span class="equity-label" id="eq-end">2026-06-23</span>
+      </div>
+    </div>
+
+    <div id="dist-002"><div class="dist-card">
+  <div class="dist-title">Distribution des résultats</div>
+  <div class="dist-bar-row">
+    <div class="dist-label">Wins</div>
+    <div class="dist-bar-bg"><div class="dist-bar-fill" style="width:50%;background:#22c55e"></div></div>
+    <div class="dist-count">18 (50%)</div>
+  </div>
+  <div class="dist-bar-row">
+    <div class="dist-label">Losses</div>
+    <div class="dist-bar-bg"><div class="dist-bar-fill" style="width:50%;background:#ef4444"></div></div>
+    <div class="dist-count">18 (50%)</div>
+  </div>
+</div></div>
+    <div id="dist-003" style="display:none"><div class="dist-card">
+  <div class="dist-title">Distribution des résultats</div>
+  <div class="dist-bar-row">
+    <div class="dist-label">Wins</div>
+    <div class="dist-bar-bg"><div class="dist-bar-fill" style="width:40%;background:#22c55e"></div></div>
+    <div class="dist-count">2 (40%)</div>
+  </div>
+  <div class="dist-bar-row">
+    <div class="dist-label">Losses</div>
+    <div class="dist-bar-bg"><div class="dist-bar-fill" style="width:60%;background:#ef4444"></div></div>
+    <div class="dist-count">3 (60%)</div>
+  </div>
+</div></div>
+  </div>
+
+  <!-- MENSUEL -->
+  <div id="monthly" class="section">
+    <div id="cal-002"><div class="month-block">
+  <div class="month-header">
+    <span class="month-name">June 2026</span>
+    <span class="month-pnl" style="color:#16a34a">+$10,110.87</span>
+  </div>
+  <table class="cal-table"><thead><tr>
+    <th>Lun</th><th>Mar</th><th>Mer</th><th>Jeu</th><th>Ven</th><th>Sam</th><th>Dim</th>
+  </tr></thead><tbody><tr><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">1</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">2</div></td><td class="cal-day has-trade" onclick="gotoDay('2026-06-03')" style="background:#dcfce7;border-color:#86efac"><div class="cal-day-num">3</div><div class="cal-pnl" style="color:#15803d">+$744</div></td><td class="cal-day has-trade" onclick="gotoDay('2026-06-04')" style="background:#dcfce7;border-color:#86efac"><div class="cal-day-num">4</div><div class="cal-pnl" style="color:#15803d">+$905</div></td><td class="cal-day has-trade" onclick="gotoDay('2026-06-05')" style="background:#fee2e2;border-color:#fca5a5"><div class="cal-day-num">5</div><div class="cal-pnl" style="color:#b91c1c">$3.0k</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">6</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">7</div></td></tr><tr><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">8</div></td><td class="cal-day has-trade" onclick="gotoDay('2026-06-09')" style="background:#dcfce7;border-color:#86efac"><div class="cal-day-num">9</div><div class="cal-pnl" style="color:#15803d">+$5.0k</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">10</div></td><td class="cal-day has-trade" onclick="gotoDay('2026-06-11')" style="background:#dcfce7;border-color:#86efac"><div class="cal-day-num">11</div><div class="cal-pnl" style="color:#15803d">+$6.5k</div></td><td class="cal-day has-trade" onclick="gotoDay('2026-06-12')" style="background:#dcfce7;border-color:#86efac"><div class="cal-day-num">12</div><div class="cal-pnl" style="color:#15803d">+$3.3k</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">13</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">14</div></td></tr><tr><td class="cal-day has-trade" onclick="gotoDay('2026-06-15')" style="background:#dcfce7;border-color:#86efac"><div class="cal-day-num">15</div><div class="cal-pnl" style="color:#15803d">+$49</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">16</div></td><td class="cal-day has-trade" onclick="gotoDay('2026-06-17')" style="background:#dcfce7;border-color:#86efac"><div class="cal-day-num">17</div><div class="cal-pnl" style="color:#15803d">+$997</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">18</div></td><td class="cal-day has-trade" onclick="gotoDay('2026-06-19')" style="background:#fee2e2;border-color:#fca5a5"><div class="cal-day-num">19</div><div class="cal-pnl" style="color:#b91c1c">$2.3k</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">20</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">21</div></td></tr><tr><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">22</div></td><td class="cal-day has-trade" onclick="gotoDay('2026-06-23')" style="background:#fee2e2;border-color:#fca5a5"><div class="cal-day-num">23</div><div class="cal-pnl" style="color:#b91c1c">$2.0k</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">24</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">25</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">26</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">27</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">28</div></td></tr><tr><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">29</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">30</div></td><td class="cal-empty"></td><td class="cal-empty"></td><td class="cal-empty"></td><td class="cal-empty"></td><td class="cal-empty"></td></tr></tbody></table>
+</div></div>
+    <div id="cal-003" style="display:none"><div class="month-block">
+  <div class="month-header">
+    <span class="month-name">June 2026</span>
+    <span class="month-pnl" style="color:#dc2626">$-18.26</span>
+  </div>
+  <table class="cal-table"><thead><tr>
+    <th>Lun</th><th>Mar</th><th>Mer</th><th>Jeu</th><th>Ven</th><th>Sam</th><th>Dim</th>
+  </tr></thead><tbody><tr><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">1</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">2</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">3</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">4</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">5</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">6</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">7</div></td></tr><tr><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">8</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">9</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">10</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">11</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">12</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">13</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">14</div></td></tr><tr><td class="cal-day has-trade" onclick="gotoDay('2026-06-15')" style="background:#fee2e2;border-color:#fca5a5"><div class="cal-day-num">15</div><div class="cal-pnl" style="color:#b91c1c">$21</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">16</div></td><td class="cal-day has-trade" onclick="gotoDay('2026-06-17')" style="background:#dcfce7;border-color:#86efac"><div class="cal-day-num">17</div><div class="cal-pnl" style="color:#15803d">+$41</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">18</div></td><td class="cal-day has-trade" onclick="gotoDay('2026-06-19')" style="background:#fee2e2;border-color:#fca5a5"><div class="cal-day-num">19</div><div class="cal-pnl" style="color:#b91c1c">$20</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">20</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">21</div></td></tr><tr><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">22</div></td><td class="cal-day has-trade" onclick="gotoDay('2026-06-23')" style="background:#fee2e2;border-color:#fca5a5"><div class="cal-day-num">23</div><div class="cal-pnl" style="color:#b91c1c">$18</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">24</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">25</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">26</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">27</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">28</div></td></tr><tr><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">29</div></td><td class="cal-day"><div class="cal-day-num" style="color:#d1d5db">30</div></td><td class="cal-empty"></td><td class="cal-empty"></td><td class="cal-empty"></td><td class="cal-empty"></td><td class="cal-empty"></td></tr></tbody></table>
+</div></div>
+  </div>
+
+  <!-- TRADES -->
+  <div id="trades" class="section">
+    <div class="table-card">
+      <div class="table-toolbar">
+        <span style="font-size:13px;color:#6b7280;margin-right:4px">Résultat :</span>
+        <button class="filter-btn active" onclick="applyResultFilter('all',this)">Tous</button>
+        <button class="filter-btn" onclick="applyResultFilter('win',this)">Wins</button>
+        <button class="filter-btn" onclick="applyResultFilter('loss',this)">Losses</button>
+        <div class="day-badge" id="day-badge">
+          <span id="day-badge-text"></span>
+          <span class="clear-x" onclick="clearDay()">✕</span>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="trades">
+          <thead><tr>
+            <th style="width:36px">#</th>
+            <th class="sortable" onclick="sortBy('date',this)">Date<span class="si"></span></th>
+            <th class="sortable" onclick="sortBy('action',this)">Direction<span class="si"></span></th>
+            <th class="sortable" onclick="sortBy('entry',this)">Entrée<span class="si"></span></th>
+            <th class="sortable" onclick="sortBy('exit',this)">Sortie<span class="si"></span></th>
+            <th class="sortable" onclick="sortBy('pnl',this)">P&L<span class="si"></span></th>
+            <th>Résultat</th>
+            <th class="sortable" onclick="sortBy('lots',this)">Lots<span class="si"></span></th>
+            <th>Durée</th>
+            <th class="sortable" onclick="sortBy('equity',this)">Equity<span class="si"></span></th>
+          </tr></thead>
+          <tbody id="trades-tbody"></tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
+
 <script>
-(function(){
-  var DAYS_002   = {"2026-06-03": {"trades": 1, "wins": 1, "losses": 0, "pnl": 744.25}, "2026-06-04": {"trades": 1, "wins": 1, "losses": 0, "pnl": 905.46}, "2026-06-05": {"trades": 1, "wins": 0, "losses": 1, "pnl": -2960.74}, "2026-06-09": {"trades": 20, "wins": 9, "losses": 11, "pnl": 4984.709999999998}, "2026-06-11": {"trades": 2, "wins": 2, "losses": 0, "pnl": 6482.54}, "2026-06-12": {"trades": 1, "wins": 1, "losses": 0, "pnl": 3272.33}, "2026-06-15": {"trades": 2, "wins": 1, "losses": 1, "pnl": 48.620000000000005}, "2026-06-17": {"trades": 4, "wins": 3, "losses": 1, "pnl": 997.4000000000001}, "2026-06-19": {"trades": 2, "wins": 0, "losses": 2, "pnl": -2348.45}, "2026-06-23": {"trades": 2, "wins": 0, "losses": 2, "pnl": -2015.25}};
-  var MONTHS_002 = ["2026-06"];
-  var idx_002    = 0;
-  var MNAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DATA = {
+  '002': [{"num": 1, "date": "2026-06-03", "action": "SELL", "entry": 4464.047, "exit": 4460.933, "pnl": 744.25, "result": "TRAIL_WIN", "lots": 2.39, "dur": "6min", "equity": 100744.0}, {"num": 2, "date": "2026-06-04", "action": "BUY", "entry": 4469.988, "exit": 4473.392, "pnl": 905.46, "result": "TRAIL_WIN", "lots": 2.66, "dur": "12min", "equity": 101650.0}, {"num": 3, "date": "2026-06-05", "action": "BUY", "entry": 4458.681, "exit": 4450.679, "pnl": -2960.74, "result": "LOSS", "lots": 3.7, "dur": "0min", "equity": 98689.0}, {"num": 4, "date": "2026-06-09", "action": "BUY", "entry": 4339.283, "exit": 4333.787, "pnl": -2165.42, "result": "LOSS", "lots": 3.94, "dur": "2h11m", "equity": 96524.0}, {"num": 5, "date": "2026-06-09", "action": "BUY", "entry": 4331.106, "exit": 4346.714, "pnl": 3948.82, "result": "WIN", "lots": 2.53, "dur": "19min", "equity": 100472.0}, {"num": 6, "date": "2026-06-09", "action": "SELL", "entry": 4274.056, "exit": 4279.634, "pnl": -2236.78, "result": "LOSS", "lots": 4.01, "dur": "4min", "equity": 98236.0}, {"num": 7, "date": "2026-06-09", "action": "SELL", "entry": 4278.906, "exit": 4269.294, "pnl": 3854.41, "result": "WIN", "lots": 4.01, "dur": "3min", "equity": 102090.0}, {"num": 8, "date": "2026-06-09", "action": "SELL", "entry": 4271.786, "exit": 4261.834, "pnl": 3990.75, "result": "WIN", "lots": 4.01, "dur": "2min", "equity": 106081.0}, {"num": 9, "date": "2026-06-09", "action": "SELL", "entry": 4264.806, "exit": 4255.414, "pnl": 3766.19, "result": "WIN", "lots": 4.01, "dur": "9min", "equity": 109847.0}, {"num": 10, "date": "2026-06-09", "action": "SELL", "entry": 4256.776, "exit": 4262.294, "pnl": -2212.72, "result": "LOSS", "lots": 4.01, "dur": "1min", "equity": 107634.0}, {"num": 11, "date": "2026-06-09", "action": "SELL", "entry": 4262.326, "exit": 4267.904, "pnl": -2236.78, "result": "LOSS", "lots": 4.01, "dur": "11min", "equity": 105397.0}, {"num": 12, "date": "2026-06-09", "action": "SELL", "entry": 4266.266, "exit": 4256.494, "pnl": 3918.57, "result": "WIN", "lots": 4.01, "dur": "1min", "equity": 109316.0}, {"num": 13, "date": "2026-06-09", "action": "SELL", "entry": 4247.326, "exit": 4252.744, "pnl": -2172.62, "result": "LOSS", "lots": 4.01, "dur": "3min", "equity": 107143.0}, {"num": 14, "date": "2026-06-09", "action": "SELL", "entry": 4251.606, "exit": 4242.174, "pnl": 3782.23, "result": "WIN", "lots": 4.01, "dur": "5min", "equity": 110926.0}, {"num": 15, "date": "2026-06-09", "action": "SELL", "entry": 4244.506, "exit": 4250.014, "pnl": -2208.71, "result": "LOSS", "lots": 4.01, "dur": "3min", "equity": 108717.0}, {"num": 16, "date": "2026-06-09", "action": "SELL", "entry": 4249.756, "exit": 4255.674, "pnl": -2373.12, "result": "LOSS", "lots": 4.01, "dur": "1min", "equity": 106344.0}, {"num": 17, "date": "2026-06-09", "action": "SELL", "entry": 4255.046, "exit": 4260.924, "pnl": -2357.08, "result": "LOSS", "lots": 4.01, "dur": "1min", "equity": 103987.0}, {"num": 18, "date": "2026-06-09", "action": "SELL", "entry": 4259.866, "exit": 4265.724, "pnl": -2349.06, "result": "LOSS", "lots": 4.01, "dur": "14min", "equity": 101638.0}, {"num": 19, "date": "2026-06-09", "action": "SELL", "entry": 4264.966, "exit": 4265.494, "pnl": -211.73, "result": "LOSS", "lots": 4.01, "dur": "39min", "equity": 101426.0}, {"num": 20, "date": "2026-06-09", "action": "SELL", "entry": 4269.176, "exit": 4259.474, "pnl": 3929.31, "result": "WIN", "lots": 4.05, "dur": "9min", "equity": 105355.0}, {"num": 21, "date": "2026-06-09", "action": "SELL", "entry": 4255.005, "exit": 4254.125, "pnl": 370.48, "result": "WIN", "lots": 4.21, "dur": "0min", "equity": 105726.0}, {"num": 22, "date": "2026-06-09", "action": "SELL", "entry": 4252.135, "exit": 4251.655, "pnl": 202.56, "result": "WIN", "lots": 4.22, "dur": "2min", "equity": 105928.0}, {"num": 23, "date": "2026-06-09", "action": "SELL", "entry": 4251.055, "exit": 4256.385, "pnl": -2254.59, "result": "LOSS", "lots": 4.23, "dur": "7min", "equity": 103674.0}, {"num": 24, "date": "2026-06-11", "action": "SELL", "entry": 4090.313, "exit": 4068.617, "pnl": 2516.74, "result": "WIN", "lots": 1.16, "dur": "34min", "equity": 106190.0}, {"num": 25, "date": "2026-06-11", "action": "SELL", "entry": 4100.355, "exit": 4084.555, "pnl": 3965.8, "result": "WIN", "lots": 2.51, "dur": "13min", "equity": 110156.0}, {"num": 26, "date": "2026-06-12", "action": "BUY", "entry": 4189.366, "exit": 4212.574, "pnl": 3272.33, "result": "WIN", "lots": 1.41, "dur": "2h10m", "equity": 113429.0}, {"num": 27, "date": "2026-06-15", "action": "BUY", "entry": 4346.52, "exit": 4328.42, "pnl": -21.13, "result": "LOSS", "lots": 0.01, "dur": "39h14m", "equity": 113407.0}, {"num": 28, "date": "2026-06-15", "action": "BUY", "entry": 4324.568, "exit": 4328.192, "pnl": 69.75, "result": "WIN", "lots": 1.17, "dur": "34h47m", "equity": 113477.0}, {"num": 29, "date": "2026-06-17", "action": "BUY", "entry": 4334.061, "exit": 4359.309, "pnl": 3357.98, "result": "WIN", "lots": 1.33, "dur": "1h24m", "equity": 116835.0}, {"num": 30, "date": "2026-06-17", "action": "BUY", "entry": 4336.91, "exit": 4376.39, "pnl": 39.48, "result": "WIN", "lots": 0.01, "dur": "4h04m", "equity": 116875.0}, {"num": 31, "date": "2026-06-17", "action": "BUY", "entry": 4375.32, "exit": 4376.89, "pnl": 1.57, "result": "WIN", "lots": 0.01, "dur": "6min", "equity": 116876.0}, {"num": 32, "date": "2026-06-17", "action": "BUY", "entry": 4335.854, "exit": 4316.486, "pnl": -2401.63, "result": "LOSS", "lots": 1.24, "dur": "2min", "equity": 114475.0}, {"num": 33, "date": "2026-06-19", "action": "BUY", "entry": 4167.11, "exit": 4147.15, "pnl": -19.96, "result": "LOSS", "lots": 0.01, "dur": "1h12m", "equity": 114455.0}, {"num": 34, "date": "2026-06-19", "action": "BUY", "entry": 4166.213, "exit": 4147.127, "pnl": -2328.49, "result": "LOSS", "lots": 1.22, "dur": "1h12m", "equity": 112126.0}, {"num": 35, "date": "2026-06-23", "action": "BUY", "entry": 4129.72, "exit": 4111.5, "pnl": -18.22, "result": "LOSS", "lots": 0.01, "dur": "6h12m", "equity": 112108.0}, {"num": 36, "date": "2026-06-23", "action": "BUY", "entry": 4127.923, "exit": 4111.687, "pnl": -1997.03, "result": "LOSS", "lots": 1.23, "dur": "6h12m", "equity": 110111.0}],
+  '003': [{"num": 1, "date": "2026-06-15", "action": "BUY", "entry": 4346.52, "exit": 4328.42, "pnl": -21.13, "result": "LOSS", "lots": 0.01, "dur": "39h14m", "equity": 979.0}, {"num": 2, "date": "2026-06-17", "action": "BUY", "entry": 4336.91, "exit": 4376.39, "pnl": 39.48, "result": "WIN", "lots": 0.01, "dur": "4h04m", "equity": 1018.0}, {"num": 3, "date": "2026-06-17", "action": "BUY", "entry": 4375.32, "exit": 4376.89, "pnl": 1.57, "result": "WIN", "lots": 0.01, "dur": "6min", "equity": 1020.0}, {"num": 4, "date": "2026-06-19", "action": "BUY", "entry": 4167.11, "exit": 4147.15, "pnl": -19.96, "result": "LOSS", "lots": 0.01, "dur": "1h12m", "equity": 1000.0}, {"num": 5, "date": "2026-06-23", "action": "BUY", "entry": 4129.72, "exit": 4111.5, "pnl": -18.22, "result": "LOSS", "lots": 0.01, "dur": "6h12m", "equity": 982.0}]
+};
+const META = {
+  '002': { start:'2026-06-03', end:'2026-06-23', max:116876 },
+  '003': { start:'2026-06-15', end:'2026-06-23', max:1020 }
+};
 
-  function fmtK(v) {
-    var a = Math.abs(v), s;
-    if (a >= 1000) s = '$' + (a/1000).toFixed(1) + 'K';
-    else s = '$' + a.toFixed(0);
-    return (v >= 0 ? '+' : '-') + s;
-  }
+let agent='002', sortCol='date', sortDir=1, filterResult='all', filterDay=null;
 
-  function render_002() {
-    var ms   = MONTHS_002[idx_002];
-    var yr   = parseInt(ms.slice(0,4));
-    var mo   = parseInt(ms.slice(5,7));
-    document.getElementById('cal-title-002').textContent = MNAMES[mo-1] + ' ' + yr;
-
-    var dim  = new Date(yr, mo, 0).getDate();
-    var mPnl = 0, mDays = 0;
-    for (var d = 1; d <= dim; d++) {
-      var key = yr+'-'+String(mo).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-      if (DAYS_002[key]) { mPnl += DAYS_002[key].pnl; mDays++; }
-    }
-    var sc = mPnl >= 0 ? '#22d3a0' : '#f87171';
-    document.getElementById('cal-stats-002').innerHTML =
-      '<span>Monthly stats:</span>' +
-      '<span style="background:'+sc+'22;border:1px solid '+sc+';color:'+sc+';padding:3px 10px;border-radius:20px;font-weight:bold">'+fmtK(mPnl)+'</span>' +
-      '<span style="background:#6366f122;border:1px solid #6366f155;color:#a5b4fc;padding:3px 10px;border-radius:20px">'+mDays+' days</span>';
-
-    var grid  = document.getElementById('cal-grid-002');
-    var weeksEl = document.getElementById('cal-weeks-002');
-    grid.innerHTML = ''; weeksEl.innerHTML = '';
-
-    var firstDow = new Date(yr, mo-1, 1).getDay();
-    for (var i = 0; i < firstDow; i++) {
-      var emp = document.createElement('div');
-      emp.style.cssText = 'min-height:75px;background:#0a0a0a;border-radius:8px';
-      grid.appendChild(emp);
-    }
-
-    var weeks = [], wk = {pnl:0,days:0};
-    for (var d = 1; d <= dim; d++) {
-      var dow = new Date(yr, mo-1, d).getDay();
-      if (dow === 0 && d > 1) { weeks.push(Object.assign({},wk)); wk={pnl:0,days:0}; }
-      var key = yr+'-'+String(mo).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-      var info = DAYS_002[key];
-      var el = document.createElement('div');
-      if (info) {
-        var pos = info.pnl >= 0;
-        var bc  = pos ? '#22d3a0' : '#f87171';
-        var bg  = pos ? 'rgba(34,211,160,0.11)' : 'rgba(248,113,113,0.11)';
-        el.style.cssText = 'min-height:75px;background:'+bg+';border:1px solid '+bc+'55;border-radius:8px;padding:7px;position:relative';
-        el.innerHTML = '<div style="font-size:10px;color:#666;margin-bottom:3px">'+d+'</div>'+
-          '<div style="font-size:13px;font-weight:bold;color:'+bc+'">'+fmtK(info.pnl)+'</div>'+
-          '<div style="font-size:10px;color:#555;margin-top:2px">'+info.trades+' trade'+(info.trades>1?'s':'')+'</div>'+
-          '<div style="width:5px;height:5px;border-radius:50%;background:'+bc+';position:absolute;bottom:6px;right:6px"></div>';
-        wk.pnl += info.pnl; wk.days++;
-      } else {
-        el.style.cssText = 'min-height:75px;background:#0d0d0d;border:1px solid #111;border-radius:8px;padding:7px';
-        el.innerHTML = '<div style="font-size:10px;color:#2a2a2a">'+d+'</div>';
-      }
-      grid.appendChild(el);
-    }
-    weeks.push(Object.assign({},wk));
-
-    weeks.forEach(function(w, i) {
-      var pos = w.pnl >= 0;
-      var wc  = w.days === 0 ? '#333' : (pos ? '#22d3a0' : '#f87171');
-      var wDiv = document.createElement('div');
-      wDiv.style.cssText = 'background:#111;border:1px solid #1a1a1a;border-radius:8px;padding:10px 12px';
-      wDiv.innerHTML = '<div style="font-size:10px;color:#444;margin-bottom:4px">Week '+(i+1)+'</div>'+
-        '<div style="font-size:15px;font-weight:bold;color:'+wc+'">'+(w.days?fmtK(w.pnl):'—')+'</div>'+
-        (w.days?'<div style="display:inline-block;background:#6366f122;border:1px solid #6366f144;color:#a5b4fc;padding:2px 7px;border-radius:12px;font-size:10px;margin-top:4px">'+w.days+' day'+(w.days>1?'s':'')+'</div>':'');
-      weeksEl.appendChild(wDiv);
+function switchAgent(id, btn) {
+  agent = id;
+  document.querySelectorAll('.agent-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  ['002','003'].forEach(a => {
+    const show = a === id;
+    ['kpis','eq','eq-sub','dist','cal'].forEach(p => {
+      const el = document.getElementById(p+'-'+a);
+      if (el) el.style.display = show ? '' : 'none';
     });
+  });
+  const m = META[id];
+  document.getElementById('eq-start').textContent = m.start;
+  document.getElementById('eq-end').textContent   = m.end;
+  document.getElementById('eq-max').textContent   = 'Max : $' + m.max.toLocaleString('fr-FR');
+  document.getElementById('trade-count').textContent = DATA[id].length;
+  filterDay = null;
+  document.getElementById('day-badge').style.display = 'none';
+  renderTrades();
+}
+
+function switchView(id, btn) {
+  document.querySelectorAll('.vtab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(id).classList.add('active');
+  if (id === 'trades') renderTrades();
+}
+
+function gotoDay(date) {
+  filterDay = date;
+  document.getElementById('day-badge-text').textContent = '📅 ' + date;
+  document.getElementById('day-badge').style.display = 'flex';
+  switchView('trades', document.getElementById('vtab-trades'));
+}
+
+function clearDay() {
+  filterDay = null;
+  document.getElementById('day-badge').style.display = 'none';
+  renderTrades();
+}
+
+function applyResultFilter(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterResult = type;
+  renderTrades();
+}
+
+function sortBy(col, th) {
+  if (sortCol === col) sortDir *= -1; else { sortCol = col; sortDir = 1; }
+  document.querySelectorAll('th.sortable').forEach(t => t.classList.remove('asc','desc'));
+  th.classList.add(sortDir === 1 ? 'asc' : 'desc');
+  renderTrades();
+}
+
+function renderTrades() {
+  let data = [...DATA[agent]];
+  if (filterDay) data = data.filter(t => t.date === filterDay);
+  if (filterResult !== 'all') data = data.filter(t =>
+    filterResult === 'win' ? t.result.includes('WIN') : t.result === 'LOSS');
+  data.sort((a, b) => {
+    let va = a[sortCol], vb = b[sortCol];
+    if (typeof va === 'string') { va = va.toLowerCase(); vb = vb.toLowerCase(); }
+    return sortDir * (va < vb ? -1 : va > vb ? 1 : 0);
+  });
+  const tbody = document.getElementById('trades-tbody');
+  if (!data.length) {
+    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:32px;color:#9ca3af">Aucun trade pour ce filtre</td></tr>';
+    return;
   }
+  tbody.innerHTML = data.map(t => {
+    const pc = t.pnl >= 0 ? '#16a34a' : '#dc2626';
+    const sg = t.pnl >= 0 ? '+' : '';
+    const dir = t.action === 'BUY'
+      ? '<span class="badge bbuy">▲ BUY</span>'
+      : '<span class="badge bsell">▼ SELL</span>';
+    const res = t.result.includes('WIN')
+      ? `<span class="badge bwin">${t.result}</span>`
+      : `<span class="badge bloss">${t.result}</span>`;
+    return `<tr>
+      <td style="color:#9ca3af">${t.num}</td>
+      <td>${t.date}</td><td>${dir}</td>
+      <td>${t.entry.toFixed(3)}</td><td>${t.exit.toFixed(3)}</td>
+      <td style="font-weight:500;color:${pc}">${sg}$${Math.abs(t.pnl).toLocaleString('fr-FR',{minimumFractionDigits:2})}</td>
+      <td>${res}</td>
+      <td style="color:#6b7280">${t.lots.toFixed(2)}</td>
+      <td style="color:#6b7280">${t.dur}</td>
+      <td style="color:#374151">$${t.equity.toLocaleString('fr-FR')}</td>
+    </tr>`;
+  }).join('');
+}
 
-  window.calPrev = window.calPrev || function(){};
-  window.calNext = window.calNext || function(){};
-  window.calToday= window.calToday|| function(){};
-
-  (function(){
-    var pp=window.calPrev, pn=window.calNext, pt=window.calToday;
-    window.calPrev = function(uid) {
-      if(uid==='002'){ idx_002=Math.min(MONTHS_002.length-1,idx_002+1); render_002(); } else pp(uid);
-    };
-    window.calNext = function(uid) {
-      if(uid==='002'){ idx_002=Math.max(0,idx_002-1); render_002(); } else pn(uid);
-    };
-    window.calToday = function(uid) {
-      if(uid==='002'){ idx_002=0; render_002(); } else pt(uid);
-    };
-  })();
-
-  render_002();
-})();
-</script></div>
-    <div id="002-trades"   class="sub">
-    <div style="overflow-x:auto">
-    <table>
-      <thead><tr>
-        <th>Date</th><th>Dir.</th><th>Entrée</th><th>Sortie</th>
-        <th>SL Init.</th><th>Résultat</th><th>P&amp;L</th><th>Swap</th><th>Capital</th>
-      </tr></thead>
-      <tbody><tr>
-          <td>2026-06-23</td>
-          <td class="win">BUY</td>
-          <td class="gold">4127.92</td>
-          <td>4111.69</td>
-          <td>—</td>
-          <td><span class="loss">LOSS</span></td>
-          <td><span class="neg">$-1,997.03</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$110,110.87</td>
-        </tr><tr>
-          <td>2026-06-23</td>
-          <td class="win">BUY</td>
-          <td class="gold">4129.72</td>
-          <td>4111.50</td>
-          <td>—</td>
-          <td><span class="loss">LOSS</span></td>
-          <td><span class="neg">$-18.22</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$112,107.90</td>
-        </tr><tr>
-          <td>2026-06-19</td>
-          <td class="win">BUY</td>
-          <td class="gold">4166.21</td>
-          <td>4147.13</td>
-          <td>—</td>
-          <td><span class="loss">LOSS</span></td>
-          <td><span class="neg">$-2,328.49</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$112,126.12</td>
-        </tr><tr>
-          <td>2026-06-19</td>
-          <td class="win">BUY</td>
-          <td class="gold">4167.11</td>
-          <td>4147.15</td>
-          <td>—</td>
-          <td><span class="loss">LOSS</span></td>
-          <td><span class="neg">$-19.96</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$114,454.61</td>
-        </tr><tr>
-          <td>2026-06-17</td>
-          <td class="win">BUY</td>
-          <td class="gold">4335.85</td>
-          <td>4316.49</td>
-          <td>—</td>
-          <td><span class="loss">LOSS</span></td>
-          <td><span class="neg">$-2,401.63</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$114,474.57</td>
-        </tr><tr>
-          <td>2026-06-17</td>
-          <td class="win">BUY</td>
-          <td class="gold">4375.32</td>
-          <td>4376.89</td>
-          <td>—</td>
-          <td><span class="win">WIN</span></td>
-          <td><span class="pos">+$1.57</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$116,876.20</td>
-        </tr><tr>
-          <td>2026-06-17</td>
-          <td class="win">BUY</td>
-          <td class="gold">4336.91</td>
-          <td>4376.39</td>
-          <td>—</td>
-          <td><span class="win">WIN</span></td>
-          <td><span class="pos">+$39.48</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$116,874.63</td>
-        </tr><tr>
-          <td>2026-06-17</td>
-          <td class="win">BUY</td>
-          <td class="gold">4334.06</td>
-          <td>4359.31</td>
-          <td>—</td>
-          <td><span class="win">WIN</span></td>
-          <td><span class="pos">+$3,357.98</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$116,835.15</td>
-        </tr><tr>
-          <td>2026-06-15</td>
-          <td class="win">BUY</td>
-          <td class="gold">4324.57</td>
-          <td>4328.19</td>
-          <td>—</td>
-          <td><span class="win">WIN</span></td>
-          <td><span class="pos">+$69.75</span></td>
-          <td><span style="color:#555">-354.26</span></td>
-          <td>$113,477.17</td>
-        </tr><tr>
-          <td>2026-06-15</td>
-          <td class="win">BUY</td>
-          <td class="gold">4346.52</td>
-          <td>4328.42</td>
-          <td>—</td>
-          <td><span class="loss">LOSS</span></td>
-          <td><span class="neg">$-21.13</span></td>
-          <td><span style="color:#555">-3.03</span></td>
-          <td>$113,407.42</td>
-        </tr><tr>
-          <td>2026-06-12</td>
-          <td class="win">BUY</td>
-          <td class="gold">4189.37</td>
-          <td>4212.57</td>
-          <td>—</td>
-          <td><span class="win">WIN</span></td>
-          <td><span class="pos">+$3,272.33</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$113,428.55</td>
-        </tr><tr>
-          <td>2026-06-11</td>
-          <td class="loss">SELL</td>
-          <td class="gold">4100.35</td>
-          <td>4084.55</td>
-          <td>—</td>
-          <td><span class="win">WIN</span></td>
-          <td><span class="pos">+$3,965.80</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$110,156.22</td>
-        </tr><tr>
-          <td>2026-06-11</td>
-          <td class="loss">SELL</td>
-          <td class="gold">4090.31</td>
-          <td>4068.62</td>
-          <td>—</td>
-          <td><span class="win">WIN</span></td>
-          <td><span class="pos">+$2,516.74</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$106,190.42</td>
-        </tr><tr>
-          <td>2026-06-09</td>
-          <td class="loss">SELL</td>
-          <td class="gold">4251.06</td>
-          <td>4256.39</td>
-          <td>—</td>
-          <td><span class="loss">LOSS</span></td>
-          <td><span class="neg">$-2,254.59</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$103,673.68</td>
-        </tr><tr>
-          <td>2026-06-09</td>
-          <td class="loss">SELL</td>
-          <td class="gold">4252.14</td>
-          <td>4251.65</td>
-          <td>—</td>
-          <td><span class="win">WIN</span></td>
-          <td><span class="pos">+$202.56</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$105,928.27</td>
-        </tr><tr>
-          <td>2026-06-09</td>
-          <td class="loss">SELL</td>
-          <td class="gold">4255.01</td>
-          <td>4254.12</td>
-          <td>—</td>
-          <td><span class="win">WIN</span></td>
-          <td><span class="pos">+$370.48</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$105,725.71</td>
-        </tr><tr>
-          <td>2026-06-09</td>
-          <td class="loss">SELL</td>
-          <td class="gold">4269.18</td>
-          <td>4259.47</td>
-          <td>—</td>
-          <td><span class="win">WIN</span></td>
-          <td><span class="pos">+$3,929.31</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$105,355.23</td>
-        </tr><tr>
-          <td>2026-06-09</td>
-          <td class="loss">SELL</td>
-          <td class="gold">4264.97</td>
-          <td>4265.49</td>
-          <td>—</td>
-          <td><span class="loss">LOSS</span></td>
-          <td><span class="neg">$-211.73</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$101,425.92</td>
-        </tr><tr>
-          <td>2026-06-09</td>
-          <td class="loss">SELL</td>
-          <td class="gold">4259.87</td>
-          <td>4265.72</td>
-          <td>—</td>
-          <td><span class="loss">LOSS</span></td>
-          <td><span class="neg">$-2,349.06</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$101,637.65</td>
-        </tr><tr>
-          <td>2026-06-09</td>
-          <td class="loss">SELL</td>
-          <td class="gold">4255.05</td>
-          <td>4260.92</td>
-          <td>—</td>
-          <td><span class="loss">LOSS</span></td>
-          <td><span class="neg">$-2,357.08</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$103,986.71</td>
-        </tr><tr>
-          <td>2026-06-09</td>
-          <td class="loss">SELL</td>
-          <td class="gold">4249.76</td>
-          <td>4255.67</td>
-          <td>—</td>
-          <td><span class="loss">LOSS</span></td>
-          <td><span class="neg">$-2,373.12</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$106,343.79</td>
-        </tr><tr>
-          <td>2026-06-09</td>
-          <td class="loss">SELL</td>
-          <td class="gold">4244.51</td>
-          <td>4250.01</td>
-          <td>—</td>
-          <td><span class="loss">LOSS</span></td>
-          <td><span class="neg">$-2,208.71</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$108,716.91</td>
-        </tr><tr>
-          <td>2026-06-09</td>
-          <td class="loss">SELL</td>
-          <td class="gold">4251.61</td>
-          <td>4242.17</td>
-          <td>—</td>
-          <td><span class="win">WIN</span></td>
-          <td><span class="pos">+$3,782.23</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$110,925.62</td>
-        </tr><tr>
-          <td>2026-06-09</td>
-          <td class="loss">SELL</td>
-          <td class="gold">4247.33</td>
-          <td>4252.74</td>
-          <td>—</td>
-          <td><span class="loss">LOSS</span></td>
-          <td><span class="neg">$-2,172.62</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$107,143.39</td>
-        </tr><tr>
-          <td>2026-06-09</td>
-          <td class="loss">SELL</td>
-          <td class="gold">4266.27</td>
-          <td>4256.49</td>
-          <td>—</td>
-          <td><span class="win">WIN</span></td>
-          <td><span class="pos">+$3,918.57</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$109,316.01</td>
-        </tr><tr>
-          <td>2026-06-09</td>
-          <td class="loss">SELL</td>
-          <td class="gold">4262.33</td>
-          <td>4267.90</td>
-          <td>—</td>
-          <td><span class="loss">LOSS</span></td>
-          <td><span class="neg">$-2,236.78</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$105,397.44</td>
-        </tr><tr>
-          <td>2026-06-09</td>
-          <td class="loss">SELL</td>
-          <td class="gold">4256.78</td>
-          <td>4262.29</td>
-          <td>—</td>
-          <td><span class="loss">LOSS</span></td>
-          <td><span class="neg">$-2,212.72</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$107,634.22</td>
-        </tr><tr>
-          <td>2026-06-09</td>
-          <td class="loss">SELL</td>
-          <td class="gold">4264.81</td>
-          <td>4255.41</td>
-          <td>—</td>
-          <td><span class="win">WIN</span></td>
-          <td><span class="pos">+$3,766.19</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$109,846.94</td>
-        </tr><tr>
-          <td>2026-06-09</td>
-          <td class="loss">SELL</td>
-          <td class="gold">4271.79</td>
-          <td>4261.83</td>
-          <td>—</td>
-          <td><span class="win">WIN</span></td>
-          <td><span class="pos">+$3,990.75</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$106,080.75</td>
-        </tr><tr>
-          <td>2026-06-09</td>
-          <td class="loss">SELL</td>
-          <td class="gold">4278.91</td>
-          <td>4269.29</td>
-          <td>—</td>
-          <td><span class="win">WIN</span></td>
-          <td><span class="pos">+$3,854.41</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$102,090.00</td>
-        </tr><tr>
-          <td>2026-06-09</td>
-          <td class="loss">SELL</td>
-          <td class="gold">4274.06</td>
-          <td>4279.63</td>
-          <td>—</td>
-          <td><span class="loss">LOSS</span></td>
-          <td><span class="neg">$-2,236.78</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$98,235.59</td>
-        </tr><tr>
-          <td>2026-06-09</td>
-          <td class="win">BUY</td>
-          <td class="gold">4331.11</td>
-          <td>4346.71</td>
-          <td>—</td>
-          <td><span class="win">WIN</span></td>
-          <td><span class="pos">+$3,948.82</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$100,472.37</td>
-        </tr><tr>
-          <td>2026-06-09</td>
-          <td class="win">BUY</td>
-          <td class="gold">4339.28</td>
-          <td>4333.79</td>
-          <td>—</td>
-          <td><span class="loss">LOSS</span></td>
-          <td><span class="neg">$-2,165.42</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$96,523.55</td>
-        </tr><tr>
-          <td>2026-06-05</td>
-          <td class="win">BUY</td>
-          <td class="gold">4458.68</td>
-          <td>4450.68</td>
-          <td>—</td>
-          <td><span class="loss">LOSS</span></td>
-          <td><span class="neg">$-2,960.74</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$98,688.97</td>
-        </tr><tr>
-          <td>2026-06-04</td>
-          <td class="win">BUY</td>
-          <td class="gold">4469.99</td>
-          <td>4473.39</td>
-          <td>—</td>
-          <td><span class="win">TRAIL_WIN</span></td>
-          <td><span class="pos">+$905.46</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$101,649.71</td>
-        </tr><tr>
-          <td>2026-06-03</td>
-          <td class="loss">SELL</td>
-          <td class="gold">4464.05</td>
-          <td>4460.93</td>
-          <td>—</td>
-          <td><span class="win">TRAIL_WIN</span></td>
-          <td><span class="pos">+$744.25</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$100,744.25</td>
-        </tr></tbody>
-    </table>
-    </div></div>
-    </div>
-  <div id="account-003" class="account">
-    <div class="sub-tabs">
-      <button class="stab active" onclick="showSub('003','overview',this)">Vue d'ensemble</button>
-      <button class="stab" onclick="showSub('003','monthly',this)">Mensuel</button>
-      <button class="stab" onclick="showSub('003','trades',this)">Trades (5)</button>
-    </div>
-    <div id="003-overview" class="sub active"><div class="kpi-grid"><div class="kpi"><label>Trades</label><value class="">5</value></div><div class="kpi"><label>Wins</label><value class="win">2</value></div><div class="kpi"><label>Losses</label><value class="loss">3</value></div><div class="kpi"><label>Breakeven</label><value class="be">0</value></div><div class="kpi"><label>Win Rate</label><value class="neg">40%</value></div><div class="kpi"><label>P&amp;L Total</label><value class=""><span class="neg">$-18.26</span></value></div><div class="kpi"><label>Swap Total</label><value class=""><span class="neg">$-3.03</span></value></div><div class="kpi"><label>Capital Initial</label><value class="">$1,000</value></div><div class="kpi"><label>Capital Final</label><value class="neg">$981.74</value></div><div class="kpi"><label>Moy. Win</label><value class="pos">$20.52</value></div><div class="kpi"><label>Moy. Loss</label><value class="neg">$-19.77</value></div><div class="kpi"><label>RR Réel</label><value class="">1.04</value></div></div></div>
-    <div id="003-monthly"  class="sub">
-<div id="cal-003" style="font-family:'Courier New',monospace;color:#ddd">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
-    <div style="display:flex;align-items:center;gap:8px">
-      <button onclick="calPrev('003')" style="background:#111;border:1px solid #222;color:#aaa;width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:16px;line-height:1">‹</button>
-      <span id="cal-title-003" style="font-size:17px;color:#e0e0e0;min-width:155px;text-align:center;font-weight:bold"></span>
-      <button onclick="calNext('003')" style="background:#111;border:1px solid #222;color:#aaa;width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:16px;line-height:1">›</button>
-      <button onclick="calToday('003')" style="background:#111;border:1px solid #333;color:#888;padding:4px 12px;border-radius:20px;cursor:pointer;font-size:11px">This month</button>
-    </div>
-    <div id="cal-stats-003" style="display:flex;align-items:center;gap:8px;font-size:12px;color:#555">Monthly stats: —</div>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 130px;gap:10px;align-items:start">
-    <div>
-      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px">
-        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Sun</div>
-        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Mon</div>
-        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Tue</div>
-        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Wed</div>
-        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Thu</div>
-        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Fri</div>
-        <div style="text-align:center;font-size:11px;color:#444;padding:3px 0">Sat</div>
-      </div>
-      <div id="cal-grid-003" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px"></div>
-    </div>
-    <div id="cal-weeks-003" style="display:flex;flex-direction:column;gap:5px"></div>
-  </div>
-</div>
-<script>
-(function(){
-  var DAYS_003   = {"2026-06-15": {"trades": 1, "wins": 0, "losses": 1, "pnl": -21.13}, "2026-06-17": {"trades": 2, "wins": 2, "losses": 0, "pnl": 41.05}, "2026-06-19": {"trades": 1, "wins": 0, "losses": 1, "pnl": -19.96}, "2026-06-23": {"trades": 1, "wins": 0, "losses": 1, "pnl": -18.22}};
-  var MONTHS_003 = ["2026-06"];
-  var idx_003    = 0;
-  var MNAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-
-  function fmtK(v) {
-    var a = Math.abs(v), s;
-    if (a >= 1000) s = '$' + (a/1000).toFixed(1) + 'K';
-    else s = '$' + a.toFixed(0);
-    return (v >= 0 ? '+' : '-') + s;
-  }
-
-  function render_003() {
-    var ms   = MONTHS_003[idx_003];
-    var yr   = parseInt(ms.slice(0,4));
-    var mo   = parseInt(ms.slice(5,7));
-    document.getElementById('cal-title-003').textContent = MNAMES[mo-1] + ' ' + yr;
-
-    var dim  = new Date(yr, mo, 0).getDate();
-    var mPnl = 0, mDays = 0;
-    for (var d = 1; d <= dim; d++) {
-      var key = yr+'-'+String(mo).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-      if (DAYS_003[key]) { mPnl += DAYS_003[key].pnl; mDays++; }
-    }
-    var sc = mPnl >= 0 ? '#22d3a0' : '#f87171';
-    document.getElementById('cal-stats-003').innerHTML =
-      '<span>Monthly stats:</span>' +
-      '<span style="background:'+sc+'22;border:1px solid '+sc+';color:'+sc+';padding:3px 10px;border-radius:20px;font-weight:bold">'+fmtK(mPnl)+'</span>' +
-      '<span style="background:#6366f122;border:1px solid #6366f155;color:#a5b4fc;padding:3px 10px;border-radius:20px">'+mDays+' days</span>';
-
-    var grid  = document.getElementById('cal-grid-003');
-    var weeksEl = document.getElementById('cal-weeks-003');
-    grid.innerHTML = ''; weeksEl.innerHTML = '';
-
-    var firstDow = new Date(yr, mo-1, 1).getDay();
-    for (var i = 0; i < firstDow; i++) {
-      var emp = document.createElement('div');
-      emp.style.cssText = 'min-height:75px;background:#0a0a0a;border-radius:8px';
-      grid.appendChild(emp);
-    }
-
-    var weeks = [], wk = {pnl:0,days:0};
-    for (var d = 1; d <= dim; d++) {
-      var dow = new Date(yr, mo-1, d).getDay();
-      if (dow === 0 && d > 1) { weeks.push(Object.assign({},wk)); wk={pnl:0,days:0}; }
-      var key = yr+'-'+String(mo).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-      var info = DAYS_003[key];
-      var el = document.createElement('div');
-      if (info) {
-        var pos = info.pnl >= 0;
-        var bc  = pos ? '#22d3a0' : '#f87171';
-        var bg  = pos ? 'rgba(34,211,160,0.11)' : 'rgba(248,113,113,0.11)';
-        el.style.cssText = 'min-height:75px;background:'+bg+';border:1px solid '+bc+'55;border-radius:8px;padding:7px;position:relative';
-        el.innerHTML = '<div style="font-size:10px;color:#666;margin-bottom:3px">'+d+'</div>'+
-          '<div style="font-size:13px;font-weight:bold;color:'+bc+'">'+fmtK(info.pnl)+'</div>'+
-          '<div style="font-size:10px;color:#555;margin-top:2px">'+info.trades+' trade'+(info.trades>1?'s':'')+'</div>'+
-          '<div style="width:5px;height:5px;border-radius:50%;background:'+bc+';position:absolute;bottom:6px;right:6px"></div>';
-        wk.pnl += info.pnl; wk.days++;
-      } else {
-        el.style.cssText = 'min-height:75px;background:#0d0d0d;border:1px solid #111;border-radius:8px;padding:7px';
-        el.innerHTML = '<div style="font-size:10px;color:#2a2a2a">'+d+'</div>';
-      }
-      grid.appendChild(el);
-    }
-    weeks.push(Object.assign({},wk));
-
-    weeks.forEach(function(w, i) {
-      var pos = w.pnl >= 0;
-      var wc  = w.days === 0 ? '#333' : (pos ? '#22d3a0' : '#f87171');
-      var wDiv = document.createElement('div');
-      wDiv.style.cssText = 'background:#111;border:1px solid #1a1a1a;border-radius:8px;padding:10px 12px';
-      wDiv.innerHTML = '<div style="font-size:10px;color:#444;margin-bottom:4px">Week '+(i+1)+'</div>'+
-        '<div style="font-size:15px;font-weight:bold;color:'+wc+'">'+(w.days?fmtK(w.pnl):'—')+'</div>'+
-        (w.days?'<div style="display:inline-block;background:#6366f122;border:1px solid #6366f144;color:#a5b4fc;padding:2px 7px;border-radius:12px;font-size:10px;margin-top:4px">'+w.days+' day'+(w.days>1?'s':'')+'</div>':'');
-      weeksEl.appendChild(wDiv);
-    });
-  }
-
-  window.calPrev = window.calPrev || function(){};
-  window.calNext = window.calNext || function(){};
-  window.calToday= window.calToday|| function(){};
-
-  (function(){
-    var pp=window.calPrev, pn=window.calNext, pt=window.calToday;
-    window.calPrev = function(uid) {
-      if(uid==='003'){ idx_003=Math.min(MONTHS_003.length-1,idx_003+1); render_003(); } else pp(uid);
-    };
-    window.calNext = function(uid) {
-      if(uid==='003'){ idx_003=Math.max(0,idx_003-1); render_003(); } else pn(uid);
-    };
-    window.calToday = function(uid) {
-      if(uid==='003'){ idx_003=0; render_003(); } else pt(uid);
-    };
-  })();
-
-  render_003();
-})();
-</script></div>
-    <div id="003-trades"   class="sub">
-    <div style="overflow-x:auto">
-    <table>
-      <thead><tr>
-        <th>Date</th><th>Dir.</th><th>Entrée</th><th>Sortie</th>
-        <th>SL Init.</th><th>Résultat</th><th>P&amp;L</th><th>Swap</th><th>Capital</th>
-      </tr></thead>
-      <tbody><tr>
-          <td>2026-06-23</td>
-          <td class="win">BUY</td>
-          <td class="gold">4129.72</td>
-          <td>4111.50</td>
-          <td>—</td>
-          <td><span class="loss">LOSS</span></td>
-          <td><span class="neg">$-18.22</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$981.74</td>
-        </tr><tr>
-          <td>2026-06-19</td>
-          <td class="win">BUY</td>
-          <td class="gold">4167.11</td>
-          <td>4147.15</td>
-          <td>—</td>
-          <td><span class="loss">LOSS</span></td>
-          <td><span class="neg">$-19.96</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$999.96</td>
-        </tr><tr>
-          <td>2026-06-17</td>
-          <td class="win">BUY</td>
-          <td class="gold">4375.32</td>
-          <td>4376.89</td>
-          <td>—</td>
-          <td><span class="win">WIN</span></td>
-          <td><span class="pos">+$1.57</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$1,019.92</td>
-        </tr><tr>
-          <td>2026-06-17</td>
-          <td class="win">BUY</td>
-          <td class="gold">4336.91</td>
-          <td>4376.39</td>
-          <td>—</td>
-          <td><span class="win">WIN</span></td>
-          <td><span class="pos">+$39.48</span></td>
-          <td><span style="color:#555">—</span></td>
-          <td>$1,018.35</td>
-        </tr><tr>
-          <td>2026-06-15</td>
-          <td class="win">BUY</td>
-          <td class="gold">4346.52</td>
-          <td>4328.42</td>
-          <td>—</td>
-          <td><span class="loss">LOSS</span></td>
-          <td><span class="neg">$-21.13</span></td>
-          <td><span style="color:#555">-3.03</span></td>
-          <td>$978.87</td>
-        </tr></tbody>
-    </table>
-    </div></div>
-    </div>
-
-  <script>
-    function showAccount(id, btn) {
-      document.querySelectorAll('.account').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-      document.getElementById('account-' + id).classList.add('active');
-      btn.classList.add('active');
-    }
-    function showSub(acct, sub, btn) {
-      const parent = document.getElementById('account-' + acct);
-      parent.querySelectorAll('.sub').forEach(el => el.classList.remove('active'));
-      parent.querySelectorAll('.stab').forEach(el => el.classList.remove('active'));
-      document.getElementById(acct + '-' + sub).classList.add('active');
-      btn.classList.add('active');
-    }
-  </script>
+renderTrades();
+</script>
 </body>
 </html>
