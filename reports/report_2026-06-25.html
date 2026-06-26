@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMC Agent — Rapport 2026-06-25</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'JetBrains Mono',monospace;background:#0a0c0f;color:#e2e8f0;
+      padding:32px;max-width:960px;margin:0 auto;font-size:13px}
+h1{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#f0b429;margin-bottom:4px}
+.sub{color:#8896aa;font-size:12px;margin-bottom:28px}
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px}
+.kpi{background:#0f1218;border:1px solid #1e2530;border-radius:8px;padding:14px 16px}
+.kpi label{font-size:10px;color:#4a5568;display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em}
+.kpi span{font-family:'Syne',sans-serif;font-size:18px;font-weight:700}
+.kpi.total-kpi{border-color:#f0b429;background:rgba(240,180,41,.05)}
+.section{background:#0f1218;border:1px solid #1e2530;border-radius:8px;overflow:hidden;margin-bottom:16px}
+.section-head{padding:12px 16px;border-bottom:1px solid #1e2530;display:flex;align-items:center;gap:8px}
+.section-head h2{font-family:'Syne',sans-serif;font-size:13px;font-weight:700}
+.badge{padding:2px 9px;border-radius:99px;font-size:10px;font-weight:600}
+.b002{background:rgba(240,180,41,.12);color:#f0b429;border:1px solid rgba(240,180,41,.25)}
+.b003{background:rgba(34,211,160,.12);color:#22d3a0;border:1px solid rgba(34,211,160,.25)}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:8px 12px;border-bottom:1px solid #1e2530;
+    font-size:10px;color:#4a5568;text-transform:uppercase;letter-spacing:.06em;font-weight:500}
+td{padding:10px 12px;border-bottom:1px solid #1e2530;color:#8896aa}
+tr:last-child td{border-bottom:none}
+.total{background:#151a22;border-radius:8px;padding:16px 20px;
+        display:flex;gap:36px;align-items:center;margin-top:8px;flex-wrap:wrap}
+.total-item label{font-size:10px;color:#4a5568;display:block;margin-bottom:4px;text-transform:uppercase}
+.total-item span{font-family:'Syne',sans-serif;font-size:18px;font-weight:700}
+.pos{color:#22d3a0}.neg{color:#f87171}.gold{color:#f0b429}
+footer{margin-top:24px;font-size:10px;color:#4a5568;text-align:center}
+@media(max-width:600px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<h1>🥇 BMC Agent — Rapport Journalier</h1>
+<div class="sub">Thursday 25 june 2026 · Généré le 22:00 (Genève)</div>
+
+<div class="kpi-grid">
+  <div class="kpi total-kpi">
+    <label>💰 P&L Total</label>
+    <span style="color:#22d3a0">+$2258.51</span>
+  </div>
+  <div class="kpi">
+    <label>-002 P&L</label>
+    <span class="pos">+$2270.09</span>
+  </div>
+  <div class="kpi">
+    <label>-003 P&L</label>
+    <span class="neg">-$11.58</span>
+  </div>
+  <div class="kpi">
+    <label>Capital -002</label>
+    <span class="gold">$110,209</span>
+  </div>
+  <div class="kpi">
+    <label>Départ -002</label>
+    <span style="color:#8896aa">$107,939</span>
+  </div>
+  <div class="kpi">
+    <label>Capital -003</label>
+    <span class="gold">$950</span>
+  </div>
+  <div class="kpi">
+    <label>Départ -003</label>
+    <span style="color:#8896aa">$962</span>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <span class="badge b002">BMC-002</span>
+    <h2>Trades du jour</h2>
+    <span style="margin-left:auto;font-size:11px;color:#4a5568">London Range : 3971.7 – 4019.38 (476.8p)</span>
+  </div>
+  <table>
+    <thead><tr>
+      <th>Compte</th><th>Heure UTC</th><th>Direction</th>
+      <th>Entrée</th><th>SL</th><th>TP</th><th>Résultat</th><th>P&L</th>
+    </tr></thead>
+    <tbody><tr>
+          <td><span style="background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;
+                color:#f0b429;font-weight:600;font-size:11px">-002</span></td>
+          <td>13:00</td>
+          <td>↑ BUY</td>
+          <td style="font-family:monospace">4014.72</td>
+          <td style="font-family:monospace">0.00</td>
+          <td style="font-family:monospace">0.00</td>
+          <td>✅ WIN</td>
+          <td style="color:#22d3a0;font-weight:600">+$2270.09</td>
+        </tr></tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <span class="badge b003">BMC-003</span>
+    <h2>Trades du jour</h2>
+  </div>
+  <table>
+    <thead><tr>
+      <th>Compte</th><th>Heure UTC</th><th>Direction</th>
+      <th>Entrée</th><th>SL</th><th>TP</th><th>Résultat</th><th>P&L</th>
+    </tr></thead>
+    <tbody><tr>
+          <td><span style="background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;
+                color:#22d3a0;font-weight:600;font-size:11px">-003</span></td>
+          <td>13:00</td>
+          <td>↑ BUY</td>
+          <td style="font-family:monospace">4014.66</td>
+          <td style="font-family:monospace">0.00</td>
+          <td style="font-family:monospace">0.00</td>
+          <td>❌ LOSS</td>
+          <td style="color:#f87171;font-weight:600">-$11.58</td>
+        </tr></tbody>
+  </table>
+</div>
+
+<div class="total">
+  <div class="total-item">
+    <label>🥇 BMC-002</label>
+    <span class="pos">+$2270.09</span>
+  </div>
+  <div class="total-item">
+    <label>🥇 BMC-003</label>
+    <span class="neg">-$11.58</span>
+  </div>
+  <div class="total-item" style="margin-left:auto">
+    <label>💰 TOTAL JOUR</label>
+    <span style="color:#22d3a0;font-size:22px">+$2258.51</span>
+  </div>
+</div>
+
+<footer>BMC Agent · Dan · Genève · 2026-06-25</footer>
+</body>
+</html>
